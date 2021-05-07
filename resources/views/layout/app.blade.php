@@ -29,6 +29,7 @@
 
     <!-- Custom Theme Style -->
     <link href="{{asset('build/css/custom.min.css')}}" rel="stylesheet">
+    @livewireStyles
 </head>
 
 <body class="nav-md">
@@ -178,7 +179,7 @@
 
 <!-- Custom Theme Scripts -->
 <script src="{{asset('build/js/custom.min.js')}}"></script>
-
+@livewireScripts
 </body>
 </html>
 
