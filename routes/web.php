@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,5 +21,6 @@ use Illuminate\Support\Facades\Route;
 /* Hospital*/
 Route::get('/',[\App\Http\Controllers\HospitalController::class, 'index'])->name('index');
 Route::get('login',[\App\Http\Controllers\HospitalController::class, 'login'])->name('login');
+//Route::get('hospital_details',[\App\Http\Livewire\HospitalDetails::class, 'render'])->name('hospital_details');
 Route::get('hospital_details',[\App\Http\Controllers\HospitalController::class, 'hospitalDetails'])->name('hospital_details');
 Route::put('hospital_details_update',[\App\Http\Controllers\HospitalController::class, 'hospitalDetailsUpdate'])->name('hospital_details_update');
