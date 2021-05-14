@@ -2,7 +2,7 @@
 @section('content')
 
     <div>
-        Do your work, then step back.
+        <a href="{{route('index')}}"> Do your work, then step back. </a>
         <div class="">
             <div class="page-title">
                 <div class="title_left">
@@ -21,20 +21,20 @@
                     <div class="x_panel">
                         <div class="x_title">
                             <h2>Hospital Report & All Activity</h2>
-                            <ul class="nav navbar-right panel_toolbox">
-                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                </li>
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                                       aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="#">Settings 1</a>
-                                        <a class="dropdown-item" href="#">Settings 2</a>
-                                    </div>
-                                </li>
-                                <li><a class="close-link"><i class="fa fa-close"></i></a>
-                                </li>
-                            </ul>
+{{--                            <ul class="nav navbar-right panel_toolbox">--}}
+{{--                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>--}}
+{{--                                </li>--}}
+{{--                                <li class="dropdown">--}}
+{{--                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"--}}
+{{--                                       aria-expanded="false"><i class="fa fa-wrench"></i></a>--}}
+{{--                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">--}}
+{{--                                        <a class="dropdown-item" href="#">Settings 1</a>--}}
+{{--                                        <a class="dropdown-item" href="#">Settings 2</a>--}}
+{{--                                    </div>--}}
+{{--                                </li>--}}
+{{--                                <li><a class="close-link"><i class="fa fa-close"></i></a>--}}
+{{--                                </li>--}}
+{{--                            </ul>--}}
                             <div class="clearfix"></div>
                         </div>
                         <div class="x_content">
@@ -43,14 +43,14 @@
                                     <div id="crop-avatar">
                                         <!-- Current avatar -->
                                         <img class="img-responsive avatar-view"
-                                             src="{{asset('images/'.$hospital[0]->logo)}}" alt="Avatar"
+                                             src="{{asset('upload_file/'.$hospital[0]->logo)}}" alt="Hospital Logo"
                                              title="Change the avatar" style="height: 220px; width: 220px">
                                     </div>
                                 </div>
                                 <h3>{{$hospital[0]->name}}</h3>
                                 <hr>
 
-                                <ul class="list-unstyled user_data">
+                                <ul class="list-unstyled user_data" style="font-size: 19px">
                                     <li><i class="fa fa-map-marker user-profile-icon"></i> {{$hospital[0]->address}}
                                     </li>
 
@@ -74,16 +74,20 @@
                             <div class="col-md-9 col-sm-9 ">
 
                                 <div class="profile_title">
-                                    <div class="col-md-6">
+                                    <div class="col-md-9">
                                         <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
-                                            <li role="presentation" class="active"><a href="#recent_activity"
+                                            <li role="presentation" class="active"><a href="#edit_hospital_details"
                                                                                       id="home-tab"
                                                                                       role="tab" data-toggle="tab"
                                                                                       aria-expanded="true">Edit</a>
                                             </li>
-                                            <li role="presentation" class=""><a href="#patient_count" role="tab"
+                                            <li role="presentation" class=""><a href="#total_patient_count" role="tab"
                                                                                 id="profile-tab" data-toggle="tab"
-                                                                                aria-expanded="false">Patient Count</a>
+                                                                                aria-expanded="false">Total Patient Count</a>
+                                            </li>
+                                            <li role="presentation" class=""><a href="#doctor_patient_count" role="tab"
+                                                                                id="profile-tab" data-toggle="tab"
+                                                                                aria-expanded="false">Doctor & Patient Count</a>
                                             </li>
                                             <li role="presentation" class=""><a href="#edit" role="tab"
                                                                                 id="profile-tab2"
@@ -93,7 +97,7 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
                                         <div id="reportrange" class="pull-right"
                                              style="margin-top: 5px; background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #E6E9ED">
                                             <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
@@ -103,10 +107,10 @@
                                 </div>
                                 <div class="" role="tabpanel" data-example-id="togglable-tabs">
                                     <div id="myTabContent" class="tab-content">
-                                        <div role="tabpanel" class="tab-pane active " id="recent_activity"
+                                        <!-- start hospital details update -->
+                                        <div role="tabpanel" class="tab-pane active " id="edit_hospital_details"
                                              aria-labelledby="home-tab">
 
-                                            <!-- start hospital details update -->
                                             <div class="x_panel">
                                                 <div class="x_title">
                                                     <h2>Hospital Details Update</h2>
@@ -117,7 +121,7 @@
                                                     <br/>
                                                     <form action="{{route('hospital_details_update')}}"
                                                           class="form-horizontal form-label-left" method="POST"
-                                                          id="hospital_details">
+                                                          enctype="multipart/form-data" id="hospital_details_update">
                                                         @csrf
                                                         @method('PUT')
 
@@ -133,6 +137,16 @@
                                                                     <strong>{{ $message }}</strong>
                                                                 </div>
                                                             @endforeach
+                                                        @endif
+                                                        @if (session()->has('message'))
+                                                            <div class="alert alert-success alert-dismissible "
+                                                                 role="alert">
+                                                                <button type="button" class="close"
+                                                                        data-dismiss="alert" aria-label="Close">
+                                                                    <span aria-hidden="true">×</span>
+                                                                </button>
+                                                                <strong>{{ session('message') }}</strong>
+                                                            </div>
                                                         @endif
                                                         <div class="form-group row ">
                                                             <label class="control-label col-md-3 col-sm-3 ">Name</label>
@@ -169,7 +183,7 @@
                                                                 <input type="email" class="form-control"
                                                                        value="{{$hospital[0]->email}}"
                                                                        placeholder="Email"
-                                                                       name="hospital_email" readonly="readonly">
+                                                                       readonly="readonly">
                                                             </div>
                                                             <button type="button" class="btn btn-secondary"
                                                                     data-toggle="modal" data-target="#update_email">
@@ -184,7 +198,7 @@
                                                                 <input type="text" class="form-control"
                                                                        value="{{$hospital[0]->mobile_no}}"
                                                                        placeholder="Mobile No" readonly="readonly"
-                                                                       name="hospital_mobile_no">
+                                                                       >
                                                             </div>
                                                             <button type="button" class="btn btn-secondary"
                                                                     data-toggle="modal" data-target="#update_mobile_no">
@@ -207,7 +221,7 @@
                                                             <div class="col-md-9 col-sm-9 ">
                                                                 <input type="text" class="form-control"
                                                                        value="{{$hospital[0]->pin_cord_no}}"
-                                                                       placeholder="Pin Cord No">
+                                                                       placeholder="Pin Cord No" name="hospital_pin_cord_no">
                                                             </div>
                                                         </div>
                                                         <div class="form-group row">
@@ -223,18 +237,13 @@
                                                             <label
                                                                 class="control-label col-md-3 col-sm-3 ">Password</label>
                                                             <div class="col-md-9 col-sm-9 ">
-                                                                <input type="password" class="form-control" value=""
-                                                                       name="password">
+                                                                <a href="routes"></a><button type="button" class="btn btn-sm btn-secondary"
+                                                                        data-toggle="modal" data-target="#change_password">
+                                                                    Change Password
+                                                                </button>
                                                             </div>
                                                         </div>
-                                                        <div class="form-group row">
-                                                            <label class="control-label col-md-3 col-sm-3 ">Confirm
-                                                                Password</label>
-                                                            <div class="col-md-9 col-sm-9 ">
-                                                                <input type="password" class="form-control" value=""
-                                                                       name="confirm_password">
-                                                            </div>
-                                                        </div>
+
                                                         <div class="form-group row">
                                                             <label class="control-label col-md-3 col-sm-3 ">Hospital
                                                                 Logo</label>
@@ -246,100 +255,32 @@
                                                         <div class="ln_solid"></div>
                                                         <div class="form-group">
                                                             <div class="col-md-9 col-sm-9  offset-md-3">
-                                                                <a href="{{route('index')}}">
-                                                                    <button type="button" class="btn btn-primary">Cancel
-                                                                    </button>
-                                                                </a>
+                                                                <a href="{{route('index')}}"><button type="button" class="btn btn-primary">Cancel
+                                                                    </button></a>
                                                                 <button type="reset" class="btn btn-primary">Reset
                                                                 </button>
                                                                 <button class="btn btn-success">Submit
                                                                 </button>
                                                             </div>
                                                         </div>
-                                                        <!-- update email -->
-                                                        <div class="modal fade" id="update_email" tabindex="-1"
-                                                             role="dialog" aria-hidden="true">
-                                                            <div class="modal-dialog modal-md">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h4 class="modal-title" id="myModalLabel2">
-                                                                            Update
-                                                                            Email</h4>
-                                                                        <button type="button" class="close"
-                                                                                data-dismiss="modal" aria-label="Close">
-                                                                            <span aria-hidden="true">×</span>
-                                                                        </button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <h4>Email</h4>
-
-                                                                        <input type="text" class="form-control"
-                                                                               value="{{$hospital[0]->email}}"
-                                                                               placeholder="Email">
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary"
-                                                                                data-dismiss="modal">Close
-                                                                        </button>
-                                                                        <button type="button" class="btn btn-primary">
-                                                                            Next
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <!-- /update email -->
-                                                        <!-- update mobile no -->
-                                                        <div class="modal fade" id="update_mobile_no" tabindex="-1"
-                                                             role="dialog" aria-hidden="true">
-                                                            <div class="modal-dialog modal-md">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h4 class="modal-title" id="myModalLabel2">
-                                                                            Update
-                                                                            Mobile Number</h4>
-                                                                        <button type="button" class="close"
-                                                                                data-dismiss="modal" aria-label="Close">
-                                                                            <span aria-hidden="true">×</span>
-                                                                        </button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <h4>Mobile Number</h4>
-
-                                                                        <input type="text" class="form-control"
-                                                                               value="{{$hospital[0]->mobile_no}}"
-                                                                               placeholder="Email">
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary"
-                                                                                data-dismiss="modal">Close
-                                                                        </button>
-                                                                        <button type="button" class="btn btn-primary">
-                                                                            Next
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <!-- /update mobile no -->
-
                                                     </form>
                                                 </div>
                                             </div>
-                                            <!-- end rhospital details update -->
-
+                                            <x-change-password/>
+                                            <x-update-email id="{{$hospital[0]->id}}"/>
+                                            <x-update-mobileno id="{{$hospital[0]->id}}"/>
                                         </div>
-                                        <div role="tabpanel" class="tab-pane fade" id="patient_count"
+                                        <!-- end hospital details update -->
+                                        <!-- start patient count -->
+                                        <div role="tabpanel" class="tab-pane fade" id="total_patient_count"
                                              aria-labelledby="profile-tab">
-
-                                            <!-- start patient count -->
                                             <table class="data table table-striped no-margin">
                                                 <thead>
                                                 <tr>
                                                     <th>#</th>
                                                     <th>Mouth & Year</th>
                                                     <th>New Patient</th>
-                                                    <th class="hidden-phone">Old Patient</th>
+                                                    <th>Old Patient</th>
                                                     <th>Totle Patient</th>
                                                 </tr>
                                                 </thead>
@@ -348,15 +289,35 @@
                                                 </tr>
                                                 </tbody>
                                             </table>
-                                            <!-- end patient count -->
-
                                         </div>
+                                        <!-- end patient count -->
+                                        <!-- start doctor and patient count -->
+                                        <div role="tabpanel" class="tab-pane fade" id="doctor_patient_count"
+                                             aria-labelledby="profile-tab">
+                                            <table class="data table table-striped no-margin">
+                                                <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Doctor Name</th>
+                                                    <th>Mouth & Year</th>
+                                                    <th>New Patient</th>
+                                                    <th>Old Patient</th>
+                                                    <th>Totle Patient</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!-- end doctor and  patient count -->
+                                        <!-- start recent activity -->
                                         <div role="tabpanel" class="tab-pane fade" id="edit"
                                              aria-labelledby="profile-tab">
 
-                                            <!-- start recent activity -->
-                                            <!-- end recent activity -->
                                         </div>
+                                        <!-- end recent activity -->
                                     </div>
                                 </div>
                             </div>
@@ -366,8 +327,6 @@
             </div>
         </div>
     </div>
-
-
 
 @stop
 

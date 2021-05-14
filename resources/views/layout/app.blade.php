@@ -46,7 +46,7 @@
                 <!-- menu profile quick info -->
                 <div class="profile clearfix">
                     <div class="profile_pic">
-                        <img src="{{asset('images/'.$hospital[0]->logo)}}" alt="..." class="img-circle profile_img">
+                        <img src="{{asset('upload_file/'.$hospital[0]->logo)}}" alt="..." class="img-circle profile_img">
                     </div>
                     <div class="profile_info">
                         <h2>{{$hospital[0]->name}}</h2>
@@ -104,7 +104,7 @@
                     <ul class=" navbar-right">
                         <li class="nav-item dropdown open" style="padding-left: 15px;">
                             <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
-                                <img src="{{asset('images/'.$hospital[0]->logo)}}" alt="{{$hospital[0]->name}}">{{$hospital[0]->name}}
+                                <img src="{{asset('upload_file/'.$hospital[0]->logo)}}" alt="{{$hospital[0]->name}}">{{$hospital[0]->name}}
                             </a>
                             <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item"  href="{{route('hospital_details')}}"> Setting</a>
@@ -128,7 +128,7 @@
         <!-- footer content -->
         <footer>
             <div class="pull-right">
-                Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+                <a href="#">VIP TechnoLabs</a>
             </div>
             <div class="clearfix"></div>
         </footer>
