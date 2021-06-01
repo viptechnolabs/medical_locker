@@ -121,7 +121,7 @@ class HospitalController extends Controller
     {
         // dd('here');
         $rules = array(
-            'hospital_email' => 'required|max:255',
+            'hospital_email' => 'required|max:25',
         );
 
         $validation = Validator::make($request->all(), $rules);

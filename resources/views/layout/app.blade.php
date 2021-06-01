@@ -17,6 +17,9 @@
     <link href="{{asset('vendors/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet">
     <!-- NProgress -->
     <link href="{{asset('vendors/nprogress/nprogress.css')}}" rel="stylesheet">
+{{--    <!-- Dropzone.js -->--}}
+{{--    <link href="{{asset('vendors/dropzone/dist/min/dropzone.min.css')}}" rel="stylesheet">--}}
+
     <!-- iCheck -->
     <link href="{{asset('vendors/iCheck/skins/flat/green.css')}}" rel="stylesheet">
 
@@ -29,7 +32,7 @@
 
     <!-- Custom Theme Style -->
     <link href="{{asset('build/css/custom.min.css')}}" rel="stylesheet">
-    @livewireStyles
+{{--    @livewireStyles--}}
 </head>
 
 <body class="nav-md">
@@ -65,7 +68,7 @@
                             <li><a href="{{route('index')}}"><i class="fa fa-home"></i> Dashboard</a></li>
                         </ul>
                         <ul class="nav side-menu">
-                            <li><a href="#"><i class="fa fa-user-md"></i> Doctors</a></li>
+                            <li><a href="{{route('doctor.index')}}"><i class="fa fa-user-md"></i> Doctors</a></li>
                         </ul>
                         <ul class="nav side-menu">
                             <li><a href="#"><i class="fa fa-users"></i> Patients</a></li>
@@ -176,10 +179,29 @@
 <!-- bootstrap-daterangepicker -->
 <script src="{{asset('vendors/moment/min/moment.min.js')}}"></script>
 <script src="{{asset('vendors/bootstrap-daterangepicker/daterangepicker.js')}}"></script>
-
+{{--<!-- bootstrap-wysiwyg -->--}}
+{{--<script src="{{asset('vendors/bootstrap-wysiwyg/js/bootstrap-wysiwyg.min.js')}}"></script>--}}
+{{--<script src="{{asset('vendors/jquery.hotkeys/jquery.hotkeys.js')}}"></script>--}}
+{{--<script src="{{asset('vendors/google-code-prettify/src/prettify.js')}}"></script>--}}
+<!-- jQuery Tags Input -->
+<script src="{{asset('vendors/jquery.tagsinput/src/jquery.tagsinput.js')}}"></script>
+{{--<!-- Switchery -->--}}
+{{--<script src="{{asset('vendors/switchery/dist/switchery.min.js')}}"></script>--}}
+{{--<!-- Select2 -->--}}
+{{--<script src="{{asset('vendors/select2/dist/js/select2.full.min.js')}}"></script>--}}
+{{--<!-- Parsley -->--}}
+{{--<script src="{{asset('vendors/parsleyjs/dist/parsley.min.js')}}"></script>--}}
+{{--<!-- Autosize -->--}}
+{{--<script src="{{asset('vendors/autosize/dist/autosize.min.js')}}"></script>--}}
+{{--<!-- jQuery autocomplete -->--}}
+{{--<script src="{{asset('vendors/devbridge-autocomplete/dist/jquery.autocomplete.min.js')}}"></script>--}}
+{{--<!-- starrr -->--}}
+{{--<script src="{{asset('vendors/starrr/dist/starrr.js')}}"></script>--}}
+{{--<!-- Dropzone.js -->--}}
+{{--<script src="{{asset('vendors/dropzone/dist/min/dropzone.min.js')}}"></script>--}}
 <!-- Custom Theme Scripts -->
 <script src="{{asset('build/js/custom.min.js')}}"></script>
-@livewireScripts
+{{--@livewireScripts--}}
 </body>
 </html>
 
