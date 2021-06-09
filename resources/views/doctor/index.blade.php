@@ -34,37 +34,30 @@
                         </div>
 
                         <div class="clearfix"></div>
-
+                        @foreach ($doctors as $doctor)
                         <div class="col-md-4 col-sm-4  profile_details">
                             <div class="well profile_view">
                                 <div class="col-sm-12">
-                                    <h4 class="brief"><i>Digital Strategist</i></h4>
+                                    <h4 class="brief"><i>{{ucfirst($doctor->doctor_id)}}</i></h4>
                                     <div class="left col-sm-7">
-                                        <h2>Nicole Pearson</h2>
-                                        <p><strong>About: </strong> Web Designer / UI. </p>
+                                        <h2>{{$doctor->name}}</h2>
+                                        <p><strong></strong>{{$doctor->degree}}</p>
                                         <ul class="list-unstyled">
-                                            <li><i class="fa fa-building"></i> Address: </li>
-                                            <li><i class="fa fa-phone"></i> Phone #: </li>
+                                            <li><i class="fa fa-phone-square user-profile-icon"></i> : {{$doctor->mobile_no}}</li>
+                                            <li><i class="fa fa-envelope user-profile-icon"></i> : {{$doctor->email }}</li>
+                                            <li><i class="fa fa-calendar"></i> : {{date('d-m-Y', strtotime($doctor->dob)) }}</li>
                                         </ul>
                                     </div>
                                     <div class="right col-sm-5 text-center">
-                                        <img src="images/user.png" alt="" class="img-circle img-fluid">
+                                        <img src="{{asset('upload_file/doctor/'.$doctor->profile_photo)}}"  alt="" class="img-circle img-fluid">
                                     </div>
                                 </div>
                                 <div class=" bottom text-center">
-                                    <div class=" col-sm-6 emphasis">
-                                        <p class="ratings">
-                                            <a>4.0</a>
-                                            <a href="#"><span class="fa fa-star"></span></a>
-                                            <a href="#"><span class="fa fa-star"></span></a>
-                                            <a href="#"><span class="fa fa-star"></span></a>
-                                            <a href="#"><span class="fa fa-star"></span></a>
-                                            <a href="#"><span class="fa fa-star-o"></span></a>
-                                        </p>
+                                    <div class=" col-sm-5 emphasis">
+                                        <h4 class="brief"><i>{{ucfirst($doctor->specialist)}}</i></h4>
                                     </div>
-                                    <div class=" col-sm-6 emphasis">
-                                        <button type="button" class="btn btn-success btn-sm"> <i class="fa fa-user">
-                                            </i> <i class="fa fa-comments-o"></i> </button>
+                                    <div class=" col-sm-7 emphasis">
+                                        <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#change_status">{{ucfirst($doctor->status)}}</button>
                                         <button type="button" class="btn btn-primary btn-sm">
                                             <i class="fa fa-user"> </i> View Profile
                                         </button>
@@ -72,6 +65,11 @@
                                 </div>
                             </div>
                         </div>
+                            <x-doctor-status/>
+                        @endforeach
+                        @empty($doctor)
+                            <p>Hello</p>
+                        @endempty
                     </div>
                 </div>
             </div>

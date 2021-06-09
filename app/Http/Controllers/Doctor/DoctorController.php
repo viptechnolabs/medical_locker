@@ -21,7 +21,9 @@ class DoctorController extends Controller
     public function index()
     {
         $hospital = Hospital::all();
-        return view('doctor.index', ['hospital' => $hospital]);
+        $doctors = Doctor::all();
+        //dd($doctors[0]->name);
+        return view('doctor.index', ['hospital' => $hospital, 'doctors' => $doctors]);
     }
 
     public function addDoctor()
@@ -39,8 +41,8 @@ class DoctorController extends Controller
         $rules = array(
             'name' => 'required',
             'degree' => 'required',
-            'specialist' => 'required|max:13',
-            'email' => 'required|max:25|min:7',
+            'specialist' => 'required',
+            'email' => 'required|max:50|min:7',
             'mobile_no' => 'required|max:13|min:7',
             'state' => 'required',
             'city' => 'required',
@@ -59,7 +61,7 @@ class DoctorController extends Controller
         } else {
             $doctor = new Doctor();
             $doctor_id_find  = DB::table('doctors')->orderBy('doctor_id', 'DESC')->first();
-            $doctor_id =substr($doctor_id_find->doctor_id ?? 'VIP/2021/0000', -1) +1 ;
+            $doctor_id =substr($doctor_id_find->doctor_id ?? 'VIP/DR/2021/0000', -1) +1 ;
             $profile_photo = $request->profile_photo;
             $doc_certificates = $request->certificates;
             if ($profile_photo) {
@@ -68,7 +70,7 @@ class DoctorController extends Controller
                 $profile_photo->move($destinationPath, $fileName);
                 $doctor->profile_photo = $fileName;
             }
-            $doctor->doctor_id  ='VIP/2021/000'.$doctor_id ;
+            $doctor->doctor_id  ='VIP/DR/2021/000'.$doctor_id ;
             $doctor->name = $request->name;
             $doctor->degree = $request->degree;
             $doctor->specialist = $request->specialist;
@@ -107,7 +109,14 @@ class DoctorController extends Controller
             }
 
             session()->flash('message', 'Hospital Details Update Successfully..!');
-            return redirect()->back();
+            return redirect()->route('doctor.index');
         }
     }
+
+    public function doctorChangeStatus(Request $request)
+    {
+        dd('hello');
+    }
+
+
 }

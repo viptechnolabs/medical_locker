@@ -15,13 +15,13 @@ class CreateDoctorsTable extends Migration
     {
         Schema::create('doctors', function (Blueprint $table) {
             $table->id();
-            $table->string('doctor_id', 22)->unique()->default('VIP/2021/0001 ');;
+            $table->string('doctor_id', 22)->unique()->default('VIP/DR/2021/0001 ');;
             $table->string('profile_photo');
             $table->string('name', 100);
             $table->string('degree', 100);
             $table->string('specialist', 100);
             $table->string('mobile_no', 13);
-            $table->string('email', 25)->unique();;
+            $table->string('email', 50)->unique();;
             $table->longText('address');
             $table->string('city', 22);
             $table->string('state', 22);
@@ -30,7 +30,7 @@ class CreateDoctorsTable extends Migration
             $table->enum('gender', ['male', 'female', 'transgender', 'other']);
             $table->dateTime('dob');
             $table->enum('status', ['inactive', 'active'])->default('active');
-            $table->string('password', 22);
+            $table->string('password', 100);
             $table->softDeletes();
             $table->timestamps();
         });
