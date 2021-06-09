@@ -29,3 +29,4 @@ Route::get('/', [App\Http\Controllers\Doctor\DoctorController::class, 'index'])-
 Route::get('add_doctor', [App\Http\Controllers\Doctor\DoctorController::class, 'addDoctor'])->name('add_doctor');
 Route::post('submit_doctor', [App\Http\Controllers\Doctor\DoctorController::class, 'submitDoctor'])->name('submit_doctor');
 Route::put('doc_change_status',[\App\Http\Controllers\Doctor\DoctorController::class, 'doctorChangeStatus'])->name('doc_change_status');
+//change vip
