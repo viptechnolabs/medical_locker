@@ -27,6 +27,7 @@ class CreateDoctorsTable extends Migration
             $table->string('state', 22);
             $table->string('pin_code', 10);
             $table->string('aadhar_no', 13);
+            $table->string('document_photo');
             $table->enum('gender', ['male', 'female', 'transgender', 'other']);
             $table->dateTime('dob');
             $table->enum('status', ['inactive', 'active'])->default('active');

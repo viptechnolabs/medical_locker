@@ -13,13 +13,13 @@ class UpdateEmail extends Component
      * @return void
      */
 
-    public $id;
-    public $email;
+    public $hospital;
 
-    public function __construct($id)
+    public function __construct($hospital)
     {
-        $hospital = Hospital::findOrFail($id);
-        $this->email = $hospital->email;
+//        $hospitalObj = new Hospital();
+//        // Ref: https://commandz.io/post/php/2016-02-21-eloquent-model-json-serialization-and-deserialization/
+//        $this->hospital = $hospitalObj->newInstance($hospitalObj->fromJson($hospital));
     }
 
     /**

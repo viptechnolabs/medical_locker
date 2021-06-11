@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Hospital;
+use App\Notifications\ChangeEmail;
+use App\Notifications\ChangeMobileNo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
-//use Illuminate\Validation\Validator;
 
 class HospitalController extends Controller
 {
@@ -21,7 +24,6 @@ class HospitalController extends Controller
 
     public function login()
     {
-        // $hospital = Hospital::all();
         return view('login');
     }
 
@@ -31,6 +33,60 @@ class HospitalController extends Controller
         return view('hospital_details', ['hospital' => $hospital]);
     }
 
+    public function getEmailPopup(Request $request)
+    {
+        $hospital = Hospital::all();
+        return view('components.update-email')->with('hospital', $hospital);;
+    }
+
+    public function getMobilePopup(Request $request)
+    {
+        $hospital = Hospital::all();
+        return view('components.update-mobileno')->with('hospital', $hospital);;
+    }
+
+    public function checkEmail(Request $request): \Illuminate\Http\JsonResponse
+    {
+        # Request params
+        $email = $request->input('email');
+        $id = $request->input('id') ?? null;
+
+        $queryBuilder = Hospital::where('email', $email);
+        if ($id) {
+            $queryBuilder->where('id', '!=', $id);
+        }
+
+        $exists = $queryBuilder->exists();
+
+        if (!$exists) {
+            return response()->json(true);
+        } else {
+            return response()->json(false);
+        }
+    }
+
+
+    public function checkMobile(Request $request): \Illuminate\Http\JsonResponse
+    {
+        # Request params
+        $mobile_no = $request->input('mobile_no');
+        $id = $request->input('id') ?? null;
+
+        $queryBuilder = Hospital::where('mobile_no', $mobile_no);
+        if ($id) {
+            $queryBuilder->where('id', '!=', $id);
+        }
+
+        $exists = $queryBuilder->exists();
+
+        if (!$exists) {
+            return response()->json(true);
+        } else {
+            return response()->json(false);
+        }
+    }
+
+
     public function hospitalDetailsUpdate(Request $request)
     {
         $rules = array(
@@ -39,11 +95,7 @@ class HospitalController extends Controller
             'hospital_fex_no' => 'required|max:13',
             'hospital_pin_cord_no' => 'required|max:10',
             'hospital_address' => 'required',
-            //'hospital_logo' => 'required|mimes:jpg|max:2048',
         );
-
-
-        // $rules = array('email' => 'required|email','password' => 'required | min:6');
 
         $validation = Validator::make($request->all(), $rules);
 
@@ -57,12 +109,10 @@ class HospitalController extends Controller
                 $fileName = date('d_m_Y') . time() . '_' . $request->hospital_logo->getClientOriginalName();
                 $image_path = public_path("upload_file/{$hospital->logo}");
                 if (File::exists($image_path)) {
-                    //File::delete($image_path);
                     unlink($image_path);
                 }
                 $file->move($destinationPath, $fileName);
                 $hospital->logo = $fileName;
-                //dd($hospital, $fileName, $uploadSuccess, $destinationPath, $uploadSuccess);
             }
             $hospital->name = $request->hospital_name;
             $hospital->details = $request->hospital_details;
@@ -78,7 +128,6 @@ class HospitalController extends Controller
 
     public function hospitalChangePassword(Request $request)
     {
-       // dd($request->all());
         $rules = array(
             'password' => 'min:5',
             'confirm_password' => 'required_with:password|same:password|min:5',
@@ -97,43 +146,123 @@ class HospitalController extends Controller
         }
     }
 
-    public function hospitalUpdateMobileNo(Request $request)
+    public function hospitalUpdateMobileNo(Request $request): \Illuminate\Http\JsonResponse
     {
-       // dd('here');
-        $rules = array(
-            'hospital_mobile_no' => 'required|max:13|min:7',
-        );
-
-        $validation = Validator::make($request->all(), $rules);
-
-        if ($validation->fails()) {
-            return redirect()->back()->withInput()->withErrors($validation);
-        } else {
-            $hospital = Hospital::findOrFail(1);
-            $hospital->mobile_no = $request->hospital_mobile_no;
+        $code = $request->verification_code;
+        $id = $request->input('id');
+        $newMobile = $request->newMobile;
+        $hospital = Hospital::find($id);
+        $dbcode = $hospital->verification_code;
+        if ($dbcode === $code) {
+            $hospital->mobile_no = $newMobile;
+            $hospital->verification_code = null;
+            $hospital->token = null;
             $hospital->save();
-            session()->flash('message', 'Mobile Update Successfully..!');
-            return redirect()->back();
+
+            return response()->json([
+                'message' => 'ok',
+                'status' => 200,
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'error',
+                'status' => 400,
+            ])->setStatusCode(400);
+        }
+    }
+
+    public function email_verification_code(Request $request)
+    {
+        # Find user
+        $id = $request->input('id');
+        $new_email = $request->input('newmail');
+        $data = Hospital::where('email', $new_email);
+        $exists = $data->exists();
+
+        if ($exists) {
+            return response()->json([
+                'message' => 'This email already registered with us.',
+                'status' => 401,
+            ])->setStatusCode(401);
+        } else {
+            $hospital = Hospital::find($id);
+            $six_digit_random_number = mt_rand(111111, 999999);
+            $token = Str::random(20);
+
+            $hospital->token = $token;
+            $hospital->verification_code = $six_digit_random_number;
+            $hospital->save();
+
+            # Send mail invitation
+            $hospital->notify(new ChangeEmail($hospital, $six_digit_random_number));
+
+            return response()->json([
+                'message' => 'ok',
+                'status' => 200,
+            ])->setStatusCode(200);
+
+        }
+    }
+
+    public function mobile_verification_code(Request $request)
+    {
+        # Find user
+        $id = $request->input('id');
+        $new_mobile_no = $request->input('newMobile');
+        $temp_new_mobile_no = '91' . $request->input('newMobile');
+        $data = Hospital::where('mobile_no', $new_mobile_no);
+        $exists = $data->exists();
+        if ($exists) {
+            return response()->json([
+                'message' => 'This mobile no already registered with us.',
+                'status' => 401,
+            ])->setStatusCode(401);
+        } else {
+            $hospital = Hospital::find($id);
+            $six_digit_random_number = mt_rand(111111, 999999);
+            $token = Str::random(20);
+
+            $hospital->token = $token;
+            $hospital->verification_code = $six_digit_random_number;
+            $hospital->save();
+            # Send mail invitation
+            Notification::route('nexmo', $temp_new_mobile_no)->notify(new ChangeMobileNo($hospital, $six_digit_random_number));
+
+            return response()->json([
+                'message' => 'ok',
+                'status' => 200,
+            ])->setStatusCode(200);
+
         }
     }
 
     public function hospitalUpdateEmail(Request $request)
     {
-        // dd('here');
-        $rules = array(
-            'hospital_email' => 'required|max:25',
-        );
 
-        $validation = Validator::make($request->all(), $rules);
-
-        if ($validation->fails()) {
-            return redirect()->back()->withInput()->withErrors($validation);
-        } else {
-            $hospital = Hospital::findOrFail(1);
-            $hospital->email = $request->hospital_email;
+        $code = $request->verification_code;
+        $id = $request->input('id');
+        $newemail = $request->newMail;
+        $hospital = Hospital::find($id);
+        $dbcode = $hospital->verification_code;
+        if ($dbcode === $code) {
+            //dd($newemail, $dbcode, $code);
+            $hospital->email = $newemail;
+            $hospital->verification_code = null;
+            $hospital->token = null;
             $hospital->save();
-            session()->flash('message', 'Email id Update Successfully..!');
-            return redirect()->back();
+//            if($request->user()->isTaTeamUser()){
+//                $this->setLeaderActivity($request->user(), $hospital, 'candidate_email');
+//            }
+
+            return response()->json([
+                'message' => 'ok',
+                'status' => 200,
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'error',
+                'status' => 400,
+            ])->setStatusCode(400);
         }
     }
 }

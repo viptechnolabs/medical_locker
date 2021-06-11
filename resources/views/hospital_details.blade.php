@@ -21,20 +21,20 @@
                     <div class="x_panel">
                         <div class="x_title">
                             <h2>Hospital Report & All Activity</h2>
-{{--                            <ul class="nav navbar-right panel_toolbox">--}}
-{{--                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>--}}
-{{--                                </li>--}}
-{{--                                <li class="dropdown">--}}
-{{--                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"--}}
-{{--                                       aria-expanded="false"><i class="fa fa-wrench"></i></a>--}}
-{{--                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">--}}
-{{--                                        <a class="dropdown-item" href="#">Settings 1</a>--}}
-{{--                                        <a class="dropdown-item" href="#">Settings 2</a>--}}
-{{--                                    </div>--}}
-{{--                                </li>--}}
-{{--                                <li><a class="close-link"><i class="fa fa-close"></i></a>--}}
-{{--                                </li>--}}
-{{--                            </ul>--}}
+                            {{--                            <ul class="nav navbar-right panel_toolbox">--}}
+                            {{--                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>--}}
+                            {{--                                </li>--}}
+                            {{--                                <li class="dropdown">--}}
+                            {{--                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"--}}
+                            {{--                                       aria-expanded="false"><i class="fa fa-wrench"></i></a>--}}
+                            {{--                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">--}}
+                            {{--                                        <a class="dropdown-item" href="#">Settings 1</a>--}}
+                            {{--                                        <a class="dropdown-item" href="#">Settings 2</a>--}}
+                            {{--                                    </div>--}}
+                            {{--                                </li>--}}
+                            {{--                                <li><a class="close-link"><i class="fa fa-close"></i></a>--}}
+                            {{--                                </li>--}}
+                            {{--                            </ul>--}}
                             <div class="clearfix"></div>
                         </div>
                         <div class="x_content">
@@ -83,11 +83,13 @@
                                             </li>
                                             <li role="presentation" class=""><a href="#total_patient_count" role="tab"
                                                                                 id="profile-tab" data-toggle="tab"
-                                                                                aria-expanded="false">Total Patient Count</a>
+                                                                                aria-expanded="false">Total Patient
+                                                    Count</a>
                                             </li>
                                             <li role="presentation" class=""><a href="#doctor_patient_count" role="tab"
                                                                                 id="profile-tab" data-toggle="tab"
-                                                                                aria-expanded="false">Doctor & Patient Count</a>
+                                                                                aria-expanded="false">Doctor & Patient
+                                                    Count</a>
                                             </li>
                                             <li role="presentation" class=""><a href="#edit" role="tab"
                                                                                 id="profile-tab2"
@@ -120,10 +122,10 @@
                                                 <div class="x_content">
                                                     <br/>
                                                     <form action="{{route('hospital_details_update')}}"
-                                                          class="form-horizontal form-label-left" method="POST"
+                                                          class="form-horizontal form-label-left" method="post"
                                                           enctype="multipart/form-data" id="hospital_details_update">
+                                                        @method('put')
                                                         @csrf
-                                                        @method('PUT')
 
 
                                                         @if ($errors->any())
@@ -185,11 +187,14 @@
                                                                        placeholder="Email"
                                                                        readonly="readonly">
                                                             </div>
-                                                            <button type="button" class="btn btn-secondary"
-                                                                    data-toggle="modal" data-target="#update_email">
-                                                                Update
-                                                                Email
-                                                            </button>
+
+                                                            <a class="border-button" href="javascript:;"
+                                                               onclick="getEmailPopup('{{ route('email.popup.get', $hospital[0]->id) }}', '{{ route('check.email') }}', {{ $hospital[0]->id }})">
+                                                                <button type="button" class="btn btn-secondary">
+                                                                    Change Email
+                                                                </button>
+                                                            </a>
+
                                                         </div>
                                                         <div class="form-group row">
                                                             <label class="control-label col-md-3 col-sm-3 ">Mobile
@@ -198,13 +203,16 @@
                                                                 <input type="text" class="form-control"
                                                                        value="{{$hospital[0]->mobile_no}}"
                                                                        placeholder="Mobile No" readonly="readonly"
-                                                                       >
+                                                                       name="mobile_no"
+                                                                >
                                                             </div>
-                                                            <button type="button" class="btn btn-secondary"
-                                                                    data-toggle="modal" data-target="#update_mobile_no">
-                                                                Update
-                                                                Mobile Number
-                                                            </button>
+
+                                                            <a class="border-button" href="javascript:;"
+                                                               onclick="getMobilePopup('{{ route('mobile.popup.get', $hospital[0]->id) }}', '{{ route('check.mobile') }}', {{ $hospital[0]->id }})">
+                                                                <button type="button" class="btn btn-secondary">
+                                                                    Change Mobile No
+                                                                </button>
+                                                            </a>
                                                         </div>
                                                         <div class="form-group row">
                                                             <label class="control-label col-md-3 col-sm-3 ">Fex
@@ -221,7 +229,8 @@
                                                             <div class="col-md-9 col-sm-9 ">
                                                                 <input type="text" class="form-control"
                                                                        value="{{$hospital[0]->pin_cord_no}}"
-                                                                       placeholder="Pin Cord No" name="hospital_pin_cord_no">
+                                                                       placeholder="Pin Cord No"
+                                                                       name="hospital_pin_cord_no">
                                                             </div>
                                                         </div>
                                                         <div class="form-group row">
@@ -237,8 +246,10 @@
                                                             <label
                                                                 class="control-label col-md-3 col-sm-3 ">Password</label>
                                                             <div class="col-md-9 col-sm-9 ">
-                                                                <a href="routes"></a><button type="button" class="btn btn-sm btn-secondary"
-                                                                        data-toggle="modal" data-target="#change_password">
+                                                                <a href="routes"></a>
+                                                                <button type="button" class="btn btn-sm btn-secondary"
+                                                                        data-toggle="modal"
+                                                                        data-target="#change_password">
                                                                     Change Password
                                                                 </button>
                                                             </div>
@@ -248,15 +259,18 @@
                                                             <label class="control-label col-md-3 col-sm-3 ">Hospital
                                                                 Logo</label>
                                                             <div class="col-md-9 col-sm-9 ">
-                                                                <input type="file" value="" name="hospital_logo">
+                                                                <input type="file" value="" name="hospital_logo"
+                                                                       accept="image/*">
                                                             </div>
                                                         </div>
 
                                                         <div class="ln_solid"></div>
                                                         <div class="form-group">
                                                             <div class="col-md-9 col-sm-9  offset-md-3">
-                                                                <a href="{{route('index')}}"><button type="button" class="btn btn-primary">Cancel
-                                                                    </button></a>
+                                                                <a href="{{route('index')}}">
+                                                                    <button type="button" class="btn btn-primary">Cancel
+                                                                    </button>
+                                                                </a>
                                                                 <button type="reset" class="btn btn-primary">Reset
                                                                 </button>
                                                                 <button class="btn btn-success">Submit
@@ -267,8 +281,12 @@
                                                 </div>
                                             </div>
                                             <x-change-password/>
-                                            <x-update-email id="{{$hospital[0]->id}}"/>
-                                            <x-update-mobileno id="{{$hospital[0]->id}}"/>
+                                            <!-- Change E-mails Pop-Up -->
+                                            <div id="update_email_popup"></div>
+                                            <!-- /Change E-mails Pop-Up -->
+                                            <!-- Change Mobile Pop-Up -->
+                                            <div id="update_mobile_popup"></div>
+                                            <!-- /Change Mobile Pop-Up -->
                                         </div>
                                         <!-- end hospital details update -->
                                         <!-- start patient count -->
@@ -327,7 +345,6 @@
             </div>
         </div>
     </div>
-
 @stop
 
 

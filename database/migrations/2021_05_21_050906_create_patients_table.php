@@ -29,7 +29,7 @@ class CreatePatientsTable extends Migration
             $table->enum('gender', ['male', 'female', 'transgender', 'other']);
             $table->string('weight', 10);
             $table->string('height', 10);
-            $table->integer('consultant_doctor')->unsigned();
+            $table->unsignedBigInteger('consultant_doctor')->unsigned();
             $table->foreign('consultant_doctor')->references('id')->on('doctors');
             $table->string('treatment_type', 100);
             $table->timestamps();

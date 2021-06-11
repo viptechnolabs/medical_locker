@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="{{asset('images/hospital.ico')}}" type="image/ico" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>VIP TechnoLabs</title>
 
@@ -141,6 +142,25 @@
 
 <!-- jQuery -->
 <script src="{{asset('vendors/jquery/dist/jquery.min.js')}}"></script>
+<script>
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+</script>
+<script>
+    function disabledSubmitBtn(form) {
+        $(form).find(':input[type=submit]').prop('disabled', true);
+        $(form).find(':input[type=radio]:not(:checked)').attr("disabled", true);
+    }
+</script>
+<script>
+    function disabledSubmitBtn(form) {
+        $(form).find(':input[type=submit]').prop('disabled', true);
+        // $(form).find(':input[type=radio]:not(:checked)').attr("disabled", true);
+    }
+</script>
 <!-- Bootstrap -->
 <script src="{{asset('vendors/bootstrap/dist/js/bootstrap.bundle.min.js')}}"></script>
 <!-- FastClick -->
@@ -201,7 +221,18 @@
 {{--<script src="{{asset('vendors/dropzone/dist/min/dropzone.min.js')}}"></script>--}}
 <!-- Custom Theme Scripts -->
 <script src="{{asset('build/js/custom.min.js')}}"></script>
+<!--Change Email Js-->
+<script src="{{ asset('js/change_email.js') }}"></script>
+<!--Change Mobile No Js-->
+<script src="{{ asset('js/change_mobile_no.js') }}"></script>
+<!--Validation-->
+<script src="{{ asset('js/jquery.validate.min.js') }}"></script>
+<script src="{{ asset('js/validation_rules.js') }}"></script>
+<script src="{{ asset('js/custom_validation_rules.js') }}"></script>
+<script src="{{ asset('js/validation.js') }}"></script>
+{{--<script src="{{ asset('js/file.js') }}"></script>--}}
 {{--@livewireScripts--}}
 </body>
+
 </html>
 

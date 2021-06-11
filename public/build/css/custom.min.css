@@ -11,3 +11,9 @@
 #slash{
 	display: none;
 }
+
+/** error message **/
+.validation-error{
+    color: #bc354f !important;
+}
+/** // error message **/

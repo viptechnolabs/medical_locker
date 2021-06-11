@@ -24,6 +24,8 @@ class CreateHospitalsTable extends Migration
             $table->string('fex_no');
             $table->longText('address');
             $table->string('pin_cord_no');
+            $table->string('token')->unique()->nullable();
+            $table->string('verification_code')->unique()->nullable();
             $table->string('password');
             $table->timestamps();
         });
