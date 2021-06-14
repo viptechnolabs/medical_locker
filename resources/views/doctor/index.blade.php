@@ -30,7 +30,16 @@
                 <div class="x_panel">
                     <div class="x_content">
                         <div class="col-md-12 col-sm-12  text-center">
-
+                            @if (session()->has('message'))
+                                <div class="alert alert-success alert-dismissible "
+                                     role="alert">
+                                    <button type="button" class="close"
+                                            data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                    <strong>{{ session('message') }}</strong>
+                                </div>
+                            @endif
                         </div>
 
                         <div class="clearfix"></div>
@@ -68,7 +77,7 @@
                             <x-doctor-status/>
                         @endforeach
                         @empty($doctor)
-                            <p>Hello</p>
+                            <h4 style="margin:22px; text-align: center">No Doctor inserted at time</h4>
                         @endempty
                     </div>
                 </div>

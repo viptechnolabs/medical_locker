@@ -60,19 +60,12 @@ class DoctorController extends Controller
             return redirect()->back()->withInput()->withErrors($validation);
         } else {
             $doctor = new Doctor();
-            $doctor_id_find  = DB::table('doctors')->orderBy('doctor_id', 'DESC')->first();
+            $doctor_id_find  = Doctor::withTrashed()->orderBy('doctor_id', 'DESC')->first();
             $doctor_id =substr($doctor_id_find->doctor_id ?? 'VIP/DR/2021/0000', -1) +1 ;
             $profile_photo = $request->profile_photo;
-            $doc_certificates = $request->certificates;
-            if ($profile_photo) {
-                $destinationPath = public_path() . '/upload_file/doctor/';
-                $fileName = $request->name . '_' . $request->profile_photo->getClientOriginalName();
-                $profile_photo->move($destinationPath, $fileName);
-                $doctor->profile_photo = $fileName;
-            }
+            $document = $request->document;
             $doctor->doctor_id  ='VIP/DR/2021/000'.$doctor_id ;
             $doctor->name = $request->name;
-            $doctor->degree = $request->degree;
             $doctor->specialist = $request->specialist;
             $doctor->mobile_no = $request->mobile_no;
             $doctor->email  = $request->email;
@@ -83,32 +76,46 @@ class DoctorController extends Controller
             $doctor->aadhar_no	 = $request->aadhar_no;
             $doctor->gender	 = $request->gender;
             $doctor->dob = $request->dob;
-            $doctor->password = Hash::make($request->mobile_no);;
+            $doctor->password = Hash::make($request->mobile_no);
+
+            if ($profile_photo) {
+                $destinationPath = public_path() . '/upload_file/doctor/';
+                $fileName = $request->name . '_' . $request->profile_photo->getClientOriginalName();
+                $doctor->profile_photo = $fileName;
+                $profile_photo->move($destinationPath, $fileName);
+            }
+            if ($document) {
+                $destinationPath = public_path() . '/upload_file/doctor/doctor_document/';
+                $fileName = $request->name . '_' . $request->document->getClientOriginalName();
+                $doctor->document_photo = $fileName;
+                $document->move($destinationPath, $fileName);
+            }
             $doctor->save();
 
+
+            $doc_certificates = $request->certificates;
             $doc_id = DB::table('doctors')->orderBy('id', 'DESC')->first();
+            $doc_degree = $request->degree;
             if($doc_certificates)
             {
                 $certificates_destinationPath = public_path() . '/upload_file/doctor/doctor_certificates/';
                 foreach($doc_certificates as $key => $certificates)
                 {
                     $certificate_temp = $certificates->getClientOriginalName();
-                    //dd($certificate_temp);
-                    $certificate_type = pathinfo($certificate_temp, PATHINFO_FILENAME); // file
-                    //dd($certificate_type);
+                    $degree_temp = (isset($doc_degree[$key]))? $doc_degree[$key]: null;
+
                     $certificate= new Certificate();
-                    $certificates_name = date('d_m_Y') . time() . '_' . $certificate_temp;
+                    $certificates_name = $degree_temp. '_' . $certificate_temp;
                     $certificate::create([
                         'doc_id' => $doc_id->id,
-                        'degree_name' => $certificate_type,
+                        'degree_name' => $degree_temp,
                         'certificate_name' => $certificates_name,
                         'certificate_file_path' => '/upload_file/doctor/doctor_certificates/'.$certificates_name,
                     ]);
                     $certificates->move($certificates_destinationPath, $certificates_name);
                 }
             }
-
-            session()->flash('message', 'Hospital Details Update Successfully..!');
+            session()->flash('message', 'Doctor Add Successfully..!');
             return redirect()->route('doctor.index');
         }
     }
