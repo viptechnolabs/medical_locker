@@ -2,7 +2,9 @@
 @section('content')
     <!-- page content -->
     <div class="row">
+
         <div class="col-md-12 col-sm-12 ">
+            <a href="{{route('doctor.index')}}"> Do your work, then step back. </a>
             <div class="x_panel">
                 <div class="x_title">
                     <h2>Add Doctor</h2>

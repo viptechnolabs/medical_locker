@@ -3,10 +3,10 @@
      role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
-            <form action="{{route('doctor.doc_change_status')}}"
+            <form action="{{ $action }}"
                   class="form-horizontal form-label-left" method="POST">
+                @method('put')
                 @csrf
-                @method('PUT')
                 <div class="modal-header">
                     <h4 class="modal-title" id="myModalLabel2">
                         Change Status</h4>
@@ -20,10 +20,10 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary"
-                            data-dismiss="modal">Close
+                            data-dismiss="modal">Cancel
                     </button>
                     <button type="submit" class="btn btn-primary">
-                        Next
+                        Confirm
                     </button>
                 </div>
             </form>

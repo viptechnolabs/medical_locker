@@ -66,7 +66,15 @@
                                         <h4 class="brief"><i>{{ucfirst($doctor->specialist)}}</i></h4>
                                     </div>
                                     <div class=" col-sm-7 emphasis">
-                                        <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#change_status">{{ucfirst($doctor->status)}}</button>
+                                        <a class="border-button" href="javascript:;"
+                                           onclick="StatusChange('{{ route('doctor.doc_change_status_popup') }}','{{ route('doctor.change_status', $doctor->id) }}')">
+{{--                                        <a class="border-button" href="javascript:;"--}}
+{{--                                           onclick="getEmailPopup('{{ route('doctor.doc_change_status',$doctor->id) }}', '', {{ $doctor->id }})">--}}
+                                            <button type="button" class= "{{$doctor->status === 'active' ? 'btn btn-success btn-sm' : 'btn btn-secondary btn-sm'}}">
+                                                {{ucfirst($doctor->status)}}
+                                            </button>
+                                        </a>
+{{--                                        <button type="button" class= "{{$doctor->status === 'active' ? 'btn btn-success btn-sm' : 'btn btn-secondary btn-sm'}} "data-toggle="modal" data-target="#change_status">{{ucfirst($doctor->status)}}</button>--}}
                                         <button type="button" class="btn btn-primary btn-sm">
                                             <i class="fa fa-user"> </i> View Profile
                                         </button>
@@ -74,11 +82,12 @@
                                 </div>
                             </div>
                         </div>
-                            <x-doctor-status/>
+{{--                        <x-doctor-status/>--}}
                         @endforeach
                         @empty($doctor)
                             <h4 style="margin:22px; text-align: center">No Doctor inserted at time</h4>
                         @endempty
+                        <div id="status_change_popup"></div>
                     </div>
                 </div>
             </div>

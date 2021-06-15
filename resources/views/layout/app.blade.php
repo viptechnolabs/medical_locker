@@ -234,6 +234,8 @@
 <script src="{{ asset('js/change_email.js') }}"></script>
 <!--Change Mobile No Js-->
 <script src="{{ asset('js/change_mobile_no.js') }}"></script>
+<!--Change Status Js-->
+<script src="{{ asset('js/change_status.js') }}"></script>
 <!--Validation-->
 <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('js/validation_rules.js') }}"></script>

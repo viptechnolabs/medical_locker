@@ -120,9 +120,23 @@ class DoctorController extends Controller
         }
     }
 
-    public function doctorChangeStatus(Request $request)
+    public function doctorChangeStatusPopup(Request $request)
     {
-        dd('hello');
+        # Request params
+        $action = $request->input('action');
+
+
+        return view('components.doctor-status')
+            ->with('action', $action);
+    }
+
+    public function changeStatus($id): \Illuminate\Http\RedirectResponse
+    {
+        # Get Employer
+        $doctor = Doctor::findOrFail($id);
+        $doctor->status = ($doctor->status === "active") ? "inactive" : "active";
+        $doctor->save();
+        return redirect()->back();
     }
 
 
