@@ -212,7 +212,7 @@
                                                                 <select id="state" name="state" class="form-control" >
                                                                     <option value="">Choose..</option>
                                                                     @foreach($states as $state)
-                                                                        <option value="{{$state->name}}">{{$state->name}}</option>
+                                                                        <option value="{{$state->name}}" {{ ($doctor->state === $state->name) ? "selected" : "" }}>{{$state->name}}</option>
                                                                     @endforeach
                                                                 </select>
                                                             </div>
@@ -225,7 +225,7 @@
                                                                 <select id="city" name="city" class="form-control">
                                                                     <option value="">Choose..</option>
                                                                     @foreach($cities as $city)
-                                                                        <option value="{{$city->name}}">{{$city->name}}</option>
+                                                                        <option value="{{$city->name}}" {{ ($doctor->city === $city->name) ? "selected" : "" }}>{{$city->name}}</option>
                                                                     @endforeach
                                                                 </select>
                                                             </div>

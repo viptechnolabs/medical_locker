@@ -237,14 +237,14 @@ validator = $('#doctor_details_update').validate({
             maxlength: 500,
             not_empty:true,
         },
-        // state: {
-        //     required: true,
-        //     not_empty:true,
-        // },
-        // city: {
-        //     required: true,
-        //     not_empty:true,
-        // },
+        state: {
+            required: true,
+            not_empty:true,
+        },
+        city: {
+            required: true,
+            not_empty:true,
+        },
         pin_code: {
             required: true,
             digits: true,
@@ -285,13 +285,12 @@ validator = $('#doctor_details_update').validate({
             digits: "Please enter only numbers",
             maxlength: "Please enter maximum 13 characters.",
         },
-        // state: {
-        //     required: "Please enter state",
-        // },
-        // city: {
-        //     required: "Please enter city",
-        //     maxlength: "Please enter maximum 500 characters.",
-        // },
+        state: {
+            required: "Please select state",
+        },
+        city: {
+            required: "Please enter city",
+        },
         address: {
             required: "Please enter hospital address",
             maxlength: "Please enter maximum 500 characters.",
