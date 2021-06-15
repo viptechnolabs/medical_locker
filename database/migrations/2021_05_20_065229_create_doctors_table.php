@@ -29,7 +29,7 @@ class CreateDoctorsTable extends Migration
             $table->string('aadhar_no', 13);
             $table->string('document_photo');
             $table->enum('gender', ['male', 'female', 'transgender', 'other']);
-            $table->dateTime('dob');
+            $table->date('dob');
             $table->enum('status', ['inactive', 'active'])->default('active');
             $table->string('password', 100);
             $table->softDeletes();

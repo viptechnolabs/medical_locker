@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use voku\helper\ASCII;
 
 class DoctorController extends Controller
 {
@@ -86,12 +87,103 @@ class DoctorController extends Controller
             }
             if ($document) {
                 $destinationPath = public_path() . '/upload_file/doctor/doctor_document/';
-                $fileName = $request->name . '_' . $request->document->getClientOriginalName();
+                $fileName = $request->aadhar_no . '_' . $request->document->getClientOriginalName();
                 $doctor->document_photo = $fileName;
                 $document->move($destinationPath, $fileName);
             }
             $doctor->save();
 
+
+            $doc_certificates = $request->certificates;
+           // $doc_id = DB::table('doctors')->orderBy('id', 'DESC')->first();
+            $doc_degree = $request->degree;
+            if($doc_certificates)
+            {
+                $certificates_destinationPath = public_path() . '/upload_file/doctor/doctor_certificates/';
+                foreach($doc_certificates as $key => $certificates)
+                {
+                    $certificate_temp = $certificates->getClientOriginalName();
+                    $degree_temp = (isset($doc_degree[$key]))? $doc_degree[$key]: null;
+
+                    $certificate= new Certificate();
+                    $certificates_name = $degree_temp. '_' . $certificate_temp;
+                    $certificate::create([
+                        'doc_id' => $request->id,
+                        'degree_name' => $degree_temp,
+                        'certificate_name' => $certificates_name,
+                        'certificate_file_path' => '/upload_file/doctor/doctor_certificates/'.$certificates_name,
+                    ]);
+                    $certificates->move($certificates_destinationPath, $certificates_name);
+                }
+            }
+            session()->flash('message', 'Doctor Add Successfully..!');
+            return redirect()->route('doctor.index');
+        }
+    }
+
+
+    public function doctorDetails(Request $request, $id)
+    {
+        $doctor = Doctor::findOrFail($id);
+        $hospital = Hospital::all();
+        $state = State::all();
+        $city = City::all();
+        return view('doctor.doctor_details', ['doctor' => $doctor, 'hospital' => $hospital, 'states' => $state, 'cities' => $city]);
+    }
+
+    public function doctorDetailsUpdate(Request $request)
+    {
+        //dd($request->all());
+
+        $rules = array(
+            'name' => 'required',
+            'specialist' => 'required',
+            'email' => 'required|email',
+            'mobile_no' => 'required|max:13',
+            'address' => 'required',
+            'pin_code' => 'required|max:10',
+            'aadhar_no' => 'required|max:13',
+            'dob' => 'required',
+        );
+
+        $validation = Validator::make($request->all(), $rules);
+
+        if ($validation->fails()) {
+            return redirect()->back()->withInput()->withErrors($validation);
+        } else {
+            $doctor = Doctor::findOrFail($request->id);
+            $doctor->name = $request->name;
+            $doctor->specialist = $request->specialist;
+            $doctor->email = $request->email;
+            $doctor->mobile_no = $request->mobile_no;
+            $doctor->address = $request->address;
+//            $doctor->state = $request->state;
+//            $doctor->city = $request->city;
+            $doctor->pin_code = $request->pin_code;
+            $doctor->aadhar_no = $request->aadhar_no;
+            $doctor->dob = $request->dob;
+            $profile_photo = $request->profile_photo;
+            $document_photo = $request->document_photo;
+            if ($profile_photo) {
+                $destinationPath = public_path() . '/upload_file/doctor/';
+                $fileName = $request->name . '_' . $request->profile_photo->getClientOriginalName();
+                $image_path = public_path("upload_file/doctor/{$doctor->profile_photo}");
+                if (File::exists($image_path)) {
+                    unlink($image_path);
+                }
+                $profile_photo->move($destinationPath, $fileName);
+                $doctor->profile_photo = $fileName;
+            }
+            if ($document_photo) {
+                $destinationPath = public_path() . '/upload_file/doctor/doctor_document';
+                $fileName = $request->aadhar_no . '_' . $request->document_photo->getClientOriginalName();
+                $image_path = public_path("upload_file/doctor/doctor_document/{$doctor->document_photo}");
+                if (File::exists($image_path)) {
+                    unlink($image_path);
+                }
+                $document_photo->move($destinationPath, $fileName);
+                $doctor->document_photo = $fileName;
+            }
 
             $doc_certificates = $request->certificates;
             $doc_id = DB::table('doctors')->orderBy('id', 'DESC')->first();
@@ -115,8 +207,10 @@ class DoctorController extends Controller
                     $certificates->move($certificates_destinationPath, $certificates_name);
                 }
             }
-            session()->flash('message', 'Doctor Add Successfully..!');
-            return redirect()->route('doctor.index');
+
+            $doctor->save();
+            session()->flash('message', 'Doctor Details Update Successfully..!');
+            return redirect()->back();
         }
     }
 

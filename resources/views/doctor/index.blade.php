@@ -49,7 +49,7 @@
                                 <div class="col-sm-12">
                                     <h4 class="brief"><i>{{ucfirst($doctor->doctor_id)}}</i></h4>
                                     <div class="left col-sm-7">
-                                        <h2>{{$doctor->name}}</h2>
+                                        <h2>Dr.{{$doctor->name}}</h2>
                                         <p><strong></strong>{{$doctor->degree}}</p>
                                         <ul class="list-unstyled">
                                             <li><i class="fa fa-phone-square user-profile-icon"></i> : {{$doctor->mobile_no}}</li>
@@ -75,9 +75,11 @@
                                             </button>
                                         </a>
 {{--                                        <button type="button" class= "{{$doctor->status === 'active' ? 'btn btn-success btn-sm' : 'btn btn-secondary btn-sm'}} "data-toggle="modal" data-target="#change_status">{{ucfirst($doctor->status)}}</button>--}}
-                                        <button type="button" class="btn btn-primary btn-sm">
-                                            <i class="fa fa-user"> </i> View Profile
-                                        </button>
+                                        <a href="{{route('doctor.doctor_details', $doctor->id)}}">
+                                            <button type="button" class="btn btn-primary btn-sm">
+                                                <i class="fa fa-user"> </i> View Profile
+                                            </button>
+                                        </a>
                                     </div>
                                 </div>
                             </div>

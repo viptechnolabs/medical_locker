@@ -32,6 +32,7 @@ Route::prefix('check')->as('check.')->group(function () {
     Route::post('email', [\App\Http\Controllers\HospitalController::class, 'checkEmail'])->name('email');
     Route::post('mobile', [\App\Http\Controllers\HospitalController::class, 'checkMobile'])->name('mobile');
     //Route::post('password', [\App\Http\Controllers\HospitalController::class, 'checkPassword'])->name('password');
+//    Route::post('password', [\App\Http\Controllers\HospitalController::class, 'checkPassword'])->name('password');
 });
 
 
@@ -44,7 +45,7 @@ Route::prefix('profile')->as('profile.')->group(function () {
 });
 
 Route::put('hospital_details_update',[\App\Http\Controllers\HospitalController::class, 'hospitalDetailsUpdate'])->name('hospital_details_update');
-Route::put('hospital_change_password',[\App\Http\Controllers\HospitalController::class, 'hospitalChangePassword'])->name('hospital_change_password');
+Route::put('change_password',[\App\Http\Controllers\HospitalController::class, 'changePassword'])->name('change_password');
 //Route::put('hospital_update_mobile_no',[\App\Http\Controllers\HospitalController::class, 'hospitalUpdateMobileNo'])->name('hospital_update_mobile_no');
 //Route::put('hospital_update_email',[\App\Http\Controllers\HospitalController::class, 'hospitalUpdateEmail'])->name('hospital_update_email');
 

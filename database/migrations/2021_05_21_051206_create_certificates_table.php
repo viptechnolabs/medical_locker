@@ -15,12 +15,12 @@ class CreateCertificatesTable extends Migration
     {
         Schema::create('certificates', function (Blueprint $table) {
             $table->id();
-            $table->integer('doc_id')->unsigned();
-            $table->foreign('doc_id')->references('id')->on('doctors');
+            $table->unsignedBigInteger('doc_id')->unsigned();
             $table->string('degree_name', 100);
             $table->string('certificate_name', 100);
             $table->string('certificate_file_path', 200);
             $table->timestamps();
+            $table->foreign('doc_id')->references('id')->on('doctors');
         });
     }
 

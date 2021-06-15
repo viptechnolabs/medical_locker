@@ -30,4 +30,9 @@ class Doctor extends Model
         'status',
         'password',
     ];
+    public function certificate()
+    {
+        return $this->hasMany(Certificate::class,'doc_id','id');
+//        return $this->hasMany(Certificate::class);
+    }
 }

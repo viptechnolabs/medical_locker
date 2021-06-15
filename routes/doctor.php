@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [App\Http\Controllers\Doctor\DoctorController::class, 'index'])->name('index');
 Route::get('add_doctor', [App\Http\Controllers\Doctor\DoctorController::class, 'addDoctor'])->name('add_doctor');
 Route::post('submit_doctor', [App\Http\Controllers\Doctor\DoctorController::class, 'submitDoctor'])->name('submit_doctor');
+Route::get('doctor_details/{id}', [App\Http\Controllers\Doctor\DoctorController::class, 'doctorDetails'])->name('doctor_details');
+Route::put('doctor_details_update', [App\Http\Controllers\Doctor\DoctorController::class, 'doctorDetailsUpdate'])->name('doctor_details_update');
 //Route::put('doc_change_status',[\App\Http\Controllers\Doctor\DoctorController::class, 'doctorChangeStatus'])->name('doc_change_status');
 
 Route::post('status_popup', [\App\Http\Controllers\Doctor\DoctorController::class, 'doctorChangeStatusPopup'])->name('doc_change_status_popup');

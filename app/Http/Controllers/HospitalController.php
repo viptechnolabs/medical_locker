@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Doctor;
 use App\Models\Hospital;
 use App\Notifications\ChangeEmail;
 use App\Notifications\ChangeMobileNo;
@@ -86,6 +87,22 @@ class HospitalController extends Controller
         }
     }
 
+    public function checkPassword(Request $request): \Illuminate\Http\JsonResponse
+    {
+        dd($request->all());
+        # Request params
+        $password = $request->input('current_password');
+
+        $user = auth()->user();
+
+        if (Hash::check($password, $user->password)) {
+            return response()->json(true);
+        } else {
+            return response()->json(false);
+        }
+    }
+
+
 
     public function hospitalDetailsUpdate(Request $request)
     {
@@ -126,8 +143,10 @@ class HospitalController extends Controller
         }
     }
 
-    public function hospitalChangePassword(Request $request)
+    public function changePassword(Request $request)
     {
+        $id = $request->id;
+        $user_type = $request->user_type;
         $rules = array(
             'password' => 'min:5',
             'confirm_password' => 'required_with:password|same:password|min:5',
@@ -138,9 +157,18 @@ class HospitalController extends Controller
         if ($validation->fails()) {
             return redirect()->back()->withInput()->withErrors($validation);
         } else {
-            $hospital = Hospital::findOrFail(1);
-            $hospital->password = Hash::make($request->password);;
-            $hospital->save();
+            if ($user_type === 'doctor')
+            {
+                $doctor = Doctor::findOrFail($id);
+                $doctor->password = Hash::make($request->password);
+                $doctor->save();
+            }
+            elseif($user_type === 'hospital')
+            {
+                $hospital = Hospital::findOrFail($id);
+                $hospital->password = Hash::make($request->password);;
+                $hospital->save();
+            }
             session()->flash('message', 'Password Change Successfully..!');
             return redirect()->back();
         }

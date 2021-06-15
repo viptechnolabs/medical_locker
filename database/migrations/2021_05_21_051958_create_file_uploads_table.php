@@ -15,11 +15,11 @@ class CreateFileUploadsTable extends Migration
     {
         Schema::create('file_uploads', function (Blueprint $table) {
             $table->id();
-            $table->integer('patient_id')->unsigned();
-            $table->foreign('patient_id')->references('id')->on('patients');
+            $table->unsignedBigInteger('patient_id')->unsigned();
             $table->string('file_name', 100);
             $table->string('file_path', 100);
             $table->timestamps();
+            $table->foreign('patient_id')->references('id')->on('patients');
         });
     }
 

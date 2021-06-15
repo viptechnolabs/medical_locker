@@ -157,7 +157,7 @@
                             </div>
                         </div>
                         <div class="item form-group">
-                            <label for="middle-name" class="col-form-label col-md-3 col-sm-3 label-align">Document</label>
+                            <label for="middle-name" class="col-form-label col-md-3 col-sm-3 label-align">Photo Document</label>
                             <div class="col-md-6 col-sm-6 ">
                                 <input  type="file" id="document"  name="document" accept="image/*">
                             </div>
@@ -186,6 +186,7 @@
             $(this).parents('tr').remove();
         });
     </script>
+    <!-- /Add more and remove button -->
 @stop
 
 

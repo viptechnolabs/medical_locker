@@ -30,9 +30,9 @@ class CreatePatientsTable extends Migration
             $table->string('weight', 10);
             $table->string('height', 10);
             $table->unsignedBigInteger('consultant_doctor')->unsigned();
-            $table->foreign('consultant_doctor')->references('id')->on('doctors');
             $table->string('treatment_type', 100);
             $table->timestamps();
+            $table->foreign('consultant_doctor')->references('id')->on('doctors');
         });
     }
 

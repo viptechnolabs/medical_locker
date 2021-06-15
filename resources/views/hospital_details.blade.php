@@ -150,6 +150,7 @@
                                                                 <strong>{{ session('message') }}</strong>
                                                             </div>
                                                         @endif
+                                                        <input type="hidden" class="form-control" name="id" value="{{$hospital[0]->id}}">
                                                         <div class="form-group row ">
                                                             <label class="control-label col-md-3 col-sm-3 ">Name</label>
                                                             <div class="col-md-9 col-sm-9 ">
@@ -280,7 +281,7 @@
                                                     </form>
                                                 </div>
                                             </div>
-                                            <x-change-password/>
+                                            <x-change-password id="{{$hospital[0]->id}}" user-type="hospital" />
                                             <!-- Change E-mails Pop-Up -->
                                             <div id="update_email_popup"></div>
                                             <!-- /Change E-mails Pop-Up -->

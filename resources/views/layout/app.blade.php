@@ -59,7 +59,7 @@
                 <!-- menu profile quick info -->
                 <div class="profile clearfix">
                     <div class="profile_pic">
-                        <img src="{{asset('upload_file/'.$hospital[0]->logo)}}" alt="..." class="img-circle profile_img">
+                        <img src="{{asset('upload_file/'.$hospital[0]->logo)}}" alt="{$hospital[0]->name}}" class="img-circle profile_img">
                     </div>
                     <div class="profile_info">
                         <h2>{{$hospital[0]->name}}</h2>
