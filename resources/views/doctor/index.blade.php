@@ -9,11 +9,13 @@
 
             <div class="title_right">
                 <div class="col-md-7 col-sm-7  form-group pull-right top_search">
+                    <form action="" method="get">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for...">
-                        <span class="input-group-btn">
-                      <button class="btn btn-default" type="button">Go!</button>&ensp;
-                    </span>
+                             <input type="search" class="form-control" placeholder="Search for..." name="doctor_search">
+                            <span class="input-group-btn">
+                                <button type="submit" class="btn btn-default">Go!</button>&ensp;
+                             </span>
+
                         <a href="{{route('doctor.add_doctor')}}">
                             <button type="button" class="btn btn-primary btn-sm">
                                 <i class="fa fa-user-md"></i> &ensp; Add Doctor
@@ -25,6 +27,7 @@
                             </button>
                         </a>
                     </div>
+                    </form>
                 </div>
             </div>
         </div>

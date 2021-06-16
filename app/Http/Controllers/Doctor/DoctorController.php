@@ -19,11 +19,19 @@ use voku\helper\ASCII;
 class DoctorController extends Controller
 {
     //
-    public function index()
+    public function index(Request $request)
     {
         $hospital = Hospital::all();
-        $doctors = Doctor::all();
-        //dd($doctors[0]->name);
+        $doctors = Doctor::query();
+        $search = $request->doctor_search;
+        if ($search)
+        {
+            $doctors = $doctors->where("doctor_id","like","%".$search."%")->orWhere("name","like","%".$search."%")
+                ->orWhere("mobile_no","like","%".$search."%")
+                ->orWhere("email","like","%".$search."%")
+                ->orWhere("dob","like","%".$search."%");
+        }
+        $doctors = $doctors->get();
         return view('doctor.index', ['hospital' => $hospital, 'doctors' => $doctors]);
     }
 
