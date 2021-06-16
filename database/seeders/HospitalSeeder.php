@@ -18,7 +18,7 @@ class HospitalSeeder extends Seeder
         //
         $hospital = Hospital::create([
             'name' => 'VIP Hospital',
-            'logo' => 'vip.jfif',
+            'logo' => 'logo.png',
             'details' => 'Hospital Details',
             'register_no' => '1234',
             'email' => 'viphospital@gmail.com',
