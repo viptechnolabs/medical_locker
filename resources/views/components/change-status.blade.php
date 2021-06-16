@@ -16,7 +16,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <h6>Are You Sure to change Status..?</h6>
+                    <h6>{{$message}}</h6>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary"

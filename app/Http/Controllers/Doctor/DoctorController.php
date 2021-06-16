@@ -95,7 +95,7 @@ class DoctorController extends Controller
 
 
             $doc_certificates = $request->certificates;
-           // $doc_id = DB::table('doctors')->orderBy('id', 'DESC')->first();
+            $doc_id = DB::table('doctors')->orderBy('id', 'DESC')->first();
             $doc_degree = $request->degree;
             if($doc_certificates)
             {
@@ -108,7 +108,7 @@ class DoctorController extends Controller
                     $certificate= new Certificate();
                     $certificates_name = $degree_temp. '_' . $certificate_temp;
                     $certificate::create([
-                        'doc_id' => $request->id,
+                        'doc_id' => $doc_id->id,
                         'degree_name' => $degree_temp,
                         'certificate_name' => $certificates_name,
                         'certificate_file_path' => '/upload_file/doctor/doctor_certificates/'.$certificates_name,
@@ -188,7 +188,7 @@ class DoctorController extends Controller
             }
 
             $doc_certificates = $request->certificates;
-            $doc_id = DB::table('doctors')->orderBy('id', 'DESC')->first();
+            //$doc_id = DB::table('doctors')->orderBy('id', 'DESC')->first();
             $doc_degree = $request->degree;
             if($doc_certificates)
             {
@@ -201,7 +201,7 @@ class DoctorController extends Controller
                     $certificate= new Certificate();
                     $certificates_name = $degree_temp. '_' . $certificate_temp;
                     $certificate::create([
-                        'doc_id' => $doc_id->id,
+                        'doc_id' => $request->id,
                         'degree_name' => $degree_temp,
                         'certificate_name' => $certificates_name,
                         'certificate_file_path' => '/upload_file/doctor/doctor_certificates/'.$certificates_name,
@@ -216,14 +216,40 @@ class DoctorController extends Controller
         }
     }
 
-    public function doctorChangeStatusPopup(Request $request)
+
+    public function doctorDelete($id)
+    {
+        $doctor = Doctor::findOrFail($id);
+        $doctor->delete();
+        session()->flash('message', 'Dr. '.$doctor->name.' are Delete Successfully..!');
+        return redirect()->route('doctor.index');
+    }
+
+    public function deletedDoctor()
+    {
+        $hospital = Hospital::all();
+        $deleted_doctor = Doctor::onlyTrashed()->get();
+//        dd($deleted_doctor);
+        return view('doctor.deleted_doctor', ['hospital' => $hospital, 'doctors' => $deleted_doctor]);
+    }
+
+    public function restoreDoctor($id)
+    {
+        $doctor = Doctor::withTrashed()->findOrFail($id);
+        $doctor->restore();
+        session()->flash('message', 'Dr. '.$doctor->name.' Restore Successfully..!');
+        return redirect()->route('doctor.index');
+    }
+
+
+    public function changeStatusPopup(Request $request)
     {
         # Request params
         $action = $request->input('action');
-
-
-        return view('components.doctor-status')
-            ->with('action', $action);
+        $message = $request->input('message');
+        return view('components.change-status', ['action' => $action, 'message' => $message]);
+//        return view('components.change-status')
+//            ->with('action', $action);
     }
 
     public function changeStatus($id): \Illuminate\Http\RedirectResponse

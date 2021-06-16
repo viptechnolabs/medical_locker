@@ -29,6 +29,6 @@ class DoctorStatus extends Component
      */
     public function render()
     {
-        return view('components.doctor-status');
+        return view('components.change-status');
     }
 }

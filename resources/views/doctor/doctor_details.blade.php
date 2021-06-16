@@ -333,6 +333,10 @@
                                                                 </a>
                                                                 <button type="reset" class="btn btn-primary">Reset
                                                                 </button>
+                                                                <a href="{{route('doctor.doctor_delete', $doctor->id)}}">
+                                                                    <button type="button" class="btn btn-danger">Delete
+                                                                    </button>
+                                                                </a>
                                                                 <button class="btn btn-success">Submit
                                                                 </button>
                                                             </div>
