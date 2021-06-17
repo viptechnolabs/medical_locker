@@ -21,7 +21,7 @@ class DoctorController extends Controller
     //
     public function index(Request $request)
     {
-        $hospital = Hospital::all();
+        $hospital = Hospital::findOrFail(1);
         $doctors = Doctor::query();
         $search = $request->doctor_search;
         if ($search)
@@ -37,7 +37,7 @@ class DoctorController extends Controller
 
     public function addDoctor()
     {
-        $hospital = Hospital::all();
+        $hospital = Hospital::findOrFail(1);
         $state = State::all();
         $city = City::all();
         return view('doctor.add_doctor', ['hospital' => $hospital, 'states' => $state, 'cities' => $city]);
@@ -133,7 +133,7 @@ class DoctorController extends Controller
     public function doctorDetails(Request $request, $id)
     {
         $doctor = Doctor::findOrFail($id);
-        $hospital = Hospital::all();
+        $hospital = Hospital::findOrFail(1);
         $state = State::all();
         $city = City::all();
         return view('doctor.doctor_details', ['doctor' => $doctor, 'hospital' => $hospital, 'states' => $state, 'cities' => $city]);
@@ -235,7 +235,7 @@ class DoctorController extends Controller
 
     public function deletedDoctor()
     {
-        $hospital = Hospital::all();
+        $hospital = Hospital::findOrFail(1);
         $deleted_doctor = Doctor::onlyTrashed()->get();
 //        dd($deleted_doctor);
         return view('doctor.deleted_doctor', ['hospital' => $hospital, 'doctors' => $deleted_doctor]);

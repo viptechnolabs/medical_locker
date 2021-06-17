@@ -43,29 +43,29 @@
                                     <div id="crop-avatar">
                                         <!-- Current avatar -->
                                         <img class="img-responsive avatar-view"
-                                             src="{{asset('upload_file/'.$hospital[0]->logo)}}" alt="Hospital Logo"
+                                             src="{{asset('upload_file/'.$hospital->logo)}}" alt="Hospital Logo"
                                              title="Change the avatar" style="height: 220px; width: 220px">
                                     </div>
                                 </div>
-                                <h3>{{$hospital[0]->name}}</h3>
+                                <h3>{{$hospital->name}}</h3>
                                 <hr>
 
                                 <ul class="list-unstyled user_data" style="font-size: 19px">
-                                    <li><i class="fa fa-map-marker user-profile-icon"></i> {{$hospital[0]->address}}
+                                    <li><i class="fa fa-map-marker user-profile-icon"></i> {{$hospital->address}}
                                     </li>
 
                                     <li>
-                                        <i class="fa fa-briefcase user-profile-icon"></i> {{$hospital[0]->details}}
+                                        <i class="fa fa-briefcase user-profile-icon"></i> {{$hospital->details}}
                                     </li>
 
                                     <li>
-                                        <a href="mailto:{{$hospital[0]->email}}">
-                                            <i class="fa fa-envelope user-profile-icon"></i> {{$hospital[0]->email}}
+                                        <a href="mailto:{{$hospital->email}}">
+                                            <i class="fa fa-envelope user-profile-icon"></i> {{$hospital->email}}
                                         </a>
                                     </li>
 
                                     <li>
-                                        <i class="fa fa-phone-square user-profile-icon"></i> {{$hospital[0]->mobile_no}}
+                                        <i class="fa fa-phone-square user-profile-icon"></i> {{$hospital->mobile_no}}
                                     </li>
                                 </ul>
 
@@ -150,13 +150,13 @@
                                                                 <strong>{{ session('message') }}</strong>
                                                             </div>
                                                         @endif
-                                                        <input type="hidden" class="form-control" name="id" value="{{$hospital[0]->id}}">
+                                                        <input type="hidden" class="form-control" name="id" value="{{$hospital->id}}">
                                                         <div class="form-group row ">
                                                             <label class="control-label col-md-3 col-sm-3 ">Name</label>
                                                             <div class="col-md-9 col-sm-9 ">
                                                                 <input type="text" class="form-control"
                                                                        name="hospital_name"
-                                                                       value="{{$hospital[0]->name}}"
+                                                                       value="{{$hospital->name}}"
                                                                        placeholder="Hospital Name">
                                                             </div>
                                                         </div>
@@ -166,7 +166,7 @@
                                                             <div class="col-md-9 col-sm-9 ">
                                                             <textarea class="form-control" rows="3"
                                                                       name="hospital_details"
-                                                                      placeholder="{{$hospital[0]->details}}">{{$hospital[0]->details}}</textarea>
+                                                                      placeholder="{{$hospital->details}}">{{$hospital->details}}</textarea>
                                                             </div>
                                                         </div>
                                                         <div class="form-group row">
@@ -175,7 +175,7 @@
                                                             <div class="col-md-9 col-sm-9 ">
                                                                 <input type="text" class="form-control"
                                                                        disabled="disabled" name="hospital_registerno"
-                                                                       value="{{$hospital[0]->register_no}}"
+                                                                       value="{{$hospital->register_no}}"
                                                                        placeholder="Register No">
                                                             </div>
                                                         </div>
@@ -184,13 +184,13 @@
                                                                 class="control-label col-md-3 col-sm-3 ">Email</label>
                                                             <div class="col-md-7 col-sm-3 ">
                                                                 <input type="email" class="form-control"
-                                                                       value="{{$hospital[0]->email}}"
+                                                                       value="{{$hospital->email}}"
                                                                        placeholder="Email"
                                                                        readonly="readonly">
                                                             </div>
 
                                                             <a class="border-button" href="javascript:;"
-                                                               onclick="getEmailPopup('{{ route('email.popup.get', $hospital[0]->id) }}', '{{ route('check.email') }}', {{ $hospital[0]->id }})">
+                                                               onclick="getEmailPopup('{{ route('email.popup.get', $hospital->id) }}', '{{ route('check.email') }}', {{ $hospital->id }}, '{{ Session::get('userType') }}')">
                                                                 <button type="button" class="btn btn-secondary">
                                                                     Change Email
                                                                 </button>
@@ -202,14 +202,14 @@
                                                                 No</label>
                                                             <div class="col-md-6 col-sm-3 ">
                                                                 <input type="text" class="form-control"
-                                                                       value="{{$hospital[0]->mobile_no}}"
+                                                                       value="{{$hospital->mobile_no}}"
                                                                        placeholder="Mobile No" readonly="readonly"
                                                                        name="mobile_no"
                                                                 >
                                                             </div>
 
                                                             <a class="border-button" href="javascript:;"
-                                                               onclick="getMobilePopup('{{ route('mobile.popup.get', $hospital[0]->id) }}', '{{ route('check.mobile') }}', {{ $hospital[0]->id }})">
+                                                               onclick="getMobilePopup('{{ route('mobile.popup.get', $hospital->id) }}', '{{ route('check.mobile') }}', {{ $hospital->id }}, '{{ Session::get('userType') }}')">
                                                                 <button type="button" class="btn btn-secondary">
                                                                     Change Mobile No
                                                                 </button>
@@ -220,7 +220,7 @@
                                                                 No</label>
                                                             <div class="col-md-9 col-sm-9 ">
                                                                 <input type="text" class="form-control"
-                                                                       value="{{$hospital[0]->fex_no}}"
+                                                                       value="{{$hospital->fex_no}}"
                                                                        placeholder="Fex No" name="hospital_fex_no">
                                                             </div>
                                                         </div>
@@ -229,7 +229,7 @@
                                                                 No</label>
                                                             <div class="col-md-9 col-sm-9 ">
                                                                 <input type="text" class="form-control"
-                                                                       value="{{$hospital[0]->pin_cord_no}}"
+                                                                       value="{{$hospital->pin_cord_no}}"
                                                                        placeholder="Pin Cord No"
                                                                        name="hospital_pin_cord_no">
                                                             </div>
@@ -240,7 +240,7 @@
                                                             <div class="col-md-9 col-sm-9 ">
                                                             <textarea class="form-control" rows="3"
                                                                       name="hospital_address"
-                                                                      placeholder="Address">{{$hospital[0]->address}}</textarea>
+                                                                      placeholder="Address">{{$hospital->address}}</textarea>
                                                             </div>
                                                         </div>
                                                         <div class="form-group row">
@@ -281,7 +281,7 @@
                                                     </form>
                                                 </div>
                                             </div>
-                                            <x-change-password id="{{$hospital[0]->id}}" user-type="hospital" />
+                                            <x-change-password id="{{$hospital->id}}" user-type="hospital" />
                                             <!-- Change E-mails Pop-Up -->
                                             <div id="update_email_popup"></div>
                                             <!-- /Change E-mails Pop-Up -->

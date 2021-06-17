@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Notifications\Notifiable;
 
 class Doctor extends Model
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
     use SoftDeletes;
     protected $dates = ['deleted_at'];
 
@@ -34,5 +35,10 @@ class Doctor extends Model
     {
         return $this->hasMany(Certificate::class,'doc_id','id');
 //        return $this->hasMany(Certificate::class);
+    }
+
+
+    public  static function  getUserById($id){
+        return Doctor::findOrFail($id);
     }
 }

@@ -1,13 +1,16 @@
-function getMobilePopup(action, checkMobileAction, userId) {
+function getMobilePopup(action, checkMobileAction, userId, userType) {
     $.ajax({
         url: action,
         type: "post",
-        data: {},
+        data: {
+            user_id : userId,
+            user_type : userType,
+        },
         success: function (data) {
             $('#update_mobile_popup').html(data);
             $('#change_mobile_modal').modal(true)
 
-            mobilePopupValidation(checkMobileAction, userId);
+            mobilePopupValidation(checkMobileAction, userId, userType);
         },
         error: function (error) {
             console.log(error);
@@ -15,7 +18,7 @@ function getMobilePopup(action, checkMobileAction, userId) {
     })
 }
 
-function mobilePopupValidation(checkMobileAction, userId) {
+function mobilePopupValidation(checkMobileAction, userId, userType) {
     $('#change_mobile_form').validate({
         errorElement: 'span',
         errorClass: 'validation-error',
@@ -26,6 +29,7 @@ function mobilePopupValidation(checkMobileAction, userId) {
                     url: checkMobileAction,
                     type: "post",
                     data: {
+                        user_type: userType,
                         mobile_no: function () {
                             return $("#mobile_no").val();
                         },

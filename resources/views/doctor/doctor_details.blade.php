@@ -150,50 +150,68 @@
                                                                 <input type="text" class="form-control"
                                                                        name="name"
                                                                        value="{{$doctor->name}}"
-                                                                       placeholder="Doctor Name">
+                                                                       placeholder="Doctor Name" {{Session::get('userType') === "doctor" ? "readonly" : ""}}>
                                                             </div>
                                                         </div>
-                                                        <div class="form-group row">
-                                                            <label
-                                                                class="control-label col-md-3 col-sm-3 ">Degree</label>
-                                                            <div class="col-md-9 col-sm-9 ">
-                                                                <table class="table " id="dynamicAddRemove">
-                                                                    <tr>
-                                                                        <td><input type="text" id="update_degree" name="degree[0]" placeholder="Enter Degree" class="form-control" /></td>
-                                                                        <td><input  type="file" id="update_certificates"  name="certificates[0]" accept="image/*" /></td>
-                                                                        <td><button type="button" name="add" id="add-btn" class="btn btn-sm btn-success">Add More</button></td>
-                                                                    </tr>
-                                                                </table>
-                                                            </div>
+                                                        @if(Session::get('userType') !== "doctor" )
+                                                            <div class="form-group row">
+                                                                <label
+                                                                    class="control-label col-md-3 col-sm-3 ">Degree</label>
+                                                                <div class="col-md-9 col-sm-9 ">
+                                                                    <table class="table " id="dynamicAddRemove">
+                                                                        <tr>
+                                                                            <td><input type="text" id="update_degree" name="degree[0]" placeholder="Enter Degree" class="form-control" /></td>
+                                                                            <td><input  type="file" id="update_certificates"  name="certificates[0]" accept="image/*" /></td>
+                                                                            <td><button type="button" name="add" id="add-btn" class="btn btn-sm btn-success">Add More</button></td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
 
-                                                        </div>
+                                                            </div>
+                                                        @endif
                                                         <div class="form-group row ">
                                                             <label class="control-label col-md-3 col-sm-3 ">Specialist</label>
                                                             <div class="col-md-9 col-sm-9 ">
                                                                 <input type="text" class="form-control"
                                                                        name="specialist"
                                                                        value="{{$doctor->specialist}}"
-                                                                       placeholder="Specialist">
+                                                                       placeholder="Specialist" {{Session::get('userType') === "doctor" ? "readonly" : ""}}>
                                                             </div>
                                                         </div>
                                                         <div class="form-group row">
                                                             <label
                                                                 class="control-label col-md-3 col-sm-3 ">Email</label>
-                                                            <div class="col-md-9 col-sm-9 ">
+                                                            <div class="{{Session::get('userType') === "doctor" ? "col-md-7 col-sm-3" : "col-md-9 col-sm-9"}}">
                                                                 <input type="email" class="form-control"
                                                                        value="{{$doctor->email}}"
-                                                                       placeholder="Email" name="email">
+                                                                       placeholder="Email" name="email" {{Session::get('userType') === "doctor" ? "readonly" : ""}}>
                                                             </div>
+                                                            @if(Session::get('userType') === "doctor" )
+                                                                <a class="border-button" href="javascript:;"
+                                                                   onclick="getEmailPopup('{{ route('email.popup.get', $doctor->id) }}', '{{ route('check.email') }}', {{ $doctor->id }}, '{{ Session::get('userType') }}')">
+                                                                    <button type="button" class="btn btn-secondary">
+                                                                        Change Email
+                                                                    </button>
+                                                                </a>
+                                                            @endif
 
                                                         </div>
                                                         <div class="form-group row">
                                                             <label
                                                                 class="control-label col-md-3 col-sm-3 ">Mobile No</label>
-                                                            <div class="col-md-9 col-sm-9 ">
+                                                            <div class="{{Session::get('userType') === "doctor" ? "col-md-6 col-sm-3" : "col-md-9 col-sm-9"}}">
                                                                 <input type="text" class="form-control"
                                                                        value="{{$doctor->mobile_no}}"
-                                                                       placeholder="Mobile No" name="mobile_no">
+                                                                       placeholder="Mobile No" name="mobile_no" {{Session::get('userType') === "doctor" ? "readonly" : ""}}>
                                                             </div>
+                                                            @if(Session::get('userType') === "doctor" )
+                                                                <a class="border-button" href="javascript:;"
+                                                                   onclick="getMobilePopup('{{ route('mobile.popup.get', $doctor->id) }}', '{{ route('check.mobile') }}', {{ $doctor->id }}, '{{ Session::get('userType') }}')">
+                                                                    <button type="button" class="btn btn-secondary">
+                                                                        Change Mobile No
+                                                                    </button>
+                                                                </a>
+                                                            @endif
 
                                                         </div>
                                                         <div class="form-group row">
@@ -247,7 +265,7 @@
                                                             <div class="col-md-9 col-sm-9 ">
                                                                 <input type="text" class="form-control"
                                                                        value="{{$doctor->aadhar_no}}"
-                                                                       placeholder="Aadhar No" name="aadhar_no">
+                                                                       placeholder="Aadhar No" name="aadhar_no" {{Session::get('userType') === "doctor" ? "readonly" : ""}}>
                                                             </div>
 
                                                         </div>
@@ -299,7 +317,9 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <input  type="file" id="document_photo"  name="document_photo" accept="image/*" alt="{{$doctor->name}}">
+                                                                @if(Session::get('userType') !== "doctor" )
+                                                                    <input  type="file" id="document_photo"  name="document_photo" accept="image/*" alt="{{$doctor->name}}">
+                                                                @endif
                                                             </div>
 
                                                         </div>
@@ -333,10 +353,12 @@
                                                                 </a>
                                                                 <button type="reset" class="btn btn-primary">Reset
                                                                 </button>
-                                                                <a href="{{route('doctor.doctor_delete', $doctor->id)}}">
-                                                                    <button type="button" class="btn btn-danger">Delete
-                                                                    </button>
-                                                                </a>
+                                                                @if(Session::get('userType') !== "doctor" )
+                                                                    <a href="{{route('doctor.doctor_delete', $doctor->id)}}">
+                                                                        <button type="button" class="btn btn-danger">Delete
+                                                                        </button>
+                                                                    </a>
+                                                                @endif
                                                                 <button class="btn btn-success">Submit
                                                                 </button>
                                                             </div>
@@ -346,10 +368,10 @@
                                             </div>
                                             <x-change-password id="{{$doctor->id}}" user-type="doctor" />
                                             <!-- Change E-mails Pop-Up -->
-{{--                                            <div id="update_email_popup"></div>--}}
+                                            <div id="update_email_popup"></div>
                                             <!-- /Change E-mails Pop-Up -->
                                             <!-- Change Mobile Pop-Up -->
-{{--                                            <div id="update_mobile_popup"></div>--}}
+                                            <div id="update_mobile_popup"></div>
                                             <!-- /Change Mobile Pop-Up -->
                                         </div>
                                         <!-- end Doctor details update -->

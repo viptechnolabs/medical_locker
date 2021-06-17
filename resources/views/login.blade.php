@@ -26,13 +26,24 @@
 <div class="login_wrapper">
     <div class="animate form login_form">
         <section class="login_content">
-            <form action="{{route('index')}}">
+            <form action="{{route('do_login')}}" method="POST">
+                @csrf
+{{--                @method('post')--}}
                 <h1>Login Form</h1>
                 <div>
-                    <input type="text" class="form-control" placeholder="Username"/>
+                    <select id="user_type" name="user_type" class="form-control" >
+                        <option value="0">Select User Type</option>
+                        <option value="hospital">Hospital</option>
+                        <option value="doctor">Doctor</option>
+                        <option value="user">User</option>
+                    </select>
+                </div>
+                <br>
+                <div>
+                    <input type="text" name="email" class="form-control" placeholder="Username"/>
                 </div>
                 <div>
-                    <input type="password" class="form-control" placeholder="Password"/>
+                    <input type="password" name="password" class="form-control" placeholder="Password"/>
                 </div>
                 <div>
                     <a href="{{route('index')}}">

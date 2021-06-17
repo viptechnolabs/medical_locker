@@ -21,8 +21,11 @@ use Illuminate\Support\Facades\Route;
 /* Hospital*/
 Route::get('/',[\App\Http\Controllers\HospitalController::class, 'index'])->name('index');
 Route::get('login',[\App\Http\Controllers\HospitalController::class, 'login'])->name('login');
+Route::post('do_login',[\App\Http\Controllers\HospitalController::class, 'doLogin'])->name('do_login');
+Route::get('logout',[\App\Http\Controllers\HospitalController::class, 'logout'])->name('logout');
 //Route::get('hospital_details',[\App\Http\Livewire\HospitalDetails::class, 'render'])->name('hospital_details');
 Route::get('hospital_details',[\App\Http\Controllers\HospitalController::class, 'hospitalDetails'])->name('hospital_details');
+Route::get('profile/{user_type}/{id}', [App\Http\Controllers\HospitalController::class, 'profile'])->name('profile');
 
 Route::post('email/popup/{user}', [\App\Http\Controllers\HospitalController::class, 'getEmailPopup'])->name('email.popup.get');
 Route::post('mobile/popup/{user}', [\App\Http\Controllers\HospitalController::class, 'getMobilePopup'])->name('mobile.popup.get');

@@ -10,7 +10,7 @@ class ChangeMobileNo extends Notification
 {
     use Queueable;
 
-    public $hospital;
+    public $obj;
     public $six_digit_random_number;
 
     /**
@@ -18,10 +18,10 @@ class ChangeMobileNo extends Notification
      *
      * @return void
      */
-    public function __construct($hospital, $six_digit_random_number)
+    public function __construct($obj, $six_digit_random_number)
     {
         //
-        $this->hospital = $hospital;
+        $this->obj = $obj;
         $this->six_digit_random_number = $six_digit_random_number;
     }
 
@@ -45,7 +45,6 @@ class ChangeMobileNo extends Notification
 
     public function toNexmo($notifiable)
     {
-        //dd($notifiable);
         return (new NexmoMessage())
             ->content('Your Verification code is' . $this->six_digit_random_number . '.');
     }

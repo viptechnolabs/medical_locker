@@ -59,10 +59,10 @@
                 <!-- menu profile quick info -->
                 <div class="profile clearfix">
                     <div class="profile_pic">
-                        <img src="{{asset('upload_file/'.$hospital[0]->logo)}}" alt="{$hospital[0]->name}}" class="img-circle profile_img">
+                        <img src="{{asset('upload_file/'.$hospital->logo)}}" alt="{$hospital->name}}" class="img-circle profile_img">
                     </div>
                     <div class="profile_info">
-                        <h2>{{$hospital[0]->name}}</h2>
+                        <h2>{{$hospital->name}}</h2>
                         <span>Digital Medical Locker</span>
                     </div>
                 </div>
@@ -77,9 +77,13 @@
                         <ul class="nav side-menu">
                             <li><a href="{{route('index')}}"><i class="fa fa-home"></i> Dashboard</a></li>
                         </ul>
-                        <ul class="nav side-menu">
-                            <li><a href="{{route('doctor.index')}}"><i class="fa fa-user-md"></i> Doctors</a></li>
-                        </ul>
+                        @if(Session::get('userType') !== "doctor" )
+                            <ul class="nav side-menu">
+                                <li><a href="{{route('doctor.index')}}"><i class="fa fa-user-md"></i> Doctors</a></li>
+                            </ul>
+                        @else
+
+                        @endif
                         <ul class="nav side-menu">
                             <li><a href="#"><i class="fa fa-users"></i> Patients</a></li>
                         </ul>
@@ -107,6 +111,12 @@
             </div>
         </div>
 
+
+        @php
+            $userType = Session::get('userType');
+            $getUser = \App\Models\Doctor::getUserById(Session::get('userId'));
+         @endphp
+
         <!-- top navigation -->
         <div class="top_nav">
             <div class="nav_menu">
@@ -117,16 +127,15 @@
                     <ul class=" navbar-right">
                         <li class="nav-item dropdown open" style="padding-left: 15px;">
                             <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
-                                <img src="{{asset('upload_file/'.$hospital[0]->logo)}}" alt="{{$hospital[0]->name}}">{{$hospital[0]->name}}
+                                <img src="{{asset('upload_file/doctor/'.$getUser->profile_photo)}}" alt="{{$getUser->name}}">{{ $getUser->name}}
                             </a>
                             <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item"  href="{{route('hospital_details')}}"> Setting</a>
-{{--                                <a class="dropdown-item"  href="javascript:;">--}}
-{{--                                    <span class="badge bg-red pull-right">50%</span>--}}
-{{--                                    <span>Settings</span>--}}
-{{--                                </a>--}}
-{{--                                <a class="dropdown-item"  href="javascript:;">Help</a>--}}
-                                <a class="dropdown-item"  href="{{route('login')}}"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
+                                @if($userType !== "doctor" )
+                                    <a class="dropdown-item"  href="{{route('hospital_details')}}"> Setting</a>
+                                @else
+                                    <a class="dropdown-item"  href="{{route('profile', [$userType, $getUser->id])}}"> Profile</a>
+                                @endif
+                                <a class="dropdown-item"  href="{{route('logout')}}"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
                             </div>
                         </li>
                     </ul>

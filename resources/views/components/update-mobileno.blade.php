@@ -4,8 +4,9 @@
         <div class="modal-content">
             <form id="change_mobile_form" onsubmit="return disabledSubmitBtn(this);">
                 @csrf
-                <input type="hidden" name="id" value="{{ $hospital[0]->id }}"/>
-                <input type="hidden" id="old_mobile_no" value="{{ $hospital[0]->mobile_no }}"/>
+                <input type="hidden" name="id" value="{{ $data->id }}"/>
+                <input type="hidden" id="user_type" value="{{ $user_type }}"/>
+                <input type="hidden" id="old_mobile_no" value="{{ $data->mobile_no }}"/>
 
                 <div class="modal-header">
                     <h4 class="modal-title" id="myModalLabel2">
@@ -20,7 +21,7 @@
                     <h4>Mobile No</h4>
 
                     <input type="text" class="form-control"
-                           value="{{ $hospital[0]->mobile_no }}"
+                           value="{{ $data->mobile_no }}"
                            placeholder="Update Mobile No" name="mobile_no" id="mobile_no">
                 </div>
                 <div class="modal-footer">
@@ -31,14 +32,16 @@
                 <script>
                     function verification_mobile() {
                         var newMobile = $('#mobile_no').val()
+                        var user_type = $('#user_type').val()
                         $.ajax({
                             method: "post",
                             url: "{{ route('profile.update.mobile_verification_code') }}",
                             data: {
                                 _token: "{{ csrf_token() }}",
-                                id: "{{$hospital[0]->id}}",
-                                mobile_no: "{{ $hospital[0]->mobile_no }}",
+                                id: "{{$data->id}}",
+                                mobile_no: "{{ $data->mobile_no }}",
                                 newMobile: newMobile,
+                                user_type: user_type,
                             },
                             success: function (result) {
                                 console.log(result);
@@ -167,14 +170,16 @@
                     jQuery('#checkVerificationCode').click(function () {
                         var code = $('#verification_code').val();
                         var newMobile = $('#mobile_no').val()
+                        var user_type = $('#user_type').val()
                         $.ajax({
                             method: "post",
                             url: "{{ route('profile.update.mobile') }}?date=" + Date.now(),
                             data: {
                                 _token: $('meta[name="csrf-token"]').attr('content'),
-                                id: "{{$hospital[0]->id}}",
+                                id: "{{$data->id}}",
                                 newMobile: newMobile,
                                 verification_code: code,
+                                user_type: user_type,
                             },
                             success: function (result) {
                                 console.log(result);

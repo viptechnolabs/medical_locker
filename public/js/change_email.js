@@ -1,14 +1,16 @@
-function getEmailPopup(action, checkEmailAction, userId) {
-    //alert(userId);
+function getEmailPopup(action, checkEmailAction, userId, userType) {
     $.ajax({
         url: action,
         type: "post",
-        data: {},
+        data: {
+            user_id : userId,
+            user_type : userType,
+        },
         success: function (data) {
             $('#update_email_popup').html(data);
             $('#change_email_modal').modal(true)
 
-            emailPopupValidation(checkEmailAction, userId);
+            emailPopupValidation(checkEmailAction, userId, userType);
         },
         error: function (error) {
             console.log(error);
@@ -16,7 +18,7 @@ function getEmailPopup(action, checkEmailAction, userId) {
     })
 }
 
-function emailPopupValidation(checkEmailAction, userId) {
+function emailPopupValidation(checkEmailAction, userId, userType) {
     $('#change_email_form').validate({
         errorElement: 'span',
         errorClass: 'validation-error',
@@ -29,6 +31,7 @@ function emailPopupValidation(checkEmailAction, userId) {
                     type: "post",
                     data: {
                         _token: $('meta[name="csrf-token"]').attr('content'),
+                        user_type: userType,
                         email: function () {
                             return $("#email").val();
                         },

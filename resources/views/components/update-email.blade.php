@@ -4,8 +4,9 @@
         <div class="modal-content">
             <form id="change_email_form" onsubmit="return disabledSubmitBtn(this);">
                 @csrf
-                <input type="hidden" name="id" value="{{ $hospital[0]->id }}"/>
-                <input type="hidden" id="old_email" value="{{ $hospital[0]->email }}"/>
+                <input type="hidden" name="id" value="{{ $data->id }}"/>
+                <input type="hidden" id="user_type" value="{{ $user_type }}"/>
+                <input type="hidden" id="old_email" value="{{ $data->email }}"/>
 
                 <div class="modal-header">
                     <h4 class="modal-title" id="myModalLabel2">
@@ -20,7 +21,7 @@
                     <h4>Email</h4>
 
                     <input type="text" class="form-control"
-                           value="{{ $hospital[0]->email }}"
+                           value="{{ $data->email }}"
                            placeholder="Update Email" name="email" id="email">
                 </div>
                 <div class="modal-footer">
@@ -31,14 +32,16 @@
                 <script>
                     function verification_mail() {
                         var newMail = $('#email').val()
+                        var user_type = $('#user_type').val()
                         $.ajax({
                             method: "post",
                             url: "{{ route('profile.update.email_verification_code') }}",
                             data: {
                                 _token: "{{ csrf_token() }}",
-                                id: "{{$hospital[0]->id}}",
-                                email: "{{ $hospital[0]->email }}",
+                                id: "{{$data->id}}",
+                                email: "{{ $data->email }}",
                                 newmail: newMail,
+                                user_type: user_type,
                             },
                             success: function (result) {
                                 console.log(result);
@@ -167,14 +170,16 @@
                     jQuery('#checkVerificationCode').click(function () {
                         var code = $('#verification_code').val();
                         var newMail = $('#email').val()
+                        var user_type = $('#user_type').val()
                         $.ajax({
                             method: "post",
                             url: "{{ route('profile.update.email') }}?date=" + Date.now(),
                             data: {
                                 _token: $('meta[name="csrf-token"]').attr('content'),
-                                id: "{{$hospital[0]->id}}",
+                                id: "{{$data->id}}",
                                 newMail: newMail,
                                 verification_code: code,
+                                user_type: user_type,
                             },
                             success: function (result) {
                                 console.log(result);

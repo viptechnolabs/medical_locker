@@ -31,6 +31,8 @@ class CreateDoctorsTable extends Migration
             $table->enum('gender', ['male', 'female', 'transgender', 'other']);
             $table->date('dob');
             $table->enum('status', ['inactive', 'active'])->default('active');
+            $table->string('token')->unique()->nullable();
+            $table->string('verification_code')->unique()->nullable();
             $table->string('password', 100);
             $table->softDeletes();
             $table->timestamps();

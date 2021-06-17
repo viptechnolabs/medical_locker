@@ -10,14 +10,13 @@ class ChangeEmail extends Notification
 {
     use Queueable;
 
-    public $hospital;
+    public $obj;
     public $six_digit_random_number;
 
-    public function __construct($hospital, $six_digit_random_number)
+    public function __construct($obj, $six_digit_random_number)
     {
         //
-        //dd($hospital->logo);
-        $this->hospital = $hospital;
+        $this->obj = $obj;
         $this->six_digit_random_number = $six_digit_random_number;
     }
 
@@ -41,8 +40,8 @@ class ChangeEmail extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)->subject('Verify your email')->view('emails.update_email', [
-            'hospital' => $this->hospital,
-            'email' => $this->hospital->email,
+            'obj' => $this->obj,
+            'email' => $this->obj->email,
             'six_digit_random_number' => $this->six_digit_random_number,
         ]);
     }
