@@ -53,6 +53,7 @@ class DoctorController extends Controller
             'specialist' => 'required',
             'email' => 'required|max:50|min:7',
             'mobile_no' => 'required|max:13|min:7',
+            'address' => 'required',
             'state' => 'required',
             'city' => 'required',
             'pin_code' => 'required|max:10',
@@ -61,6 +62,7 @@ class DoctorController extends Controller
             'dob' => 'required',
             'profile_photo' => 'required',
             'certificates' => 'required',
+            'document' => 'required',
             //'hospital_logo' => 'required|mimes:jpg|max:2048',
         );
         $validation = Validator::make($request->all(), $rules);

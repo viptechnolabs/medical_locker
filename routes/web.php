@@ -23,6 +23,11 @@ Route::middleware(['auth:hospital'])->group(function () {
     Route::get('profile/{user_type}/{id}', [App\Http\Controllers\HospitalController::class, 'profile'])->name('profile');
     Route::get('hospital_details',[\App\Http\Controllers\HospitalController::class, 'hospitalDetails'])->name('hospital_details');
     Route::put('hospital_details_update',[\App\Http\Controllers\HospitalController::class, 'hospitalDetailsUpdate'])->name('hospital_details_update');
+    Route::prefix('user')->as('user.')->group(function () {
+        Route::get('/', [App\Http\Controllers\User\UserController::class, 'index'])->name('index');
+        Route::get('add_user', [App\Http\Controllers\User\UserController::class, 'addUser'])->name('add_user');
+        Route::post('submit_doctor', [App\Http\Controllers\User\UserController::class, 'submitUser'])->name('submit_user');
+    });
 });
 
 Route::middleware(['auth:doctor'])->group(function () {

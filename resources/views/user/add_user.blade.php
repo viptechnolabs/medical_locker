@@ -4,15 +4,15 @@
     <div class="row">
 
         <div class="col-md-12 col-sm-12 ">
-            <a href="{{route('doctor.index')}}"> Do your work, then step back. </a>
+            <a href="{{route('user.index')}}"> Do your work, then step back. </a>
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>Add Doctor</h2>
+                    <h2>Add User</h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
                     <br />
-                    <form action="{{route('doctor.submit_doctor')}}" method="POST" enctype="multipart/form-data" id="add_doctor">
+                    <form action="{{route('user.submit_user')}}" method="POST" enctype="multipart/form-data" id="add_user">
                         @csrf
                         @if ($errors->any())
                             @foreach ($errors->all() as $message)
@@ -40,39 +40,21 @@
                             <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Name
                             </label>
                             <div class="col-md-6 col-sm-6 ">
-                                <input type="text" id="name"  name="name"  class="form-control" >
-                            </div>
-                        </div>
-                        <div class="item form-group">
-                            <label for="middle-name" class="col-form-label col-md-3 col-sm-3 label-align">Degree</label>
-                            <div class="col-md-6 col-sm-6 ">
-                                <table class="table " id="dynamicAddRemove">
-                                    <tr>
-                                        <td><input type="text" id="degree" name="degree[0]" placeholder="Enter Degree" class="form-control" /></td>
-                                        <td><input  type="file" id="certificates"  name="certificates[0]" accept="image/*" /></td>
-                                        <td><button type="button" name="add" id="add-btn" class="btn btn-sm btn-success">Add More</button></td>
-                                    </tr>
-                                </table>
+                                <input type="text" id="name"  name="name"  class="form-control" placeholder="Name">
                             </div>
                         </div>
 
-                        <div class="item form-group">
-                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="last-name">Specialist
-                            </label>
-                            <div class="col-md-6 col-sm-6 ">
-                                <input type="text" id="specialist" name="specialist" class="form-control" >
-                            </div>
-                        </div>
+
                         <div class="item form-group">
                             <label for="middle-name" class="col-form-label col-md-3 col-sm-3 label-align">Email</label>
                             <div class="col-md-6 col-sm-6 ">
-                                <input id="email" class="form-control" type="text"  name="email" >
+                                <input id="email" class="form-control" type="text"  name="email" placeholder="Email" >
                             </div>
                         </div>
                         <div class="item form-group">
                             <label for="middle-name" class="col-form-label col-md-3 col-sm-3 label-align">Mobile No</label>
                             <div class="col-md-6 col-sm-6 ">
-                                <input id="mobile_no" class="form-control" type="text"  name="mobile_no">
+                                <input id="mobile_no" class="form-control" type="text"  name="mobile_no" placeholder="Mobile no">
                             </div>
                         </div>
                         <div class="item form-group">
@@ -108,13 +90,13 @@
                         <div class="item form-group">
                             <label for="middle-name" class="col-form-label col-md-3 col-sm-3 label-align">Pin Code</label>
                             <div class="col-md-6 col-sm-6 ">
-                                <input id="pin_code" class="form-control" type="text"  name="pin_code" >
+                                <input id="pin_code" class="form-control" type="text"  name="pin_code" placeholder="Pin Code" >
                             </div>
                         </div>
                         <div class="item form-group">
                             <label for="middle-name" class="col-form-label col-md-3 col-sm-3 label-align">Aadhar No</label>
                             <div class="col-md-6 col-sm-6 ">
-                                <input id="aadhar_no" class="form-control" type="text"  name="aadhar_no" >
+                                <input id="aadhar_no" class="form-control" type="text"  name="aadhar_no" placeholder="Aadhar No" >
                             </div>
                         </div>
                         <div class="item form-group">
@@ -165,7 +147,7 @@
                         <div class="ln_solid"></div>
                         <div class="item form-group">
                             <div class="col-md-6 col-sm-6 offset-md-3">
-                                <a href="{{route('doctor.index')}}"><button class="btn btn-primary" type="button">Cancel</button></a>
+                                <a href="{{route('user.index')}}"><button class="btn btn-primary" type="button">Cancel</button></a>
                                 <button class="btn btn-primary" type="reset">Reset</button>
                                 <button type="submit" class="btn btn-success">Submit</button>
                             </div>
@@ -176,18 +158,6 @@
         </div>
     </div>
     <!-- /page content -->
-    <!-- Add more and remove button -->
-    <script type="text/javascript">
-        var i = 0;
-        $("#add-btn").click(function(){
-            ++i;
-            $("#dynamicAddRemove").append('<tr><td><input type="text" name="degree['+i+']" placeholder="Enter Degree" class="form-control" /></td><td><input  type="file" id="certificates"  name="certificates['+i+']" accept="image/* "/></td><td><button type="button" class="btn btn-sm btn-danger remove-tr">Remove</button></td></tr>');
-        });
-        $(document).on('click', '.remove-tr', function(){
-            $(this).parents('tr').remove();
-        });
-    </script>
-    <!-- /Add more and remove button -->
 @stop
 
 

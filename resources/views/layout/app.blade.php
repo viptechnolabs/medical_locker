@@ -14,7 +14,7 @@
 
 {{--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/css/bootstrap.min.css">--}}
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-{{--    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"></script>--}}
+
 
 
 
@@ -82,6 +82,9 @@
                                 <li><a href="{{route('doctor.index')}}"><i class="fa fa-user-md"></i> Doctors</a></li>
                             </ul>
                         @endif
+                        <ul class="nav side-menu">
+                            <li><a href="{{route('user.index')}}"><i class="fa fa-user"></i> Users</a></li>
+                        </ul>
                         <ul class="nav side-menu">
                             <li><a href="#"><i class="fa fa-users"></i> Patients</a></li>
                         </ul>
@@ -181,6 +184,10 @@
 </script>
 <!-- Bootstrap -->
 <script src="{{asset('vendors/bootstrap/dist/js/bootstrap.bundle.min.js')}}"></script>
+<!-- DataTables -->
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+{{--<!-- Bootstrap JavaScript -->--}}
+{{--<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>--}}
 <!-- FastClick -->
 <script src="{{asset('vendors/fastclick/lib/fastclick.js')}}"></script>
 <!-- NProgress -->
