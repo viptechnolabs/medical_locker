@@ -34,6 +34,7 @@ class CreateDoctorsTable extends Migration
             $table->string('token')->unique()->nullable();
             $table->string('verification_code')->unique()->nullable();
             $table->string('password', 100);
+            $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();
         });

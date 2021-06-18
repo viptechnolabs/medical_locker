@@ -6,8 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Doctor extends Model
+
+class Doctor extends Authenticatable
 {
     use HasFactory, Notifiable;
     use SoftDeletes;
@@ -38,7 +40,7 @@ class Doctor extends Model
     }
 
 
-    public  static function  getUserById($id){
-        return Doctor::findOrFail($id);
-    }
+//    public  static function  getUserById($id){
+//        return Doctor::findOrFail($id);
+//    }
 }

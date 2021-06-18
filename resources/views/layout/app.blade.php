@@ -77,12 +77,10 @@
                         <ul class="nav side-menu">
                             <li><a href="{{route('index')}}"><i class="fa fa-home"></i> Dashboard</a></li>
                         </ul>
-                        @if(Session::get('userType') !== "doctor" )
+                        @if(Auth::guard('hospital')->check())
                             <ul class="nav side-menu">
                                 <li><a href="{{route('doctor.index')}}"><i class="fa fa-user-md"></i> Doctors</a></li>
                             </ul>
-                        @else
-
                         @endif
                         <ul class="nav side-menu">
                             <li><a href="#"><i class="fa fa-users"></i> Patients</a></li>
@@ -112,11 +110,6 @@
         </div>
 
 
-        @php
-            $userType = Session::get('userType');
-            $getUser = \App\Models\Doctor::getUserById(Session::get('userId'));
-         @endphp
-
         <!-- top navigation -->
         <div class="top_nav">
             <div class="nav_menu">
@@ -126,14 +119,21 @@
                 <nav class="nav navbar-nav">
                     <ul class=" navbar-right">
                         <li class="nav-item dropdown open" style="padding-left: 15px;">
-                            <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
-                                <img src="{{asset('upload_file/doctor/'.$getUser->profile_photo)}}" alt="{{$getUser->name}}">{{ $getUser->name}}
-                            </a>
+                            @if(Auth::guard('hospital')->check())
+                                <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
+                                    <img src="{{asset('upload_file/'.Auth::guard('hospital')->user()->logo)}}" alt="{{Auth::guard('hospital')->user()->name}}">{{ Auth::guard('hospital')->user()->name}}
+                                </a>
+                            @elseif(Auth::guard('doctor')->check())
+                                <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
+                                    <img src="{{asset('upload_file/doctor/'.Auth::guard('doctor')->user()->profile_photo)}}" alt="{{Auth::guard('hospital')->check()}}">{{ Auth::guard('doctor')->user()->name}}
+                                </a>
+
+                            @endif
                             <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
-                                @if($userType !== "doctor" )
+                                @if(Auth::guard('hospital')->check())
                                     <a class="dropdown-item"  href="{{route('hospital_details')}}"> Setting</a>
-                                @else
-                                    <a class="dropdown-item"  href="{{route('profile', [$userType, $getUser->id])}}"> Profile</a>
+                                @elseif(Auth::guard('doctor')->check())
+                                    <a class="dropdown-item"  href="{{route('profile', ['doctor', Auth::guard('doctor')->user()->id])}}"> Profile</a>
                                 @endif
                                 <a class="dropdown-item"  href="{{route('logout')}}"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
                             </div>

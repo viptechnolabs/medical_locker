@@ -27,6 +27,7 @@ class CreateHospitalsTable extends Migration
             $table->string('token')->unique()->nullable();
             $table->string('verification_code')->unique()->nullable();
             $table->string('password');
+            $table->rememberToken();
             $table->timestamps();
         });
     }

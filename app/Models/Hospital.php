@@ -5,8 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Hospital extends Model
+class Hospital extends Authenticatable
 {
     use HasFactory, Notifiable;
 
@@ -21,6 +22,10 @@ class Hospital extends Model
         'address',
         'pin_cord_no',
         'password',
+    ];
+
+    protected $hidden = [
+        'password', 'remember_token',
     ];
 
 }

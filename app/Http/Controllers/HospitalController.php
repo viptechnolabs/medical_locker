@@ -9,32 +9,24 @@ use App\Models\State;
 use App\Notifications\ChangeEmail;
 use App\Notifications\ChangeMobileNo;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+//use Illuminate\Support\Facades\Auth;
+//use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-
+//use Illuminate\Foundation\Auth\ThrottlesLogins;
+use Illuminate\Support\Facades\Auth;
 
 class HospitalController extends Controller
 {
-    //
+
     public function index()
     {
-        $userType = array('hospital','doctor','user');
-        if(in_array(Session::get('userType'),$userType) ){
             $hospital = Hospital::findOrFail(1);
-            //$userType = Session::get('userType');
-            $response =  view('index', ['hospital' => $hospital]);
-        }else{
-
-            $response =  redirect()->route('login');
-        }
-
-        return $response;
-
+             return  view('index', ['hospital' => $hospital]);
     }
 
     public function login()
@@ -44,42 +36,43 @@ class HospitalController extends Controller
 
     public function doLogin(Request $request)
     {
-        $userType = array('hospital','doctor','user');
-        if(in_array($request->user_type, $userType)){
-
-            if($request->user_type === 'hospital'){
-                $checkUser = Hospital::where('email',$request->email)->count();
-                if($checkUser > 0){
-                   $getUser = Hospital::where('email',$request->email)->first();
-                    if(password_verify($request->password,$getUser->password)){
-                        Session::put('userType', 'hospital' );
-                        Session::put('userId', $getUser->id );
-                        return redirect()->route('index');
-                    }
-                }
+        //$userType = array('hospital','doctor','user');
+        if($request->user_type === 'hospital') {
+            if(Auth::guard('hospital')->attempt($request->only('email','password'),$request->filled('remember'))){
+                //Authentication passed...
+                Session::put('userType', 'hospital' );
+                return redirect()->route('index');
             }
-
-
-            if($request->user_type === 'doctor'){
-                $checkUser = Doctor::where('email',$request->email)->count();
-                if($checkUser > 0){
-                    $getUser = Doctor::where('email',$request->email)->first();
-                    if(password_verify($request->password,$getUser->password)){
-                        Session::put('userType', 'doctor' );
-                        Session::put('userId', $getUser->id );
-                        return redirect()->route('index');
-                    }
-                }
-            }
-
         }
+        elseif($request->user_type === 'doctor') {
+            if(Auth::guard('doctor')->attempt($request->only('email','password'),$request->filled('remember'))){
+                //Authentication passed...
+                Session::put('userType', 'doctor' );
+                return redirect()->route('index');
+            }
+        }
+        //Authentication failed...
+        return redirect()
+            ->back()
+            ->withInput()
+            ->with('error','Login failed, please try again!');
+
     }
 
 
     public function logout()
     {
-        Session::flush(); // removes all session data
-        return redirect()->route('login');
+        if (Session::get('userType') === 'hospital')
+        {
+            Auth::guard('hospital')->logout();
+        }
+        elseif (Session::get('userType') === 'doctor')
+        {
+            Auth::guard('doctor')->logout();
+        }
+        return redirect()
+            ->route('login')
+            ->with('status','Admin has been logged out!');
     }
     public function hospitalDetails()
     {

@@ -40,6 +40,14 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'hospital' => [
+            'driver' => 'session',
+            'provider' => 'hospital',
+        ],
+        'doctor' => [
+            'driver' => 'session',
+            'provider' => 'doctor',
+        ],
 
         'api' => [
             'driver' => 'token',
@@ -70,6 +78,14 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
+        'hospital' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Hospital::class,
+        ],
+        'doctor' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Doctor::class,
+        ],
 
         // 'users' => [
         //     'driver' => 'database',
@@ -99,6 +115,12 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
+
+    'hospital' => [
+        'provider' => 'hospital',
+        'table' => 'password_resets',
+        'expire' => 60,
+    ],
     ],
 
     /*

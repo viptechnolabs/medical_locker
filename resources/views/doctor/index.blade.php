@@ -73,7 +73,7 @@
                                     </div>
                                     <div class="right col-sm-5 text-center">
                                         <img src="{{asset('upload_file/doctor/'.$doctor->profile_photo)}}" alt=""
-                                             class="img-circle img-fluid" style="width: 200px;max-height: 200px; height: 287px;">
+                                             class="img-circle img-fluid" style="width: 255px;max-height: 200px; height: 287px;">
                                     </div>
                                 </div>
                                 <div class=" bottom text-center">
