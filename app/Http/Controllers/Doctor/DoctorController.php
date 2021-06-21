@@ -8,6 +8,7 @@ use App\Models\City;
 use App\Models\Doctor;
 use App\Models\Hospital;
 use App\Models\State;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -239,37 +240,9 @@ class DoctorController extends Controller
     {
         $hospital = Hospital::findOrFail(1);
         $deleted_doctor = Doctor::onlyTrashed()->get();
-//        dd($deleted_doctor);
         return view('doctor.deleted_doctor', ['hospital' => $hospital, 'doctors' => $deleted_doctor]);
     }
 
-    public function restoreDoctor($id)
-    {
-        $doctor = Doctor::withTrashed()->findOrFail($id);
-        $doctor->restore();
-        session()->flash('message', 'Dr. '.$doctor->name.' Restore Successfully..!');
-        return redirect()->route('doctor.index');
-    }
-
-
-    public function changeStatusPopup(Request $request)
-    {
-        # Request params
-        $action = $request->input('action');
-        $message = $request->input('message');
-        return view('components.change-status', ['action' => $action, 'message' => $message]);
-//        return view('components.change-status')
-//            ->with('action', $action);
-    }
-
-    public function changeStatus($id): \Illuminate\Http\RedirectResponse
-    {
-        # Get Employer
-        $doctor = Doctor::findOrFail($id);
-        $doctor->status = ($doctor->status === "active") ? "inactive" : "active";
-        $doctor->save();
-        return redirect()->back();
-    }
 
 
 }

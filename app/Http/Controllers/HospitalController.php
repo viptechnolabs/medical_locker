@@ -6,6 +6,7 @@ use App\Models\City;
 use App\Models\Doctor;
 use App\Models\Hospital;
 use App\Models\State;
+use App\Models\User;
 use App\Notifications\ChangeEmail;
 use App\Notifications\ChangeMobileNo;
 use Illuminate\Http\Request;
@@ -251,15 +252,21 @@ class HospitalController extends Controller
         if ($validation->fails()) {
             return redirect()->back()->withInput()->withErrors($validation);
         } else {
-            if ($user_type === 'doctor')
+            if ($user_type === 'hospital')
             {
-                $doctor = Doctor::findOrFail($id);
+                $doctor = Hospital::findOrFail($id);
                 $doctor->password = Hash::make($request->password);
                 $doctor->save();
             }
-            elseif($user_type === 'hospital')
+            elseif($user_type === 'doctor')
             {
-                $hospital = Hospital::findOrFail($id);
+                $hospital = Doctor::findOrFail($id);
+                $hospital->password = Hash::make($request->password);;
+                $hospital->save();
+            }
+            elseif($user_type === 'user')
+            {
+                $hospital = User::findOrFail($id);
                 $hospital->password = Hash::make($request->password);;
                 $hospital->save();
             }
@@ -510,4 +517,56 @@ class HospitalController extends Controller
             }
         }
     }
+
+    public function changeStatusPopup(Request $request)
+    {
+        # Request params
+        $action = $request->input('action');
+        $message = $request->input('message');
+        $user_type = $request->input('user_type');
+        return view('components.change-status', ['action' => $action, 'message' => $message, 'user_type' => $user_type]);
+//        return view('components.change-status')
+//            ->with('action', $action);
+    }
+
+    public function changeStatus(Request $request, $id): \Illuminate\Http\RedirectResponse
+    {
+        if ($request->user_type === 'doctor')
+        {
+            $doctor = Doctor::findOrFail($id);
+            $doctor->status = ($doctor->status === "active") ? "inactive" : "active";
+            session()->flash('message', $doctor->name.' Status Updated..!');
+            $doctor->save();
+        }
+        elseif ($request->user_type === 'user')
+        {
+            $user = User::findOrFail($id);
+            $user->status = ($user->status === "active") ? "inactive" : "active";
+            session()->flash('message', $user->name.' Status Updated..!');
+            $user->save();
+        }
+
+        return redirect()->back();
+    }
+
+    public function restore(Request $request, $id)
+    {
+       // dd($request->all(), $id);
+        if ($request->user_type === 'doctor') {
+            $doctor = Doctor::withTrashed()->findOrFail($id);
+            $doctor->restore();
+            session()->flash('message', 'Dr. '.$doctor->name.' Restore Successfully..!');
+            return redirect()->route('doctor.index');
+        }
+
+        elseif ($request->user_type === 'user')
+        {
+            $user = User::withTrashed()->findOrFail($id);
+            $user->restore();
+            session()->flash('message', $user->name . ' Restore Successfully..!');
+            return redirect()->route('user.index');
+        }
+    }
+
+
 }

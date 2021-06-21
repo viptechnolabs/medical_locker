@@ -28,6 +28,4 @@ Route::middleware(['auth:hospital'])->group(function () {
     Route::get('doctor_delete/{id}', [App\Http\Controllers\Doctor\DoctorController::class, 'doctorDelete'])->name('doctor_delete');
     Route::get('deleted_doctor', [App\Http\Controllers\Doctor\DoctorController::class, 'deletedDoctor'])->name('deleted_doctor');
     Route::put('restore_doctor/{id}', [App\Http\Controllers\Doctor\DoctorController::class, 'restoreDoctor'])->name('restore_doctor');
-    Route::post('status_popup', [\App\Http\Controllers\Doctor\DoctorController::class, 'changeStatusPopup'])->name('change_status_popup');
-    Route::put('change_status/{id}', [\App\Http\Controllers\Doctor\DoctorController::class, 'changeStatus'])->name('change_status');
 });

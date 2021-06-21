@@ -27,7 +27,14 @@ Route::middleware(['auth:hospital'])->group(function () {
         Route::get('/', [App\Http\Controllers\User\UserController::class, 'index'])->name('index');
         Route::get('add_user', [App\Http\Controllers\User\UserController::class, 'addUser'])->name('add_user');
         Route::post('submit_doctor', [App\Http\Controllers\User\UserController::class, 'submitUser'])->name('submit_user');
+        Route::get('user_details/{id}', [App\Http\Controllers\User\UserController::class, 'userDetails'])->name('user_details');
+        Route::put('user_details_update', [App\Http\Controllers\User\UserController::class, 'userDetailsUpdate'])->name('user_details_update');
+        Route::get('user_delete/{id}', [App\Http\Controllers\User\UserController::class, 'userDelete'])->name('user_delete');
+        Route::get('deleted_user', [App\Http\Controllers\User\UserController::class, 'deletedUser'])->name('deleted_user');
     });
+    Route::put('restore/{id}', [App\Http\Controllers\HospitalController::class, 'restore'])->name('restore');
+    Route::post('status_popup', [\App\Http\Controllers\HospitalController::class, 'changeStatusPopup'])->name('change_status_popup');
+    Route::put('change_status/{id}', [\App\Http\Controllers\HospitalController::class, 'changeStatus'])->name('change_status');
 });
 
 Route::middleware(['auth:doctor'])->group(function () {

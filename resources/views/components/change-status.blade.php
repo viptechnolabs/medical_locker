@@ -15,6 +15,7 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
+                <input type="hidden" name="user_type" value="{{$user_type}}">
                 <div class="modal-body">
                     <h6>{{$message}}</h6>
                 </div>

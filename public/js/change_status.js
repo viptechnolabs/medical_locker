@@ -1,5 +1,5 @@
 
-function StatusChange(url, action, message) {
+function StatusChange(url, action, message, user_type) {
     $.ajax({
         method: "post",
         url: url,
@@ -7,6 +7,7 @@ function StatusChange(url, action, message) {
             _token: $('meta[name="csrf-token"]').attr('content'),
             action: action,
             message: message,
+            user_type: user_type,
         },
         success: function (result) {
             $('#status_change_popup').html(result);

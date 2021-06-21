@@ -65,7 +65,7 @@
                                     </div>
                                     <div class=" col-sm-7 emphasis">
                                         <a class="border-button" href="javascript:;"
-                                           onclick="StatusChange('{{ route('doctor.change_status_popup') }}','{{ route('doctor.restore_doctor', $doctor->id) }}', 'Are You Sure to restore Dr.{{$doctor->name}}...?')">
+                                           onclick="StatusChange('{{ route('change_status_popup') }}','{{ route('restore', $doctor->id) }}', 'Are You Sure to restore Dr.{{$doctor->name}}...?', 'doctor')">
                                             {{--                                        <a class="border-button" href="javascript:;"--}}
                                             {{--                                           onclick="getEmailPopup('{{ route('doctor.doc_change_status',$doctor->id) }}', '', {{ $doctor->id }})">--}}
                                             <button type="button" class= "btn btn-success btn-sm">
