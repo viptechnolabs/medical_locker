@@ -46,9 +46,16 @@ class HospitalController extends Controller
             }
         }
         elseif($request->user_type === 'doctor') {
-            if(Auth::guard('doctor')->attempt($request->only('email','password'),$request->filled('remember'))){
+            if(Auth::guard('doctor')->attempt(['email' => $request->email, 'password' => $request->password, 'status' => 'active'],$request->filled('remember'))){
                 //Authentication passed...
                 Session::put('userType', 'doctor' );
+                return redirect()->route('index');
+            }
+        }
+        elseif($request->user_type === 'user') {
+            if(Auth::attempt(['email' => $request->email, 'password' => $request->password, 'status' => 'active'],$request->filled('remember'))){
+                //Authentication passed...
+                Session::put('userType', 'user' );
                 return redirect()->route('index');
             }
         }
@@ -65,11 +72,18 @@ class HospitalController extends Controller
     {
         if (Session::get('userType') === 'hospital')
         {
+            Session::flush();
             Auth::guard('hospital')->logout();
         }
         elseif (Session::get('userType') === 'doctor')
         {
+            Session::flush();
             Auth::guard('doctor')->logout();
+        }
+        elseif (Session::get('userType') === 'user')
+        {
+            Session::flush();
+            Auth::logout();
         }
         return redirect()
             ->route('login')
@@ -93,7 +107,10 @@ class HospitalController extends Controller
         }
         elseif ($user_type === 'user')
         {
-            dd($user_type, $id);
+            $user = User::findOrFail($id);
+            $state = State::all();
+            $city = City::all();
+            return view('user.user_details', ['user' => $user, 'hospital' => $hospital, 'states' => $state, 'cities' => $city]);
         }
     }
 

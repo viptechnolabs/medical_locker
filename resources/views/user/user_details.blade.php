@@ -87,7 +87,7 @@
                                                 </div>
                                                 <div class="x_content">
                                                     <br/>
-                                                    <form action="{{route('user.user_details_update')}}"
+                                                    <form action="{{route('user_details_update')}}"
                                                           class="form-horizontal form-label-left" method="post"
                                                           enctype="multipart/form-data" id="user_details_update">
                                                         @method('put')

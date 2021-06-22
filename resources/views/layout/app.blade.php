@@ -78,13 +78,13 @@
                             <li><a href="{{route('index')}}"><i class="fa fa-home"></i> Dashboard</a></li>
                         </ul>
                         @if(Auth::guard('hospital')->check())
-                            <ul class="nav side-menu">
-                                <li><a href="{{route('doctor.index')}}"><i class="fa fa-user-md"></i> Doctors</a></li>
-                            </ul>
-                        @endif
+                        <ul class="nav side-menu">
+                            <li><a href="{{route('doctor.index')}}"><i class="fa fa-user-md"></i> Doctors</a></li>
+                        </ul>
                         <ul class="nav side-menu">
                             <li><a href="{{route('user.index')}}"><i class="fa fa-user"></i> Users</a></li>
                         </ul>
+                        @endif
                         <ul class="nav side-menu">
                             <li><a href="#"><i class="fa fa-users"></i> Patients</a></li>
                         </ul>
@@ -130,13 +130,18 @@
                                 <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
                                     <img src="{{asset('upload_file/doctor/'.Auth::guard('doctor')->user()->profile_photo)}}" alt="{{Auth::guard('hospital')->check()}}">{{ Auth::guard('doctor')->user()->name}}
                                 </a>
-
+                            @elseif(Auth::guard('web')->check())
+                                <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
+                                    <img src="{{asset('upload_file/user/'.Auth::guard('web')->user()->profile_photo)}}" alt="{{Auth::guard('web')->check()}}">{{ Auth::guard('web')->user()->name}}
+                                </a>
                             @endif
                             <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
                                 @if(Auth::guard('hospital')->check())
                                     <a class="dropdown-item"  href="{{route('hospital_details')}}"> Setting</a>
                                 @elseif(Auth::guard('doctor')->check())
                                     <a class="dropdown-item"  href="{{route('profile', ['doctor', Auth::guard('doctor')->user()->id])}}"> Profile</a>
+                                @elseif(Auth::guard('web')->check())
+                                    <a class="dropdown-item"  href="{{route('profile', ['user', Auth::guard('web')->user()->id])}}"> Profile</a>
                                 @endif
                                 <a class="dropdown-item"  href="{{route('logout')}}"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
                             </div>

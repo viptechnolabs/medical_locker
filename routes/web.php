@@ -20,7 +20,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:hospital'])->group(function () {
     /* Hospital Middleware */
-    Route::get('profile/{user_type}/{id}', [App\Http\Controllers\HospitalController::class, 'profile'])->name('profile');
     Route::get('hospital_details',[\App\Http\Controllers\HospitalController::class, 'hospitalDetails'])->name('hospital_details');
     Route::put('hospital_details_update',[\App\Http\Controllers\HospitalController::class, 'hospitalDetailsUpdate'])->name('hospital_details_update');
     Route::prefix('user')->as('user.')->group(function () {
@@ -28,7 +27,7 @@ Route::middleware(['auth:hospital'])->group(function () {
         Route::get('add_user', [App\Http\Controllers\User\UserController::class, 'addUser'])->name('add_user');
         Route::post('submit_doctor', [App\Http\Controllers\User\UserController::class, 'submitUser'])->name('submit_user');
         Route::get('user_details/{id}', [App\Http\Controllers\User\UserController::class, 'userDetails'])->name('user_details');
-        Route::put('user_details_update', [App\Http\Controllers\User\UserController::class, 'userDetailsUpdate'])->name('user_details_update');
+        //Route::put('user_details_update', [App\Http\Controllers\User\UserController::class, 'userDetailsUpdate'])->name('user_details_update');
         Route::get('user_delete/{id}', [App\Http\Controllers\User\UserController::class, 'userDelete'])->name('user_delete');
         Route::get('deleted_user', [App\Http\Controllers\User\UserController::class, 'deletedUser'])->name('deleted_user');
     });
@@ -37,14 +36,16 @@ Route::middleware(['auth:hospital'])->group(function () {
     Route::put('change_status/{id}', [\App\Http\Controllers\HospitalController::class, 'changeStatus'])->name('change_status');
 });
 
-Route::middleware(['auth:doctor'])->group(function () {
-    /* Doctor Middleware */
+Route::middleware(['auth:doctor,web'])->group(function () {
+    /* Doctor and User Middleware */
     Route::get('profile/{user_type}/{id}', [App\Http\Controllers\HospitalController::class, 'profile'])->name('profile');
 });
 
-Route::middleware(['auth:hospital,doctor'])->group(function () {
-    /* Hospital and Doctor Middleware*/
+Route::group(['middleware' => 'auth:hospital,doctor,web'], function () {
+        /* Hospital and Doctor Middleware*/
     Route::get('/',[\App\Http\Controllers\HospitalController::class, 'index'])->name('index');
+    Route::put('user_details_update', [App\Http\Controllers\User\UserController::class, 'userDetailsUpdate'])->name('user_details_update');
+    Route::put('doctor_details_update', [App\Http\Controllers\Doctor\DoctorController::class, 'doctorDetailsUpdate'])->name('doctor_details_update');
     Route::post('email/popup/{user}', [\App\Http\Controllers\HospitalController::class, 'getEmailPopup'])->name('email.popup.get');
     Route::post('mobile/popup/{user}', [\App\Http\Controllers\HospitalController::class, 'getMobilePopup'])->name('mobile.popup.get');
     Route::prefix('check')->as('check.')->group(function () {
