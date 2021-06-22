@@ -40,12 +40,19 @@ Route::middleware(['auth:doctor,web'])->group(function () {
     /* Doctor and User Middleware */
     Route::get('profile/{user_type}/{id}', [App\Http\Controllers\HospitalController::class, 'profile'])->name('profile');
 });
+Route::middleware(['auth:hospital,web'])->group(function () {
+    /* Hospital and User Middleware */
+    Route::get('profile/{user_type}/{id}', [App\Http\Controllers\HospitalController::class, 'profile'])->name('profile');
+    Route::put('user_details_update', [App\Http\Controllers\User\UserController::class, 'userDetailsUpdate'])->name('user_details_update');
+});
+Route::middleware(['auth:hospital,doctor'])->group(function () {
+    /* Hospital and Doctor Middleware */
+    Route::put('doctor_details_update', [App\Http\Controllers\Doctor\DoctorController::class, 'doctorDetailsUpdate'])->name('doctor_details_update');
+});
 
 Route::group(['middleware' => 'auth:hospital,doctor,web'], function () {
         /* Hospital and Doctor Middleware*/
     Route::get('/',[\App\Http\Controllers\HospitalController::class, 'index'])->name('index');
-    Route::put('user_details_update', [App\Http\Controllers\User\UserController::class, 'userDetailsUpdate'])->name('user_details_update');
-    Route::put('doctor_details_update', [App\Http\Controllers\Doctor\DoctorController::class, 'doctorDetailsUpdate'])->name('doctor_details_update');
     Route::post('email/popup/{user}', [\App\Http\Controllers\HospitalController::class, 'getEmailPopup'])->name('email.popup.get');
     Route::post('mobile/popup/{user}', [\App\Http\Controllers\HospitalController::class, 'getMobilePopup'])->name('mobile.popup.get');
     Route::prefix('check')->as('check.')->group(function () {

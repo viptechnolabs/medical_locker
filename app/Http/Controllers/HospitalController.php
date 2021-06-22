@@ -87,7 +87,7 @@ class HospitalController extends Controller
         }
         return redirect()
             ->route('login')
-            ->with('status','Admin has been logged out!');
+            ->with('status','Logout successfully...!');
     }
     public function hospitalDetails()
     {
@@ -123,6 +123,9 @@ class HospitalController extends Controller
         elseif ($request->user_type === 'doctor') {
             $data = Doctor::findOrFail($id);
         }
+        elseif ($request->user_type === 'user') {
+            $data = User::findOrFail($id);
+        }
         return view('components.update-email', ['data' => $data, 'user_type' => $request->user_type]);
     }
 
@@ -134,6 +137,9 @@ class HospitalController extends Controller
         }
         elseif ($request->user_type === 'doctor') {
             $data = Doctor::findOrFail($id);
+        }
+        elseif ($request->user_type === 'user') {
+            $data = User::findOrFail($id);
         }
         return view('components.update-mobileno', ['data' => $data, 'user_type' => $request->user_type]);
     }
@@ -155,6 +161,15 @@ class HospitalController extends Controller
         elseif ($request->user_type === 'doctor')
         {
             $queryBuilder = Doctor::where('email', $email);
+            if ($id) {
+                $queryBuilder->where('id', '!=', $id);
+            }
+
+            $exists = $queryBuilder->exists();
+        }
+        elseif ($request->user_type === 'user')
+        {
+            $queryBuilder = User::where('email', $email);
             if ($id) {
                 $queryBuilder->where('id', '!=', $id);
             }
@@ -186,6 +201,15 @@ class HospitalController extends Controller
         elseif ($request->user_type === 'doctor')
         {
             $queryBuilder = Doctor::where('mobile_no', $mobile_no);
+            if ($id) {
+                $queryBuilder->where('id', '!=', $id);
+            }
+
+            $exists = $queryBuilder->exists();
+        }
+        elseif ($request->user_type === 'user')
+        {
+            $queryBuilder = User::where('mobile_no', $mobile_no);
             if ($id) {
                 $queryBuilder->where('id', '!=', $id);
             }
@@ -250,7 +274,7 @@ class HospitalController extends Controller
             $hospital->pin_cord_no = $request->hospital_pin_cord_no;
             $hospital->password = Hash::make($request->password);;
             $hospital->save();
-            session()->flash('message', 'Hospital Details Update Successfully..!');
+            session()->flash('message', 'Hospital details update successfully..!');
             return redirect()->back();
         }
     }
@@ -359,6 +383,36 @@ class HospitalController extends Controller
             }
         }
 
+        elseif ($user_type === 'user')
+        {
+            $data = User::where('email', $new_email);
+            $exists = $data->exists();
+
+            if ($exists) {
+                return response()->json([
+                    'message' => 'This email already registered with us.',
+                    'status' => 401,
+                ])->setStatusCode(401);
+            } else {
+                $obj = User::find($id);
+                $six_digit_random_number = mt_rand(111111, 999999);
+                $token = Str::random(20);
+
+                $obj->token = $token;
+                $obj->verification_code = $six_digit_random_number;
+                $obj->save();
+
+                # Send mail invitation
+                $obj->notify(new ChangeEmail($obj, $six_digit_random_number));
+
+                return response()->json([
+                    'message' => 'ok',
+                    'status' => 200,
+                ])->setStatusCode(200);
+
+            }
+        }
+
     }
 
     public function mobile_verification_code(Request $request)
@@ -407,6 +461,35 @@ class HospitalController extends Controller
                 ])->setStatusCode(401);
             } else {
                 $obj = Doctor::find($id);
+                $six_digit_random_number = mt_rand(111111, 999999);
+                $token = Str::random(20);
+
+                $obj->token = $token;
+                $obj->verification_code = $six_digit_random_number;
+                $obj->save();
+
+                # Send mail invitation
+                Notification::route('nexmo', $temp_new_mobile_no)->notify(new ChangeMobileNo($obj, $six_digit_random_number));
+
+                return response()->json([
+                    'message' => 'ok',
+                    'status' => 200,
+                ])->setStatusCode(200);
+
+            }
+        }
+        elseif ($user_type === 'user')
+        {
+            $data = User::where('mobile_no', $new_mobile_no);
+            $exists = $data->exists();
+
+            if ($exists) {
+                return response()->json([
+                    'message' => 'This email already registered with us.',
+                    'status' => 401,
+                ])->setStatusCode(401);
+            } else {
+                $obj = User::find($id);
                 $six_digit_random_number = mt_rand(111111, 999999);
                 $token = Str::random(20);
 
@@ -481,6 +564,31 @@ class HospitalController extends Controller
                 ])->setStatusCode(400);
             }
         }
+
+        elseif ($user_type === 'user')
+        {
+            $user = User::find($id);
+            $dbcode = $user->verification_code;
+            if ($dbcode === $code) {
+                $user->email = $newemail;
+                $user->verification_code = null;
+                $user->token = null;
+                $user->save();
+                //            if($request->user()->isTaTeamUser()){
+                //                $this->setLeaderActivity($request->user(), $hospital, 'candidate_email');
+                //            }
+
+                return response()->json([
+                    'message' => 'ok',
+                    'status' => 200,
+                ]);
+            } else {
+                return response()->json([
+                    'message' => 'error',
+                    'status' => 400,
+                ])->setStatusCode(400);
+            }
+        }
     }
 
     public function hospitalUpdateMobileNo(Request $request): \Illuminate\Http\JsonResponse
@@ -518,6 +626,30 @@ class HospitalController extends Controller
                 $doctor->verification_code = null;
                 $doctor->token = null;
                 $doctor->save();
+                //            if($request->user()->isTaTeamUser()){
+                //                $this->setLeaderActivity($request->user(), $hospital, 'candidate_email');
+                //            }
+
+                return response()->json([
+                    'message' => 'ok',
+                    'status' => 200,
+                ]);
+            } else {
+                return response()->json([
+                    'message' => 'error',
+                    'status' => 400,
+                ])->setStatusCode(400);
+            }
+        }
+        elseif ($user_type === 'user')
+        {
+            $user = User::find($id);
+            $dbcode = $user->verification_code;
+            if ($dbcode === $code) {
+                $user->mobile_no = $newMobile;
+                $user->verification_code = null;
+                $user->token = null;
+                $user->save();
                 //            if($request->user()->isTaTeamUser()){
                 //                $this->setLeaderActivity($request->user(), $hospital, 'candidate_email');
                 //            }
