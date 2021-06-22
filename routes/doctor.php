@@ -18,7 +18,7 @@ Route::middleware(['auth:hospital'])->group(function () {
 });
 
 
-Route::middleware(['auth:hospital'])->group(function () {
+Route::middleware(['auth:hospital', 'checkStatus'])->group(function () {
     /* Hospital Middleware*/
     Route::get('/', [App\Http\Controllers\Doctor\DoctorController::class, 'index'])->name('index');
     Route::get('add_doctor', [App\Http\Controllers\Doctor\DoctorController::class, 'addDoctor'])->name('add_doctor');

@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 //    return view('welcome');
 //})->name('index');
 
-Route::middleware(['auth:hospital'])->group(function () {
+Route::middleware(['auth:hospital', 'checkStatus'])->group(function () {
     /* Hospital Middleware */
     Route::get('hospital_details',[\App\Http\Controllers\HospitalController::class, 'hospitalDetails'])->name('hospital_details');
     Route::put('hospital_details_update',[\App\Http\Controllers\HospitalController::class, 'hospitalDetailsUpdate'])->name('hospital_details_update');
@@ -36,21 +36,21 @@ Route::middleware(['auth:hospital'])->group(function () {
     Route::put('change_status/{id}', [\App\Http\Controllers\HospitalController::class, 'changeStatus'])->name('change_status');
 });
 
-Route::middleware(['auth:doctor,web'])->group(function () {
+Route::middleware(['auth:doctor,web', 'checkStatus'])->group(function () {
     /* Doctor and User Middleware */
     Route::get('profile/{user_type}/{id}', [App\Http\Controllers\HospitalController::class, 'profile'])->name('profile');
 });
-Route::middleware(['auth:hospital,web'])->group(function () {
+Route::middleware(['auth:hospital,web', 'checkStatus'])->group(function () {
     /* Hospital and User Middleware */
-    Route::get('profile/{user_type}/{id}', [App\Http\Controllers\HospitalController::class, 'profile'])->name('profile');
+//    Route::get('profile/{user_type}/{id}', [App\Http\Controllers\HospitalController::class, 'profile'])->name('profile');
     Route::put('user_details_update', [App\Http\Controllers\User\UserController::class, 'userDetailsUpdate'])->name('user_details_update');
 });
-Route::middleware(['auth:hospital,doctor'])->group(function () {
+Route::middleware(['auth:hospital,doctor', 'checkStatus'])->group(function () {
     /* Hospital and Doctor Middleware */
     Route::put('doctor_details_update', [App\Http\Controllers\Doctor\DoctorController::class, 'doctorDetailsUpdate'])->name('doctor_details_update');
 });
 
-Route::group(['middleware' => 'auth:hospital,doctor,web'], function () {
+Route::middleware(['auth:hospital,doctor,web', 'checkStatus'])->group(function () {
         /* Hospital and Doctor Middleware*/
     Route::get('/',[\App\Http\Controllers\HospitalController::class, 'index'])->name('index');
     Route::post('email/popup/{user}', [\App\Http\Controllers\HospitalController::class, 'getEmailPopup'])->name('email.popup.get');
@@ -67,7 +67,6 @@ Route::group(['middleware' => 'auth:hospital,doctor,web'], function () {
     });
     Route::put('change_password',[\App\Http\Controllers\HospitalController::class, 'changePassword'])->name('change_password');
 });
-
 Route::get('login',[\App\Http\Controllers\HospitalController::class, 'login'])->name('login');
 Route::post('do_login',[\App\Http\Controllers\HospitalController::class, 'doLogin'])->name('do_login');
 Route::get('logout',[\App\Http\Controllers\HospitalController::class, 'logout'])->name('logout');
