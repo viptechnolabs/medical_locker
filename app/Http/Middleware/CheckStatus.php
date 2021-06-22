@@ -19,7 +19,6 @@ class CheckStatus
     public function handle(Request $request, Closure $next)
     {
         if (Auth::guard('hospital')->check()) {
-            //dd('here');
             return $next($request);
         }
         elseif (Auth::guard('doctor')->check())

@@ -26,8 +26,9 @@ class HospitalController extends Controller
 
     public function index()
     {
-            $hospital = Hospital::findOrFail(1);
-             return  view('index', ['hospital' => $hospital]);
+        $doctors = Doctor::latest()->take(5)->get();
+        $hospital = Hospital::findOrFail(1);
+         return  view('index', ['hospital' => $hospital, 'doctors' => $doctors]);
     }
 
     public function login()

@@ -5,19 +5,19 @@
     <div class="row" style="display: inline-block;">
         <div class="tile_count">
             <div class="col-md-2 col-sm-4  tile_stats_count">
-                <span class="count_top"><i class="fa fa-user"></i> Total Users</span>
-                <div class="count">2500</div>
+                <span class="count_top"><i class="fa fa-user-md"></i> Total Doctor</span>
+                <div class="count">{{App\Models\Doctor::all()->count()}}</div>
                 <span class="count_bottom"><i class="green">4% </i> From last Week</span>
             </div>
             <div class="col-md-2 col-sm-4  tile_stats_count">
-                <span class="count_top"><i class="fa fa-clock-o"></i> Average Time</span>
-                <div class="count">123.50</div>
-                <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>3% </i> From last Week</span>
-            </div>
-            <div class="col-md-2 col-sm-4  tile_stats_count">
-                <span class="count_top"><i class="fa fa-user"></i> Total Males</span>
+                <span class="count_top"><i class="fa fa-users"></i> Total Patients</span>
                 <div class="count green">2,500</div>
                 <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>
+            </div>
+            <div class="col-md-2 col-sm-4  tile_stats_count">
+                <span class="count_top"><i class="fa fa-user"></i> Total User</span>
+                <div class="count">{{App\Models\User::all()->count()}}</div>
+                <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>3% </i> From last Week</span>
             </div>
             <div class="col-md-2 col-sm-4  tile_stats_count">
                 <span class="count_top"><i class="fa fa-user"></i> Total Females</span>
@@ -84,78 +84,24 @@
                             <div class="col-md-3 col-sm-12 ">
                                 <div>
                                     <div class="x_title">
-                                        <h2>Top Profiles</h2>
-                                        <ul class="nav navbar-right panel_toolbox">
-                                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                            </li>
-                                            <li class="dropdown">
-                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                    <a class="dropdown-item" href="#">Settings 1</a>
-                                                    <a class="dropdown-item" href="#">Settings 2</a>
-                                                </div>
-                                            </li>
-                                            <li><a class="close-link"><i class="fa fa-close"></i></a>
-                                            </li>
-                                        </ul>
+                                        <h2>Recent Add  Doctors</h2>
                                         <div class="clearfix"></div>
                                     </div>
                                     <ul class="list-unstyled top_profiles scroll-view">
+                                        @foreach ($doctors as $doctor)
                                         <li class="media event">
                                             <a class="pull-left border-aero profile_thumb">
-                                                <i class="fa fa-user aero"></i>
+                                                <i class="fa fa-user-md aero"></i>
                                             </a>
                                             <div class="media-body">
-                                                <a class="title" href="#">Ms. Mary Jane</a>
-                                                <p><strong>$2300. </strong> Agent Avarage Sales </p>
-                                                <p> <small>12 Sales Today</small>
-                                                </p>
+                                                <a class="title" href="#">Dr. {{$doctor->name}}</a>
+                                                <p><strong>{{$doctor->specialist}} </strong> <small style="margin-left: 130px">{{$doctor->created_at}}</small></p>
                                             </div>
                                         </li>
-                                        <li class="media event">
-                                            <a class="pull-left border-green profile_thumb">
-                                                <i class="fa fa-user green"></i>
-                                            </a>
-                                            <div class="media-body">
-                                                <a class="title" href="#">Ms. Mary Jane</a>
-                                                <p><strong>$2300. </strong> Agent Avarage Sales </p>
-                                                <p> <small>12 Sales Today</small>
-                                                </p>
-                                            </div>
-                                        </li>
-                                        <li class="media event">
-                                            <a class="pull-left border-blue profile_thumb">
-                                                <i class="fa fa-user blue"></i>
-                                            </a>
-                                            <div class="media-body">
-                                                <a class="title" href="#">Ms. Mary Jane</a>
-                                                <p><strong>$2300. </strong> Agent Avarage Sales </p>
-                                                <p> <small>12 Sales Today</small>
-                                                </p>
-                                            </div>
-                                        </li>
-                                        <li class="media event">
-                                            <a class="pull-left border-aero profile_thumb">
-                                                <i class="fa fa-user aero"></i>
-                                            </a>
-                                            <div class="media-body">
-                                                <a class="title" href="#">Ms. Mary Jane</a>
-                                                <p><strong>$2300. </strong> Agent Avarage Sales </p>
-                                                <p> <small>12 Sales Today</small>
-                                                </p>
-                                            </div>
-                                        </li>
-                                        <li class="media event">
-                                            <a class="pull-left border-green profile_thumb">
-                                                <i class="fa fa-user green"></i>
-                                            </a>
-                                            <div class="media-body">
-                                                <a class="title" href="#">Ms. Mary Jane</a>
-                                                <p><strong>$2300. </strong> Agent Avarage Sales </p>
-                                                <p> <small>12 Sales Today</small>
-                                                </p>
-                                            </div>
-                                        </li>
+                                        @endforeach
+                                        @empty($doctor)
+                                            <h4 style="margin:22px; text-align: center">No doctor inserted at time</h4>
+                                        @endempty
                                     </ul>
                                 </div>
                             </div>

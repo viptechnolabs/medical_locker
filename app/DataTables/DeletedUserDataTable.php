@@ -53,11 +53,11 @@ class DeletedUserDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-                    ->setTableId('deleteduser-table')
+                    ->pageLength('5')
+                    ->setTableId('user-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     ->dom('Bfrtip')
-                    ->orderBy(1)
                     ->buttons(
                         Button::make('create'),
                         Button::make('export'),
