@@ -23,9 +23,10 @@ class HospitalController extends Controller
 
     public function index()
     {
-        $doctors = Doctor::orderBy('id', 'DESC')->take(5)->get();
         $hospital = Hospital::findOrFail(1);
-        return view('index', ['hospital' => $hospital, 'doctors' => $doctors]);
+        $doctors = Doctor::orderBy('id', 'DESC')->take(5)->get();
+        $users = User::orderBy('id', 'DESC')->take(5)->get();
+        return view('index', ['hospital' => $hospital, 'doctors' => $doctors, 'users' => $users]);
     }
 
     public function login()

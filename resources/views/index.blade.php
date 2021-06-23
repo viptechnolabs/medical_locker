@@ -102,6 +102,12 @@
                                         @empty($doctor)
                                             <h4 style="margin:22px; text-align: center">No doctor inserted at time</h4>
                                         @endempty
+                                        <li class="media event">
+
+                                            <div class="media-body text-center">
+                                                <a href="{{route('doctor.index')}}"><u><p><strong>view more</strong></p></u></a>
+                                            </div>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -111,285 +117,155 @@
                 </div>
             </div>
 
-
-
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-4">
                     <div class="x_panel">
                         <div class="x_title">
-                            <h2>Weekly Summary <small>Activity shares</small></h2>
-                            <ul class="nav navbar-right panel_toolbox">
-                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                </li>
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="#">Settings 1</a>
-                                        <a class="dropdown-item" href="#">Settings 2</a>
-                                    </div>
-                                </li>
-                                <li><a class="close-link"><i class="fa fa-close"></i></a>
-                                </li>
-                            </ul>
+                            <h2>Recent Add  Doctors</h2>
                             <div class="clearfix"></div>
                         </div>
-                        <div class="x_content">
+                        <ul class="list-unstyled top_profiles scroll-view">
+                            @foreach ($doctors as $doctor)
+                                <li class="media event">
+                                    <a class="pull-left border-aero profile_thumb">
+                                        <i class="fa fa-user-md aero"></i>
+                                    </a>
+                                    <div class="media-body">
+                                        <a class="title" href="{{route('doctor.doctor_details', $doctor->id)}}">Dr. {{$doctor->name}}</a>
+                                        <p><strong>{{$doctor->specialist}} </strong> <small style="margin-left: 130px">{{$doctor->created_at}}</small></p>
+                                    </div>
+                                </li>
+                            @endforeach
+                            @empty($doctor)
+                                <h4 style="margin:22px; text-align: center">No doctor inserted at time</h4>
+                            @endempty
+                            <li class="media event">
 
-                            <div class="row" style="border-bottom: 1px solid #E0E0E0; padding-bottom: 5px; margin-bottom: 5px;">
-                                <div class="col-md-7" style="overflow:hidden;">
+                                <div class="media-body text-center">
+                                    <a href="{{route('doctor.index')}}"><u><p><strong>view more</strong></p></u></a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>Recent Add  Patients </h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <ul class="list-unstyled top_profiles scroll-view">
+                            @foreach ($doctors as $doctor)
+                                <li class="media event">
+                                    <a class="pull-left border-aero profile_thumb">
+                                        <i class="fa fa-user aero"></i>
+                                    </a>
+                                    <div class="media-body">
+                                        <a class="title" href="{{route('doctor.doctor_details', $doctor->id)}}">Dr. {{$doctor->name}}</a>
+                                        <p><strong>{{$doctor->specialist}} </strong> <small style="margin-left: 130px">{{$doctor->created_at}}</small></p>
+                                    </div>
+                                </li>
+                            @endforeach
+                            @empty($doctor)
+                                <h4 style="margin:22px; text-align: center">No patient inserted at time</h4>
+                            @endempty
+                            <li class="media event">
+
+                                <div class="media-body text-center">
+                                    <a href="{{route('doctor.index')}}"><u><p><strong>view more</strong></p></u></a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>Recent Add  Users</h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <ul class="list-unstyled top_profiles scroll-view">
+                            @foreach ($users as $user)
+                                <li class="media event">
+                                    <a class="pull-left border-aero profile_thumb">
+                                        <i class="fa fa-user aero"></i>
+                                    </a>
+                                    <div class="media-body">
+                                        <a class="title" href="{{route('user.user_details', $user->id)}}">{{$user->name}}</a>
+                                        <div>
+                                        <small style="">{{$user->created_at}}</small>
+                                        </div>
+                                    </div>
+                                </li>
+                            @endforeach
+                            @empty($user)
+                                <h4 style="margin:22px; text-align: center">No user inserted at time</h4>
+                            @endempty
+                            <li class="media event">
+                                <div class="media-body text-center">
+                                    <a href="{{route('user.index')}}"><u><p><strong>view more</strong></p></u></a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Weekly Summary <small>Activity shares</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#">Settings 1</a>
+                                <a class="dropdown-item" href="#">Settings 2</a>
+                            </div>
+                        </li>
+                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+
+                    <div class="row" style="border-bottom: 1px solid #E0E0E0; padding-bottom: 5px; margin-bottom: 5px;">
+                        <div class="col-md-7" style="overflow:hidden;">
                         <span class="sparkline_one" style="height: 160px; padding: 10px 25px;">
                                       <canvas width="200" height="60" style="display: inline-block; vertical-align: top; width: 94px; height: 30px;"></canvas>
                                   </span>
-                                    <h4 style="margin:18px">Weekly sales progress</h4>
-                                </div>
+                            <h4 style="margin:18px">Weekly sales progress</h4>
+                        </div>
 
-                                <div class="col-md-5">
-                                    <div class="row" style="text-align: center;">
-                                        <div class="col-md-4">
-                                            <canvas class="canvasDoughnut" height="110" width="110" style="margin: 5px 10px 10px 0"></canvas>
-                                            <h4 style="margin:0">Bounce Rates</h4>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <canvas class="canvasDoughnut" height="110" width="110" style="margin: 5px 10px 10px 0"></canvas>
-                                            <h4 style="margin:0">New Traffic</h4>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <canvas class="canvasDoughnut" height="110" width="110" style="margin: 5px 10px 10px 0"></canvas>
-                                            <h4 style="margin:0">Device Share</h4>
-                                        </div>
-                                    </div>
+                        <div class="col-md-5">
+                            <div class="row" style="text-align: center;">
+                                <div class="col-md-4">
+                                    <canvas class="canvasDoughnut" height="110" width="110" style="margin: 5px 10px 10px 0"></canvas>
+                                    <h4 style="margin:0">Bounce Rates</h4>
+                                </div>
+                                <div class="col-md-4">
+                                    <canvas class="canvasDoughnut" height="110" width="110" style="margin: 5px 10px 10px 0"></canvas>
+                                    <h4 style="margin:0">New Traffic</h4>
+                                </div>
+                                <div class="col-md-4">
+                                    <canvas class="canvasDoughnut" height="110" width="110" style="margin: 5px 10px 10px 0"></canvas>
+                                    <h4 style="margin:0">Device Share</h4>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-
-
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="x_panel">
-                        <div class="x_title">
-                            <h2>Top Profiles <small>Sessions</small></h2>
-                            <ul class="nav navbar-right panel_toolbox">
-                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                </li>
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="#">Settings 1</a>
-                                        <a class="dropdown-item" href="#">Settings 2</a>
-                                    </div>
-                                </li>
-                                <li><a class="close-link"><i class="fa fa-close"></i></a>
-                                </li>
-                            </ul>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="x_content">
-                            <article class="media event">
-                                <a class="pull-left date">
-                                    <p class="month">April</p>
-                                    <p class="day">23</p>
-                                </a>
-                                <div class="media-body">
-                                    <a class="title" href="#">Item One Title</a>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                </div>
-                            </article>
-                            <article class="media event">
-                                <a class="pull-left date">
-                                    <p class="month">April</p>
-                                    <p class="day">23</p>
-                                </a>
-                                <div class="media-body">
-                                    <a class="title" href="#">Item Two Title</a>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                </div>
-                            </article>
-                            <article class="media event">
-                                <a class="pull-left date">
-                                    <p class="month">April</p>
-                                    <p class="day">23</p>
-                                </a>
-                                <div class="media-body">
-                                    <a class="title" href="#">Item Two Title</a>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                </div>
-                            </article>
-                            <article class="media event">
-                                <a class="pull-left date">
-                                    <p class="month">April</p>
-                                    <p class="day">23</p>
-                                </a>
-                                <div class="media-body">
-                                    <a class="title" href="#">Item Two Title</a>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                </div>
-                            </article>
-                            <article class="media event">
-                                <a class="pull-left date">
-                                    <p class="month">April</p>
-                                    <p class="day">23</p>
-                                </a>
-                                <div class="media-body">
-                                    <a class="title" href="#">Item Three Title</a>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                </div>
-                            </article>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="x_panel">
-                        <div class="x_title">
-                            <h2>Top Profiles <small>Sessions</small></h2>
-                            <ul class="nav navbar-right panel_toolbox">
-                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                </li>
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="#">Settings 1</a>
-                                        <a class="dropdown-item" href="#">Settings 2</a>
-                                    </div>
-                                </li>
-                                <li><a class="close-link"><i class="fa fa-close"></i></a>
-                                </li>
-                            </ul>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="x_content">
-                            <article class="media event">
-                                <a class="pull-left date">
-                                    <p class="month">April</p>
-                                    <p class="day">23</p>
-                                </a>
-                                <div class="media-body">
-                                    <a class="title" href="#">Item One Title</a>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                </div>
-                            </article>
-                            <article class="media event">
-                                <a class="pull-left date">
-                                    <p class="month">April</p>
-                                    <p class="day">23</p>
-                                </a>
-                                <div class="media-body">
-                                    <a class="title" href="#">Item Two Title</a>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                </div>
-                            </article>
-                            <article class="media event">
-                                <a class="pull-left date">
-                                    <p class="month">April</p>
-                                    <p class="day">23</p>
-                                </a>
-                                <div class="media-body">
-                                    <a class="title" href="#">Item Two Title</a>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                </div>
-                            </article>
-                            <article class="media event">
-                                <a class="pull-left date">
-                                    <p class="month">April</p>
-                                    <p class="day">23</p>
-                                </a>
-                                <div class="media-body">
-                                    <a class="title" href="#">Item Two Title</a>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                </div>
-                            </article>
-                            <article class="media event">
-                                <a class="pull-left date">
-                                    <p class="month">April</p>
-                                    <p class="day">23</p>
-                                </a>
-                                <div class="media-body">
-                                    <a class="title" href="#">Item Three Title</a>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                </div>
-                            </article>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="x_panel">
-                        <div class="x_title">
-                            <h2>Top Profiles <small>Sessions</small></h2>
-                            <ul class="nav navbar-right panel_toolbox">
-                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                </li>
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="#">Settings 1</a>
-                                        <a class="dropdown-item" href="#">Settings 2</a>
-                                    </div>
-                                </li>
-                                <li><a class="close-link"><i class="fa fa-close"></i></a>
-                                </li>
-                            </ul>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="x_content">
-                            <article class="media event">
-                                <a class="pull-left date">
-                                    <p class="month">April</p>
-                                    <p class="day">23</p>
-                                </a>
-                                <div class="media-body">
-                                    <a class="title" href="#">Item One Title</a>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                </div>
-                            </article>
-                            <article class="media event">
-                                <a class="pull-left date">
-                                    <p class="month">April</p>
-                                    <p class="day">23</p>
-                                </a>
-                                <div class="media-body">
-                                    <a class="title" href="#">Item Two Title</a>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                </div>
-                            </article>
-                            <article class="media event">
-                                <a class="pull-left date">
-                                    <p class="month">April</p>
-                                    <p class="day">23</p>
-                                </a>
-                                <div class="media-body">
-                                    <a class="title" href="#">Item Two Title</a>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                </div>
-                            </article>
-                            <article class="media event">
-                                <a class="pull-left date">
-                                    <p class="month">April</p>
-                                    <p class="day">23</p>
-                                </a>
-                                <div class="media-body">
-                                    <a class="title" href="#">Item Two Title</a>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                </div>
-                            </article>
-                            <article class="media event">
-                                <a class="pull-left date">
-                                    <p class="month">April</p>
-                                    <p class="day">23</p>
-                                </a>
-                                <div class="media-body">
-                                    <a class="title" href="#">Item Three Title</a>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                </div>
-                            </article>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        </div>
+    </div>
     <!-- /page content -->
 @stop
 
