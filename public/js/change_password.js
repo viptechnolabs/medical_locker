@@ -12,6 +12,7 @@ function changePasswordClick(action) {
                     type: "post",
                     data: {
                         _token: $('meta[name="csrf-token"]').attr('content'),
+                        user_type: $("#user_type").val(),
                         current_password: function () {
                             return $("#current_password").val();
                         }

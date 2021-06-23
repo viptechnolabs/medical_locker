@@ -1,7 +1,8 @@
 @extends('layout.app')
 @section('content')
     <div>
-        <a href="{{route(Session::get('userType') === "doctor" ? "index" : "doctor.index")}}"> Do your work, then step back. </a>
+        <a href="{{route(Session::get('userType') === "doctor" ? "index" : "doctor.index")}}"> Do your work, then step
+            back. </a>
         <div class="">
             <div class="page-title">
                 <div class="title_left">
@@ -28,7 +29,8 @@
                                     <div id="crop-avatar">
                                         <!-- Current avatar -->
                                         <img class="img-responsive avatar-view"
-                                             src="{{asset('upload_file/doctor/'.$doctor->profile_photo)}}" alt="{{$doctor->name}}"
+                                             src="{{asset('upload_file/doctor/'.$doctor->profile_photo)}}"
+                                             alt="{{$doctor->name}}"
                                              title="Change the avatar" style="height: 220px; width: 220px">
                                     </div>
                                 </div>
@@ -41,7 +43,7 @@
 
                                         @foreach ($doctor->certificate as $certificate){{$certificate->degree_name}},
 
-                                    @endforeach
+                                        @endforeach
                                     </li>
                                     <li>
                                         <a href="mailto:{{$doctor->email}}">
@@ -68,7 +70,8 @@
                                             <li role="presentation" class="active"><a href="#edit_doctor_details"
                                                                                       id="home-tab"
                                                                                       role="tab" data-toggle="tab"
-                                                                                      aria-expanded="true">Edit Doctor</a>
+                                                                                      aria-expanded="true">Edit
+                                                    Doctor</a>
                                             </li>
                                             <li role="presentation" class=""><a href="#patient_count" role="tab"
                                                                                 id="profile-tab" data-toggle="tab"
@@ -128,7 +131,8 @@
                                                                 <strong>{{ session('message') }}</strong>
                                                             </div>
                                                         @endif
-                                                        <input type="hidden" class="form-control" name="id" value="{{$doctor->id}}">
+                                                        <input type="hidden" class="form-control" name="id"
+                                                               value="{{$doctor->id}}">
                                                         <div class="form-group row ">
                                                             <label class="control-label col-md-3 col-sm-3 ">Name</label>
                                                             <div class="col-md-9 col-sm-9 ">
@@ -145,9 +149,21 @@
                                                                 <div class="col-md-9 col-sm-9 ">
                                                                     <table class="table " id="dynamicAddRemove">
                                                                         <tr>
-                                                                            <td><input type="text" id="update_degree" name="degree[0]" placeholder="Enter Degree" class="form-control" /></td>
-                                                                            <td><input  type="file" id="update_certificates"  name="certificates[0]" accept="image/*" /></td>
-                                                                            <td><button type="button" name="add" id="add-btn" class="btn btn-sm btn-success">Add More</button></td>
+                                                                            <td><input type="text" id="update_degree"
+                                                                                       name="degree[0]"
+                                                                                       placeholder="Enter Degree"
+                                                                                       class="form-control"/></td>
+                                                                            <td><input type="file"
+                                                                                       id="update_certificates"
+                                                                                       name="certificates[0]"
+                                                                                       accept="image/*"/></td>
+                                                                            <td>
+                                                                                <button type="button" name="add"
+                                                                                        id="add-btn"
+                                                                                        class="btn btn-sm btn-success">
+                                                                                    Add More
+                                                                                </button>
+                                                                            </td>
                                                                         </tr>
                                                                     </table>
                                                                 </div>
@@ -155,7 +171,8 @@
                                                             </div>
                                                         @endif
                                                         <div class="form-group row ">
-                                                            <label class="control-label col-md-3 col-sm-3 ">Specialist</label>
+                                                            <label
+                                                                class="control-label col-md-3 col-sm-3 ">Specialist</label>
                                                             <div class="col-md-9 col-sm-9 ">
                                                                 <input type="text" class="form-control"
                                                                        name="specialist"
@@ -166,10 +183,12 @@
                                                         <div class="form-group row">
                                                             <label
                                                                 class="control-label col-md-3 col-sm-3 ">Email</label>
-                                                            <div class="{{Session::get('userType') === "doctor" ? "col-md-7 col-sm-3" : "col-md-9 col-sm-9"}}">
+                                                            <div
+                                                                class="{{Session::get('userType') === "doctor" ? "col-md-7 col-sm-3" : "col-md-9 col-sm-9"}}">
                                                                 <input type="email" class="form-control"
                                                                        value="{{$doctor->email}}"
-                                                                       placeholder="Email" name="email" {{Session::get('userType') === "doctor" ? "readonly" : ""}}>
+                                                                       placeholder="Email"
+                                                                       name="email" {{Session::get('userType') === "doctor" ? "readonly" : ""}}>
                                                             </div>
                                                             @if(Session::get('userType') === "doctor" )
                                                                 <a class="border-button" href="javascript:;"
@@ -183,11 +202,14 @@
                                                         </div>
                                                         <div class="form-group row">
                                                             <label
-                                                                class="control-label col-md-3 col-sm-3 ">Mobile No</label>
-                                                            <div class="{{Session::get('userType') === "doctor" ? "col-md-6 col-sm-3" : "col-md-9 col-sm-9"}}">
+                                                                class="control-label col-md-3 col-sm-3 ">Mobile
+                                                                No</label>
+                                                            <div
+                                                                class="{{Session::get('userType') === "doctor" ? "col-md-6 col-sm-3" : "col-md-9 col-sm-9"}}">
                                                                 <input type="text" class="form-control"
                                                                        value="{{$doctor->mobile_no}}"
-                                                                       placeholder="Mobile No" name="mobile_no" {{Session::get('userType') === "doctor" ? "readonly" : ""}}>
+                                                                       placeholder="Mobile No"
+                                                                       name="mobile_no" {{Session::get('userType') === "doctor" ? "readonly" : ""}}>
                                                             </div>
                                                             @if(Session::get('userType') === "doctor" )
                                                                 <a class="border-button" href="javascript:;"
@@ -212,10 +234,11 @@
                                                             <label
                                                                 class="control-label col-md-3 col-sm-3 ">State</label>
                                                             <div class="col-md-9 col-sm-9 ">
-                                                                <select id="state" name="state" class="form-control" >
+                                                                <select id="state" name="state" class="form-control">
                                                                     <option value="">Choose..</option>
                                                                     @foreach($states as $state)
-                                                                        <option value="{{$state->name}}" {{ ($doctor->state === $state->name) ? "selected" : "" }}>{{$state->name}}</option>
+                                                                        <option
+                                                                            value="{{$state->name}}" {{ ($doctor->state === $state->name) ? "selected" : "" }}>{{$state->name}}</option>
                                                                     @endforeach
                                                                 </select>
                                                             </div>
@@ -228,7 +251,8 @@
                                                                 <select id="city" name="city" class="form-control">
                                                                     <option value="">Choose..</option>
                                                                     @foreach($cities as $city)
-                                                                        <option value="{{$city->name}}" {{ ($doctor->city === $city->name) ? "selected" : "" }}>{{$city->name}}</option>
+                                                                        <option
+                                                                            value="{{$city->name}}" {{ ($doctor->city === $city->name) ? "selected" : "" }}>{{$city->name}}</option>
                                                                     @endforeach
                                                                 </select>
                                                             </div>
@@ -236,7 +260,8 @@
                                                         </div>
                                                         <div class="form-group row">
                                                             <label
-                                                                class="control-label col-md-3 col-sm-3 ">Pin Code</label>
+                                                                class="control-label col-md-3 col-sm-3 ">Pin
+                                                                Code</label>
                                                             <div class="col-md-9 col-sm-9 ">
                                                                 <input type="text" class="form-control"
                                                                        value="{{$doctor->pin_code}}"
@@ -246,22 +271,32 @@
                                                         </div>
                                                         <div class="form-group row">
                                                             <label
-                                                                class="control-label col-md-3 col-sm-3 ">Aadhar No</label>
+                                                                class="control-label col-md-3 col-sm-3 ">Aadhar
+                                                                No</label>
                                                             <div class="col-md-9 col-sm-9 ">
                                                                 <input type="text" class="form-control"
                                                                        value="{{$doctor->aadhar_no}}"
-                                                                       placeholder="Aadhar No" name="aadhar_no" {{Session::get('userType') === "doctor" ? "readonly" : ""}}>
+                                                                       placeholder="Aadhar No"
+                                                                       name="aadhar_no" {{Session::get('userType') === "doctor" ? "readonly" : ""}}>
                                                             </div>
 
                                                         </div>
                                                         <div class="form-group row">
                                                             <label
-                                                                class="control-label col-md-3 col-sm-3 ">Date Of Birth</label>
+                                                                class="control-label col-md-3 col-sm-3 ">Date Of
+                                                                Birth</label>
                                                             <div class="col-md-9 col-sm-9 ">
-                                                                <input id="dob" name="dob" value="{{$doctor->dob}}" class="date-picker form-control" placeholder="dd-mm-yyyy" type="text" onfocus="this.type='date'" onmouseover="this.type='date'" onclick="this.type='date'" onblur="this.type='text'" onmouseout="timeFunctionLong(this)">
+                                                                <input id="dob" name="dob" value="{{$doctor->dob}}"
+                                                                       class="date-picker form-control"
+                                                                       placeholder="dd-mm-yyyy" type="text"
+                                                                       onfocus="this.type='date'"
+                                                                       onmouseover="this.type='date'"
+                                                                       onclick="this.type='date'"
+                                                                       onblur="this.type='text'"
+                                                                       onmouseout="timeFunctionLong(this)">
                                                                 <script>
                                                                     function timeFunctionLong(input) {
-                                                                        setTimeout(function() {
+                                                                        setTimeout(function () {
                                                                             input.type = 'text';
                                                                         }, 60000);
                                                                     }
@@ -273,37 +308,49 @@
                                                             <label
                                                                 class="control-label col-md-3 col-sm-3 ">Password</label>
                                                             <div class="col-md-9 col-sm-9 ">
-                                                                <a href="routes"></a>
-                                                                <button type="button" class="btn btn-sm btn-secondary"
-                                                                        data-toggle="modal"
-                                                                        data-target="#change_password">
-                                                                    Change Password
-                                                                </button>
+                                                                <a href="javascript:;" class="border-button"
+                                                                   data-toggle="modal"
+                                                                   data-target="#change_password"
+                                                                   onclick="changePasswordClick('{{ route('check.password') }}')">
+                                                                    <button type="button"
+                                                                            class="btn btn-sm btn-secondary">
+                                                                        Change Password
+                                                                    </button>
+                                                                </a>
                                                             </div>
                                                         </div>
                                                         <div class="form-group row">
                                                             <label
-                                                                class="control-label col-md-3 col-sm-3 ">Profile Photo</label>
+                                                                class="control-label col-md-3 col-sm-3 ">Profile
+                                                                Photo</label>
                                                             <div class="col-md-9 col-sm-9 ">
-                                                                <input  type="file" id="profile_photo"  name="profile_photo" accept="image/*">
+                                                                <input type="file" id="profile_photo"
+                                                                       name="profile_photo" accept="image/*">
                                                             </div>
 
                                                         </div>
                                                         <div class="form-group row">
                                                             <label
-                                                                class="control-label col-md-3 col-sm-3 ">Document Photo</label>
+                                                                class="control-label col-md-3 col-sm-3 ">Document
+                                                                Photo</label>
                                                             <div class="col-md-9 col-sm-9 ">
                                                                 <div class="col-md-55">
                                                                     <div class="thumbnail">
                                                                         <div class="image view view-first">
-                                                                            <a href="{{asset('upload_file/doctor/doctor_document/'.$doctor->document_photo)}}" target="_blank">
-                                                                                <img style="width: 100%; display: block;" src="{{asset('upload_file/doctor/doctor_document/'.$doctor->document_photo)}}" alt="image">
+                                                                            <a href="{{asset('upload_file/doctor/doctor_document/'.$doctor->document_photo)}}"
+                                                                               target="_blank">
+                                                                                <img
+                                                                                    style="width: 100%; display: block;"
+                                                                                    src="{{asset('upload_file/doctor/doctor_document/'.$doctor->document_photo)}}"
+                                                                                    alt="image">
                                                                             </a>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 @if(Session::get('userType') !== "doctor" )
-                                                                    <input  type="file" id="document_photo"  name="document_photo" accept="image/*" alt="{{$doctor->name}}">
+                                                                    <input type="file" id="document_photo"
+                                                                           name="document_photo" accept="image/*"
+                                                                           alt="{{$doctor->name}}">
                                                                 @endif
                                                             </div>
 
@@ -313,18 +360,22 @@
                                                                 class="control-label col-md-3 col-sm-3 ">Certificates</label>
                                                             <div class="col-md-9 col-sm-9 ">
                                                                 @foreach ($doctor->certificate as $certificate)
-                                                                <div class="col-md-55">
-                                                                    <div class="thumbnail">
-                                                                        <div class="image view view-first">
-                                                                            <a href="{{asset($certificate->certificate_file_path)}}" target="_blank">
-                                                                                <img style="width: 100%; display: block;" src="{{asset($certificate->certificate_file_path)}}" alt="{{$certificate->degree_name}}">
-                                                                            </a>
-                                                                        </div>
-                                                                        <div class="caption">
-                                                                            <p style="text-align: center; height: 10px;">{{$certificate->degree_name}}</p>
+                                                                    <div class="col-md-55">
+                                                                        <div class="thumbnail">
+                                                                            <div class="image view view-first">
+                                                                                <a href="{{asset($certificate->certificate_file_path)}}"
+                                                                                   target="_blank">
+                                                                                    <img
+                                                                                        style="width: 100%; display: block;"
+                                                                                        src="{{asset($certificate->certificate_file_path)}}"
+                                                                                        alt="{{$certificate->degree_name}}">
+                                                                                </a>
+                                                                            </div>
+                                                                            <div class="caption">
+                                                                                <p style="text-align: center; height: 10px;">{{$certificate->degree_name}}</p>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
                                                                 @endforeach
                                                             </div>
 
@@ -340,7 +391,8 @@
                                                                 </button>
                                                                 @if(Session::get('userType') !== "doctor" )
                                                                     <a href="{{route('doctor.doctor_delete', $doctor->id)}}">
-                                                                        <button type="button" class="btn btn-danger">Delete
+                                                                        <button type="button" class="btn btn-danger">
+                                                                            Delete
                                                                         </button>
                                                                     </a>
                                                                 @endif
@@ -351,7 +403,7 @@
                                                     </form>
                                                 </div>
                                             </div>
-                                            <x-change-password id="{{$doctor->id}}" user-type="doctor" />
+                                            <x-change-password id="{{$doctor->id}}" user-type="doctor"/>
                                             <!-- Change E-mails Pop-Up -->
                                             <div id="update_email_popup"></div>
                                             <!-- /Change E-mails Pop-Up -->
@@ -392,11 +444,11 @@
     <!-- Add more and remove button -->
     <script type="text/javascript">
         var i = 0;
-        $("#add-btn").click(function(){
+        $("#add-btn").click(function () {
             ++i;
-            $("#dynamicAddRemove").append('<tr><td><input type="text" name="degree['+i+']" placeholder="Enter Degree" class="form-control" /></td><td><input  type="file" id="certificates"  name="certificates['+i+']" accept="image/* "/></td><td><button type="button" class="btn btn-sm btn-danger remove-tr">Remove</button></td></tr>');
+            $("#dynamicAddRemove").append('<tr><td><input type="text" name="degree[' + i + ']" placeholder="Enter Degree" class="form-control" /></td><td><input  type="file" id="certificates"  name="certificates[' + i + ']" accept="image/* "/></td><td><button type="button" class="btn btn-sm btn-danger remove-tr">Remove</button></td></tr>');
         });
-        $(document).on('click', '.remove-tr', function(){
+        $(document).on('click', '.remove-tr', function () {
             $(this).parents('tr').remove();
         });
     </script>

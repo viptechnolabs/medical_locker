@@ -10,17 +10,13 @@ use App\Models\User;
 use App\Notifications\ChangeEmail;
 use App\Notifications\ChangeMobileNo;
 use Illuminate\Http\Request;
-//use Illuminate\Support\Facades\Auth;
-//use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-//use Illuminate\Foundation\Auth\ThrottlesLogins;
-use Illuminate\Support\Facades\Auth;
-use function GuzzleHttp\Promise\all;
 
 class HospitalController extends Controller
 {
@@ -29,7 +25,7 @@ class HospitalController extends Controller
     {
         $doctors = Doctor::orderBy('id', 'DESC')->take(5)->get();
         $hospital = Hospital::findOrFail(1);
-         return  view('index', ['hospital' => $hospital, 'doctors' => $doctors]);
+        return view('index', ['hospital' => $hospital, 'doctors' => $doctors]);
     }
 
     public function login()
@@ -40,24 +36,22 @@ class HospitalController extends Controller
     public function doLogin(Request $request)
     {
         //$userType = array('hospital','doctor','user');
-        if($request->user_type === 'hospital') {
-            if(Auth::guard('hospital')->attempt($request->only('email','password'),$request->filled('remember'))){
+        if ($request->user_type === 'hospital') {
+            if (Auth::guard('hospital')->attempt($request->only('email', 'password'), $request->filled('remember'))) {
                 //Authentication passed...
-                Session::put('userType', 'hospital' );
+                Session::put('userType', 'hospital');
                 return redirect()->route('index');
             }
-        }
-        elseif($request->user_type === 'doctor') {
-            if(Auth::guard('doctor')->attempt(['email' => $request->email, 'password' => $request->password, 'status' => 'active'],$request->filled('remember'))){
+        } elseif ($request->user_type === 'doctor') {
+            if (Auth::guard('doctor')->attempt(['email' => $request->email, 'password' => $request->password, 'status' => 'active'], $request->filled('remember'))) {
                 //Authentication passed...
-                Session::put('userType', 'doctor' );
+                Session::put('userType', 'doctor');
                 return redirect()->route('index');
             }
-        }
-        elseif($request->user_type === 'user') {
-            if(Auth::attempt(['email' => $request->email, 'password' => $request->password, 'status' => 'active'],$request->filled('remember'))){
+        } elseif ($request->user_type === 'user') {
+            if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'status' => 'active'], $request->filled('remember'))) {
                 //Authentication passed...
-                Session::put('userType', 'user' );
+                Session::put('userType', 'user');
                 return redirect()->route('index');
             }
         }
@@ -65,32 +59,28 @@ class HospitalController extends Controller
         return redirect()
             ->back()
             ->withInput()
-            ->with('error','Login failed, please try again!');
+            ->with('error', 'Login failed, please try again!');
 
     }
 
 
     public function logout()
     {
-        if (Session::get('userType') === 'hospital')
-        {
+        if (Session::get('userType') === 'hospital') {
             Session::flush();
             Auth::guard('hospital')->logout();
-        }
-        elseif (Session::get('userType') === 'doctor')
-        {
+        } elseif (Session::get('userType') === 'doctor') {
             Session::flush();
             Auth::guard('doctor')->logout();
-        }
-        elseif (Session::get('userType') === 'user')
-        {
+        } elseif (Session::get('userType') === 'user') {
             Session::flush();
             Auth::logout();
         }
         return redirect()
             ->route('login')
-            ->with('status','Logout successfully...!');
+            ->with('status', 'Logout successfully...!');
     }
+
     public function hospitalDetails()
     {
         $hospital = Hospital::findOrFail(1);
@@ -100,15 +90,12 @@ class HospitalController extends Controller
     public function profile($user_type, $id)
     {
         $hospital = Hospital::findOrFail(1);
-        if($user_type === 'doctor')
-        {
+        if ($user_type === 'doctor') {
             $doctor = Doctor::findOrFail($id);
             $state = State::all();
             $city = City::all();
             return view('doctor.doctor_details', ['doctor' => $doctor, 'hospital' => $hospital, 'states' => $state, 'cities' => $city]);
-        }
-        elseif ($user_type === 'user')
-        {
+        } elseif ($user_type === 'user') {
             $user = User::findOrFail($id);
             $state = State::all();
             $city = City::all();
@@ -119,13 +106,11 @@ class HospitalController extends Controller
     public function getEmailPopup(Request $request)
     {
         $id = $request->user_id;
-        if($request->user_type === 'hospital') {
+        if ($request->user_type === 'hospital') {
             $data = Hospital::findOrFail($id);
-        }
-        elseif ($request->user_type === 'doctor') {
+        } elseif ($request->user_type === 'doctor') {
             $data = Doctor::findOrFail($id);
-        }
-        elseif ($request->user_type === 'user') {
+        } elseif ($request->user_type === 'user') {
             $data = User::findOrFail($id);
         }
         return view('components.update-email', ['data' => $data, 'user_type' => $request->user_type]);
@@ -134,13 +119,11 @@ class HospitalController extends Controller
     public function getMobilePopup(Request $request)
     {
         $id = $request->user_id;
-        if($request->user_type === 'hospital') {
+        if ($request->user_type === 'hospital') {
             $data = Hospital::findOrFail($id);
-        }
-        elseif ($request->user_type === 'doctor') {
+        } elseif ($request->user_type === 'doctor') {
             $data = Doctor::findOrFail($id);
-        }
-        elseif ($request->user_type === 'user') {
+        } elseif ($request->user_type === 'user') {
             $data = User::findOrFail($id);
         }
         return view('components.update-mobileno', ['data' => $data, 'user_type' => $request->user_type]);
@@ -151,26 +134,21 @@ class HospitalController extends Controller
         # Request params
         $email = $request->input('email');
         $id = $request->input('id') ?? null;
-        if($request->user_type === 'hospital')
-        {
+        if ($request->user_type === 'hospital') {
             $queryBuilder = Hospital::where('email', $email);
             if ($id) {
                 $queryBuilder->where('id', '!=', $id);
             }
 
             $exists = $queryBuilder->exists();
-        }
-        elseif ($request->user_type === 'doctor')
-        {
+        } elseif ($request->user_type === 'doctor') {
             $queryBuilder = Doctor::where('email', $email);
             if ($id) {
                 $queryBuilder->where('id', '!=', $id);
             }
 
             $exists = $queryBuilder->exists();
-        }
-        elseif ($request->user_type === 'user')
-        {
+        } elseif ($request->user_type === 'user') {
             $queryBuilder = User::where('email', $email);
             if ($id) {
                 $queryBuilder->where('id', '!=', $id);
@@ -192,25 +170,20 @@ class HospitalController extends Controller
         # Request params
         $mobile_no = $request->input('mobile_no');
         $id = $request->input('id') ?? null;
-        if($request->user_type === 'hospital')
-        {
+        if ($request->user_type === 'hospital') {
             $queryBuilder = Hospital::where('mobile_no', $mobile_no);
             if ($id) {
                 $queryBuilder->where('id', '!=', $id);
             }
             $exists = $queryBuilder->exists();
-        }
-        elseif ($request->user_type === 'doctor')
-        {
+        } elseif ($request->user_type === 'doctor') {
             $queryBuilder = Doctor::where('mobile_no', $mobile_no);
             if ($id) {
                 $queryBuilder->where('id', '!=', $id);
             }
 
             $exists = $queryBuilder->exists();
-        }
-        elseif ($request->user_type === 'user')
-        {
+        } elseif ($request->user_type === 'user') {
             $queryBuilder = User::where('mobile_no', $mobile_no);
             if ($id) {
                 $queryBuilder->where('id', '!=', $id);
@@ -236,16 +209,14 @@ class HospitalController extends Controller
             } else {
                 return response()->json(false);
             }
-        }
-        elseif (Auth::guard('doctor')->check()) {
+        } elseif (Auth::guard('doctor')->check()) {
 
             if (Hash::check($password, Auth::guard('doctor')->user()->password)) {
                 return response()->json(true);
             } else {
                 return response()->json(false);
             }
-        }
-        elseif (Auth::guard('web')->check()) {
+        } elseif (Auth::guard('web')->check()) {
 
             if (Hash::check($password, Auth::guard('web')->user()->password)) {
                 return response()->json(true);
@@ -255,8 +226,6 @@ class HospitalController extends Controller
         }
 
     }
-
-
 
     public function hospitalDetailsUpdate(Request $request)
     {
@@ -299,6 +268,9 @@ class HospitalController extends Controller
 
     public function changePassword(Request $request)
     {
+        $id = $request->id;
+        $user_type = $request->user_type;
+
         $rules = array(
             'password' => 'min:5',
             'confirm_password' => 'required_with:password|same:password|min:5',
@@ -308,22 +280,26 @@ class HospitalController extends Controller
 
         if ($validation->fails()) {
             return redirect()->back()->withInput()->withErrors($validation);
-        }
-        else
-        {
+        } else {
             if (Auth::guard('hospital')->check()) {
-                $hospital = Hospital::findOrFail(Auth::guard('hospital')->user()->id);
-                $hospital->password = Hash::make($request->password);
-                $hospital->save();
-            }
-            elseif(Auth::guard('doctor')->check())
-            {
+                if ($user_type === 'hospital') {
+                    $doctor = Hospital::findOrFail(Auth::guard('hospital')->user()->id);
+                    $doctor->password = Hash::make($request->password);
+                    $doctor->save();
+                } elseif ($user_type === 'doctor') {
+                    $hospital = Doctor::findOrFail($id);
+                    $hospital->password = Hash::make($request->password);;
+                    $hospital->save();
+                } elseif ($user_type === 'user') {
+                    $hospital = User::findOrFail($id);
+                    $hospital->password = Hash::make($request->password);;
+                    $hospital->save();
+                }
+            } elseif (Auth::guard('doctor')->check()) {
                 $doctor = Doctor::findOrFail(Auth::guard('doctor')->user()->id);
                 $doctor->password = Hash::make($request->password);;
                 $doctor->save();
-            }
-            elseif(Auth::guard('web')->check())
-            {
+            } elseif (Auth::guard('web')->check()) {
                 $user = User::findOrFail(Auth::guard('web')->user()->id);
                 $user->password = Hash::make($request->password);;
                 $user->save();
@@ -339,8 +315,7 @@ class HospitalController extends Controller
         $id = $request->input('id');
         $new_email = $request->input('newmail');
         $user_type = $request->user_type;
-        if ($user_type === 'hospital')
-        {
+        if ($user_type === 'hospital') {
             $data = Hospital::where('email', $new_email);
             $exists = $data->exists();
 
@@ -368,10 +343,7 @@ class HospitalController extends Controller
                 ])->setStatusCode(200);
 
             }
-        }
-
-        elseif ($user_type === 'doctor')
-        {
+        } elseif ($user_type === 'doctor') {
             $data = Doctor::where('email', $new_email);
             $exists = $data->exists();
 
@@ -398,10 +370,7 @@ class HospitalController extends Controller
                 ])->setStatusCode(200);
 
             }
-        }
-
-        elseif ($user_type === 'user')
-        {
+        } elseif ($user_type === 'user') {
             $data = User::where('email', $new_email);
             $exists = $data->exists();
 
@@ -439,8 +408,7 @@ class HospitalController extends Controller
         $new_mobile_no = $request->input('newMobile');
         $temp_new_mobile_no = '91' . $request->input('newMobile');
         $user_type = $request->user_type;
-        if ($user_type === 'hospital')
-        {
+        if ($user_type === 'hospital') {
             $data = Hospital::where('mobile_no', $new_mobile_no);
             $exists = $data->exists();
             if ($exists) {
@@ -465,9 +433,7 @@ class HospitalController extends Controller
                 ])->setStatusCode(200);
 
             }
-        }
-        elseif ($user_type === 'doctor')
-        {
+        } elseif ($user_type === 'doctor') {
             $data = Doctor::where('mobile_no', $new_mobile_no);
             $exists = $data->exists();
 
@@ -494,9 +460,7 @@ class HospitalController extends Controller
                 ])->setStatusCode(200);
 
             }
-        }
-        elseif ($user_type === 'user')
-        {
+        } elseif ($user_type === 'user') {
             $data = User::where('mobile_no', $new_mobile_no);
             $exists = $data->exists();
 
@@ -555,10 +519,7 @@ class HospitalController extends Controller
                     'status' => 400,
                 ])->setStatusCode(400);
             }
-        }
-
-        elseif ($user_type === 'doctor')
-        {
+        } elseif ($user_type === 'doctor') {
             $doctor = Doctor::find($id);
             $dbcode = $doctor->verification_code;
             if ($dbcode === $code) {
@@ -566,9 +527,6 @@ class HospitalController extends Controller
                 $doctor->verification_code = null;
                 $doctor->token = null;
                 $doctor->save();
-                //            if($request->user()->isTaTeamUser()){
-                //                $this->setLeaderActivity($request->user(), $hospital, 'candidate_email');
-                //            }
 
                 return response()->json([
                     'message' => 'ok',
@@ -580,10 +538,7 @@ class HospitalController extends Controller
                     'status' => 400,
                 ])->setStatusCode(400);
             }
-        }
-
-        elseif ($user_type === 'user')
-        {
+        } elseif ($user_type === 'user') {
             $user = User::find($id);
             $dbcode = $user->verification_code;
             if ($dbcode === $code) {
@@ -591,9 +546,6 @@ class HospitalController extends Controller
                 $user->verification_code = null;
                 $user->token = null;
                 $user->save();
-                //            if($request->user()->isTaTeamUser()){
-                //                $this->setLeaderActivity($request->user(), $hospital, 'candidate_email');
-                //            }
 
                 return response()->json([
                     'message' => 'ok',
@@ -633,9 +585,7 @@ class HospitalController extends Controller
                     'status' => 400,
                 ])->setStatusCode(400);
             }
-        }
-        elseif ($user_type === 'doctor')
-        {
+        } elseif ($user_type === 'doctor') {
             $doctor = Doctor::find($id);
             $dbcode = $doctor->verification_code;
             if ($dbcode === $code) {
@@ -643,9 +593,6 @@ class HospitalController extends Controller
                 $doctor->verification_code = null;
                 $doctor->token = null;
                 $doctor->save();
-                //            if($request->user()->isTaTeamUser()){
-                //                $this->setLeaderActivity($request->user(), $hospital, 'candidate_email');
-                //            }
 
                 return response()->json([
                     'message' => 'ok',
@@ -657,9 +604,7 @@ class HospitalController extends Controller
                     'status' => 400,
                 ])->setStatusCode(400);
             }
-        }
-        elseif ($user_type === 'user')
-        {
+        } elseif ($user_type === 'user') {
             $user = User::find($id);
             $dbcode = $user->verification_code;
             if ($dbcode === $code) {
@@ -667,9 +612,6 @@ class HospitalController extends Controller
                 $user->verification_code = null;
                 $user->token = null;
                 $user->save();
-                //            if($request->user()->isTaTeamUser()){
-                //                $this->setLeaderActivity($request->user(), $hospital, 'candidate_email');
-                //            }
 
                 return response()->json([
                     'message' => 'ok',
@@ -691,24 +633,19 @@ class HospitalController extends Controller
         $message = $request->input('message');
         $user_type = $request->input('user_type');
         return view('components.change-status', ['action' => $action, 'message' => $message, 'user_type' => $user_type]);
-//        return view('components.change-status')
-//            ->with('action', $action);
     }
 
     public function changeStatus(Request $request, $id): \Illuminate\Http\RedirectResponse
     {
-        if ($request->user_type === 'doctor')
-        {
+        if ($request->user_type === 'doctor') {
             $doctor = Doctor::findOrFail($id);
             $doctor->status = ($doctor->status === "active") ? "inactive" : "active";
-            session()->flash('message', $doctor->name.' Status Updated..!');
+            session()->flash('message', $doctor->name . ' Status Updated..!');
             $doctor->save();
-        }
-        elseif ($request->user_type === 'user')
-        {
+        } elseif ($request->user_type === 'user') {
             $user = User::findOrFail($id);
             $user->status = ($user->status === "active") ? "inactive" : "active";
-            session()->flash('message', $user->name.' Status Updated..!');
+            session()->flash('message', $user->name . ' Status Updated..!');
             $user->save();
         }
 
@@ -717,22 +654,17 @@ class HospitalController extends Controller
 
     public function restore(Request $request, $id)
     {
-       // dd($request->all(), $id);
         if ($request->user_type === 'doctor') {
             $doctor = Doctor::withTrashed()->findOrFail($id);
             $doctor->restore();
-            session()->flash('message', 'Dr. '.$doctor->name.' Restore Successfully..!');
+            session()->flash('message', 'Dr. ' . $doctor->name . ' Restore Successfully..!');
             return redirect()->route('doctor.index');
-        }
-
-        elseif ($request->user_type === 'user')
-        {
+        } elseif ($request->user_type === 'user') {
             $user = User::withTrashed()->findOrFail($id);
             $user->restore();
             session()->flash('message', $user->name . ' Restore Successfully..!');
             return redirect()->route('user.index');
         }
     }
-
 
 }
