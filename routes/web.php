@@ -58,6 +58,7 @@ Route::middleware(['auth:hospital,doctor,web', 'checkStatus'])->group(function (
     Route::prefix('check')->as('check.')->group(function () {
         Route::post('email', [\App\Http\Controllers\HospitalController::class, 'checkEmail'])->name('email');
         Route::post('mobile', [\App\Http\Controllers\HospitalController::class, 'checkMobile'])->name('mobile');
+        Route::post('password', [\App\Http\Controllers\HospitalController::class, 'checkPassword'])->name('password');
     });
     Route::prefix('profile')->as('profile.')->group(function () {
         Route::post('update/email', [\App\Http\Controllers\HospitalController::class, 'hospitalUpdateEmail'])->name('update.email');

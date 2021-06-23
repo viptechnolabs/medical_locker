@@ -247,12 +247,12 @@
                                                             <label
                                                                 class="control-label col-md-3 col-sm-3 ">Password</label>
                                                             <div class="col-md-9 col-sm-9 ">
-                                                                <a href="routes"></a>
-                                                                <button type="button" class="btn btn-sm btn-secondary"
-                                                                        data-toggle="modal"
-                                                                        data-target="#change_password">
+                                                                <a href="javascript:;" class="border-button" data-toggle="modal"
+                                                                   data-target="#change_password" onclick="changePasswordClick('{{ route('check.password') }}')">
+                                                                <button type="button" class="btn btn-sm btn-secondary">
                                                                     Change Password
                                                                 </button>
+                                                                </a>
                                                             </div>
                                                         </div>
 
@@ -281,7 +281,8 @@
                                                     </form>
                                                 </div>
                                             </div>
-                                            <x-change-password id="{{$hospital->id}}" user-type="hospital" />
+                                            <x-change-password />
+{{--                                            <x-change-password id="{{$hospital->id}}" user-type="hospital" />--}}
                                             <!-- Change E-mails Pop-Up -->
                                             <div id="update_email_popup"></div>
                                             <!-- /Change E-mails Pop-Up -->

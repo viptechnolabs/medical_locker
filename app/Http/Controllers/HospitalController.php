@@ -20,13 +20,14 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 //use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Support\Facades\Auth;
+use function GuzzleHttp\Promise\all;
 
 class HospitalController extends Controller
 {
 
     public function index()
     {
-        $doctors = Doctor::latest()->take(5)->get();
+        $doctors = Doctor::orderBy('id', 'DESC')->take(5)->get();
         $hospital = Hospital::findOrFail(1);
          return  view('index', ['hospital' => $hospital, 'doctors' => $doctors]);
     }
@@ -226,17 +227,33 @@ class HospitalController extends Controller
 
     public function checkPassword(Request $request): \Illuminate\Http\JsonResponse
     {
-        dd($request->all());
         # Request params
         $password = $request->input('current_password');
+        if (Auth::guard('hospital')->check()) {
 
-        $user = auth()->user();
-
-        if (Hash::check($password, $user->password)) {
-            return response()->json(true);
-        } else {
-            return response()->json(false);
+            if (Hash::check($password, Auth::guard('hospital')->user()->password)) {
+                return response()->json(true);
+            } else {
+                return response()->json(false);
+            }
         }
+        elseif (Auth::guard('doctor')->check()) {
+
+            if (Hash::check($password, Auth::guard('doctor')->user()->password)) {
+                return response()->json(true);
+            } else {
+                return response()->json(false);
+            }
+        }
+        elseif (Auth::guard('web')->check()) {
+
+            if (Hash::check($password, Auth::guard('web')->user()->password)) {
+                return response()->json(true);
+            } else {
+                return response()->json(false);
+            }
+        }
+
     }
 
 
@@ -282,8 +299,6 @@ class HospitalController extends Controller
 
     public function changePassword(Request $request)
     {
-        $id = $request->id;
-        $user_type = $request->user_type;
         $rules = array(
             'password' => 'min:5',
             'confirm_password' => 'required_with:password|same:password|min:5',
@@ -293,24 +308,25 @@ class HospitalController extends Controller
 
         if ($validation->fails()) {
             return redirect()->back()->withInput()->withErrors($validation);
-        } else {
-            if ($user_type === 'hospital')
+        }
+        else
+        {
+            if (Auth::guard('hospital')->check()) {
+                $hospital = Hospital::findOrFail(Auth::guard('hospital')->user()->id);
+                $hospital->password = Hash::make($request->password);
+                $hospital->save();
+            }
+            elseif(Auth::guard('doctor')->check())
             {
-                $doctor = Hospital::findOrFail($id);
-                $doctor->password = Hash::make($request->password);
+                $doctor = Doctor::findOrFail(Auth::guard('doctor')->user()->id);
+                $doctor->password = Hash::make($request->password);;
                 $doctor->save();
             }
-            elseif($user_type === 'doctor')
+            elseif(Auth::guard('web')->check())
             {
-                $hospital = Doctor::findOrFail($id);
-                $hospital->password = Hash::make($request->password);;
-                $hospital->save();
-            }
-            elseif($user_type === 'user')
-            {
-                $hospital = User::findOrFail($id);
-                $hospital->password = Hash::make($request->password);;
-                $hospital->save();
+                $user = User::findOrFail(Auth::guard('web')->user()->id);
+                $user->password = Hash::make($request->password);;
+                $user->save();
             }
             session()->flash('message', 'Password Change Successfully..!');
             return redirect()->back();

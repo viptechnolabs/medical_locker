@@ -311,36 +311,3 @@ validator = $('#doctor_details_update').validate({
     }
 });
 
-
-validator = $('#change_password_form').validate({
-    ignore: [],
-    errorElement: 'span',
-    errorClass: 'validation-error',
-    rules: {
-        password: {
-            required: true,
-            minlength:8
-        },
-        confirm_password: {
-            required: true,
-            minlength:8,
-            equalTo: "#password"
-        }
-    },
-    submitHandler: function (form) {
-        $(form).find(':input[type=submit]').prop('disabled', true)
-        form.submit();
-    },
-    messages: {
-            password: {
-                required: "Please enter new password",
-                minlength: "Please enter minlength 8 characters."
-            },
-            confirm_password: {
-                required: "Please enter retype new password",
-                minlength: "Please enter minlength 8 characters.",
-                equalTo: "Confirm password does not match",
-            }
-    }
-});
-

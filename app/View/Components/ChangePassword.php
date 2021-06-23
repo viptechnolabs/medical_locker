@@ -6,18 +6,15 @@ use Illuminate\View\Component;
 
 class ChangePassword extends Component
 {
-    public $id;
-    public $user_type;
+
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($id, $userType)
+    public function __construct()
     {
         //
-        $this->id = $id;
-        $this->user_type = $userType;
     }
 
     /**

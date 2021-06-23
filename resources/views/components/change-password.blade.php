@@ -1,5 +1,5 @@
     <!-- change password -->
-    <div class="modal fade" id="change_password" tabindex="-1"
+        <div class="modal fade" id="change_password" tabindex="-1"
          role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-md">
             <div class="modal-content">
@@ -19,14 +19,14 @@
                     </div>
                     <input type="hidden" class="form-control" name="id" value="{{$id}}">
                     <input type="hidden" class="form-control" name="user_type" value="{{$user_type}}">
+                    @if(Auth::guard('hospital')->check())
+                        <div class="modal-body">
+                            <h4>Current Password</h4>
 
-{{--                    <div class="modal-body">--}}
-{{--                        <h4>Current Password</h4>--}}
-
-{{--                        <input type="password" class="form-control" placeholder="Current Password" name="current_password"--}}
-{{--                               id="current_password">--}}
-{{--                    </div>--}}
-
+                            <input type="password" class="form-control" placeholder="Current Password" name="current_password"
+                                   id="current_password">
+                        </div>
+                    @endif
                     <div class="modal-body">
                         <h4>Password</h4>
 

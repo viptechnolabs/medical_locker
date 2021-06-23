@@ -262,6 +262,8 @@
 <script src="{{ asset('js/change_mobile_no.js') }}"></script>
 <!--Change Status Js-->
 <script src="{{ asset('js/change_status.js') }}"></script>
+<!--Change password Js-->
+<script src="{{ asset('js/change_password.js') }}"></script>
 <!--Validation-->
 <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('js/validation_rules.js') }}"></script>
