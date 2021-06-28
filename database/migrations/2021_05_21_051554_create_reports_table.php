@@ -16,13 +16,16 @@ class CreateReportsTable extends Migration
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('patient_id')->unsigned();
-            $table->unsignedBigInteger('doc_id')->unsigned();
-            $table->dateTime('consultant_date');
-            $table->string('treatment_type', 100);
+            $table->unsignedBigInteger('consultant_doctor')->unsigned();
+            $table->date('consultant_date');
+            $table->enum('routine_checkup', ['yes', 'no']);
+            $table->enum('type', ['opd', 'indore']);
+            $table->string('treatment_name', 100);
+            $table->enum('insurance', ['yes', 'no']);
             $table->string('file_path', 100);
             $table->timestamps();
             $table->foreign('patient_id')->references('id')->on('patients');
-            $table->foreign('doc_id')->references('id')->on('doctors');
+            $table->foreign('consultant_doctor')->references('id')->on('doctors');
         });
     }
 

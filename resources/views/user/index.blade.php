@@ -18,12 +18,12 @@
 
                         <a href="{{route('user.add_user')}}">
                             <button type="button" class="btn btn-primary btn-sm">
-                                <i class="fa fa-user-md"></i> &ensp; Add User
+                                <i class="fa fa-user-plus"></i> &ensp; Add User
                             </button>
                         </a>
                         <a href="{{route('user.deleted_user')}}">
                             <button type="button" class="btn btn-danger btn-sm">
-                                <i class="fa fa-user-md"></i> &ensp; Deleted User
+                                <i class="fa fa-user"></i> &ensp; Deleted User
                             </button>
                         </a>
                     </div>

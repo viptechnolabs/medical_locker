@@ -15,7 +15,7 @@ class CreateDoctorsTable extends Migration
     {
         Schema::create('doctors', function (Blueprint $table) {
             $table->id();
-            $table->string('doctor_id', 22)->unique()->default('VIP/DR/2021/0001 ');;
+            $table->string('doctor_id', 22)->unique()->default('VIP/DR/2021/0001 ');
             $table->string('profile_photo');
             $table->string('name', 100);
 //            $table->string('degree', 100);
@@ -26,7 +26,7 @@ class CreateDoctorsTable extends Migration
             $table->string('city', 22);
             $table->string('state', 22);
             $table->string('pin_code', 10);
-            $table->string('aadhar_no', 13);
+            $table->string('aadhar_no', 13)->unique();
             $table->string('document_photo');
             $table->enum('gender', ['male', 'female', 'transgender', 'other']);
             $table->date('dob');

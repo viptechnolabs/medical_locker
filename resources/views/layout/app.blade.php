@@ -86,7 +86,7 @@
                         </ul>
                         @endif
                         <ul class="nav side-menu">
-                            <li><a href="#"><i class="fa fa-users"></i> Patients</a></li>
+                            <li><a href="{{route('patient.index')}}"><i class="fa fa-users"></i> Patients</a></li>
                         </ul>
                     </div>
 

@@ -23,7 +23,7 @@ class UserDataTable extends DataTable
             ->eloquent($query)
             ->addColumn('action', 'user.action')
             ->editColumn('profile_photo', function (User $user){
-                $url = asset('upload_file/user/'.$user->profile_photo);
+                $url = $user->profile_photo ? asset('upload_file/user/'.$user->profile_photo) : asset('upload_file/default.png');
                 return "<img src='{$url}' width='100px' />";
 
             })
@@ -79,27 +79,33 @@ class UserDataTable extends DataTable
      */
     protected function getColumns()
     {
-        return [
-            'id',
-            'profile_photo',
-            'name',
-            'email',
-            'mobile_no',
-            'status',
-            'action',
-        ];
-
 //        return [
-//            Column::computed('action')
-//                  ->exportable(false)
-//                  ->printable(false)
-//                  ->width(60)
-//                  ->addClass('text-center'),
-//            Column::make('id'),
-//            Column::make('add your columns'),
-//            Column::make('created_at'),
-//            Column::make('updated_at'),
+//            'id',
+//            'profile_photo',
+//            'name',
+//            'email',
+//            'mobile_no',
+//            'status',
+//            'action',
 //        ];
+
+        return [
+            Column::make('id'),
+            Column::make('profile_photo'),
+            Column::make('name'),
+            Column::make('email'),
+            Column::make('mobile_no'),
+            Column::computed('status')
+//                ->exportable(false)
+//                ->printable(false)
+//                ->width(60)
+                ->addClass('text-center'),
+            Column::computed('action')
+//                ->exportable(false)
+//                ->printable(false)
+//                ->width(60)
+                ->addClass('text-center'),
+        ];
     }
 
     /**

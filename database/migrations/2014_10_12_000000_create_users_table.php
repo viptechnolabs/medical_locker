@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('city', 22);
             $table->string('state', 22);
             $table->string('pin_code', 10);
-            $table->string('aadhar_no', 13);
+            $table->string('aadhar_no', 13)->unique();
             $table->enum('gender', ['male', 'female', 'transgender', 'other']);
             $table->date('dob');
             $table->enum('status', ['inactive', 'active'])->default('active');

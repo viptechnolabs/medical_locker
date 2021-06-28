@@ -526,3 +526,270 @@ validator = $('#user_details_update').validate({
     }
 });
 
+
+validator = $('#add_patient').validate({
+    ignore: [],
+    errorElement: 'span',
+    errorClass: 'validation-error',
+    rules: {
+        name: {
+            required: true,
+            maxlength: 100,
+            not_empty:true,
+        },
+        email: {
+            email: true,
+            required: true,
+            maxlength: 100,
+            not_empty:true,
+        },
+        mobile_no: {
+            required: true,
+            digits: true,
+            maxlength: 13,
+            not_empty:true,
+        },
+        address: {
+            required: true,
+            maxlength: 500,
+            not_empty:true,
+        },
+        state: {
+            required: true,
+            not_empty:true,
+        },
+        city: {
+            required: true,
+            not_empty:true,
+        },
+        pin_code: {
+            required: true,
+            digits: true,
+            maxlength: 13,
+            not_empty:true,
+        },
+        aadhar_no: {
+            required: true,
+            digits: true,
+            maxlength: 13,
+            not_empty:true,
+        },
+        gender: {
+            required: true,
+            not_empty:true,
+        },
+        dob: {
+            required: true,
+            not_empty:true,
+        },
+    },
+    submitHandler: function (form) {
+        $(form).find(':input[type=submit]').prop('disabled', true)
+        form.submit();
+    },
+    messages: {
+        name: {
+            required: "Please enter patient name",
+            maxlength: "Please enter maximum 100 characters.",
+        },
+        email: {
+            required: "Please enter email id",
+            email: "Please enter valid email address",
+            maxlength: "Please enter maximum 100 characters.",
+        },
+        mobile_no: {
+            required: "Please enter mobile no",
+            digits: "Please enter only numbers",
+            maxlength: "Please enter maximum 13 characters.",
+        },
+        state: {
+            required: "Please select state",
+        },
+        city: {
+            required: "Please enter city",
+        },
+        address: {
+            required: "Please enter patient address",
+            maxlength: "Please enter maximum 500 characters.",
+        },
+        pin_code: {
+            required: "Please enter pin cord no",
+            digits: "Please enter only numbers",
+            maxlength: "Please enter maximum 13 characters.",
+        },
+        aadhar_no: {
+            required: "Please enter aadhar card no",
+            digits: "Please enter only numbers",
+            maxlength: "Please enter maximum 13 characters.",
+        },
+        gender: {
+            required: "Please enter gender",
+        },
+        dob: {
+            required: "Please enter date of birth",
+        },
+    }
+});
+
+validator = $('#patient_details_update').validate({
+    ignore: [],
+    errorElement: 'span',
+    errorClass: 'validation-error',
+    rules: {
+        name: {
+            required: true,
+            maxlength: 100,
+            not_empty:true,
+        },
+        email: {
+            email: true,
+            required: true,
+            maxlength: 100,
+            not_empty:true,
+        },
+        mobile_no: {
+            required: true,
+            digits: true,
+            maxlength: 13,
+            not_empty:true,
+        },
+        address: {
+            required: true,
+            maxlength: 500,
+            not_empty:true,
+        },
+        state: {
+            required: true,
+            not_empty:true,
+        },
+        city: {
+            required: true,
+            not_empty:true,
+        },
+        pin_code: {
+            required: true,
+            digits: true,
+            maxlength: 13,
+            not_empty:true,
+        },
+        aadhar_no: {
+            required: true,
+            digits: true,
+            maxlength: 13,
+            not_empty:true,
+        },
+        dob: {
+            required: true,
+            not_empty:true,
+        },
+    },
+    submitHandler: function (form) {
+        $(form).find(':input[type=submit]').prop('disabled', true)
+        form.submit();
+    },
+    messages: {
+        name: {
+            required: "Please enter patient name",
+            maxlength: "Please enter maximum 100 characters.",
+        },
+        email: {
+            required: "Please enter email id",
+            email: "Please enter valid email address",
+            maxlength: "Please enter maximum 100 characters.",
+        },
+        mobile_no: {
+            required: "Please enter mobile no",
+            digits: "Please enter only numbers",
+            maxlength: "Please enter maximum 13 characters.",
+        },
+        state: {
+            required: "Please select state",
+        },
+        city: {
+            required: "Please enter city",
+        },
+        address: {
+            required: "Please enter patient address",
+            maxlength: "Please enter maximum 500 characters.",
+        },
+        pin_code: {
+            required: "Please enter pin cord no",
+            digits: "Please enter only numbers",
+            maxlength: "Please enter maximum 13 characters.",
+        },
+        aadhar_no: {
+            required: "Please enter aadhar card no",
+            digits: "Please enter only numbers",
+            maxlength: "Please enter maximum 13 characters.",
+        },
+        dob: {
+            required: "Please enter date of birth",
+        },
+    }
+});
+
+
+validator = $('#add_report').validate({
+    ignore: [],
+    errorElement: 'span',
+    errorClass: 'validation-error',
+    rules: {
+        consultant_doctor: {
+            required: true,
+            not_empty:true,
+        },
+        treatment_name: {
+            required: true,
+            maxlength: 100,
+            not_empty:true,
+        },
+        insurance: {
+            required: true,
+            not_empty:true,
+        },
+        type: {
+            required: true,
+            not_empty:true,
+        },
+        routine_checkup: {
+            required: true,
+            not_empty:true,
+        },
+        consultant_date: {
+            required: true,
+            not_empty:true,
+        },
+        file: {
+            required: true,
+            not_empty:true,
+        },
+    },
+    submitHandler: function (form) {
+        $(form).find(':input[type=submit]').prop('disabled', true)
+        form.submit();
+    },
+    messages: {
+        consultant_doctor: {
+            required: "Please select consultant doctor",
+        },
+        treatment_name: {
+            required: "Please enter treatment name",
+            maxlength: "Please enter maximum 100 characters.",
+        },
+        type: {
+            required: "Please select type",
+        },
+        routine_checkup: {
+            required: "Please select routine checkup",
+        },
+        insurance: {
+            required: "Please select insurance",
+        },
+        consultant_date: {
+            required: "Please enter consultant date",
+        },
+        file: {
+            required: "Please upload file (report)",
+        },
+    }
+});

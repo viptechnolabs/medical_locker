@@ -24,8 +24,9 @@ class UserController extends Controller
     public function index(UserDataTable $dataTable  )
     {
         $hospital = Hospital::findOrFail(1);
+        $users = User::all();
         return $dataTable->render('user.index', ['hospital' => $hospital]);
-//        return view('user.index', ['hospital' => $hospital]);
+//        return view('user.index', ['hospital' => $hospital, 'users' => $users]);
     }
 
     public function addUser()

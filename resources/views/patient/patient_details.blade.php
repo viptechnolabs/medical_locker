@@ -1,7 +1,7 @@
 @extends('layout.app')
 @section('content')
     <div>
-        <a href="{{route(Session::get('userType') === "user" ? "index" : "user.index")}}"> Do your work, then step
+        <a href="{{route(Session::get('userType') === "user" ? "index" : "patient.index")}}"> Do your work, then step
             back. </a>
         <div class="">
             <div class="page-title">
@@ -20,7 +20,10 @@
                 <div class="col-md-12 col-sm-12 ">
                     <div class="x_panel">
                         <div class="x_title">
-                            <h2>User Update Details</h2>
+                            <h2>Patient Update Details</h2>
+                            <ul class="nav navbar-right panel_toolbox">
+                                <a type='button' class='btn btn-success btn-sm' href="{{route('patient.add_report', $patient->id)}}"><i class='fa fa-plus'> </i> Add Report</a>
+                            </ul>
                             <div class="clearfix"></div>
                         </div>
                         <div class="x_content">
@@ -29,25 +32,25 @@
                                     <div id="crop-avatar">
                                         <!-- Current avatar -->
                                         <img class="img-responsive avatar-view"
-                                             src="{{asset('upload_file/user/'.$user->profile_photo)}}"
-                                             alt="{{$user->name}}"
+                                             src="{{$patient->profile_photo ? asset('upload_file/patient/'.$patient->profile_photo) : asset('upload_file/default.png')}}"
+                                             alt="{{$patient->name}}"
                                              title="Change the avatar" style="height: 220px; width: 220px">
                                     </div>
                                 </div>
-                                <h3>{{$user->name}}</h3>
+                                <h3>{{$patient->name}}</h3>
                                 <hr>
 
                                 <ul class="list-unstyled user_data" style="font-size: 19px">
                                     <li>
-                                        <a href="mailto:{{$user->email}}">
-                                            <i class="fa fa-envelope user-profile-icon"></i> {{$user->email}}
+                                        <a href="mailto:{{$patient->email}}">
+                                            <i class="fa fa-envelope user-profile-icon"></i> {{$patient->email}}
                                         </a>
                                     </li>
 
                                     <li>
-                                        <i class="fa fa-phone-square user-profile-icon"></i> {{$user->mobile_no}}
+                                        <i class="fa fa-phone-square user-profile-icon"></i> {{$patient->mobile_no}}
                                     </li>
-                                    <li><i class="fa fa-map-marker user-profile-icon"></i> {{$user->address}}
+                                    <li><i class="fa fa-map-marker user-profile-icon"></i> {{$patient->address}}
                                     </li>
 
 
@@ -60,10 +63,10 @@
                                 <div class="profile_title">
                                     <div class="col-md-9">
                                         <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
-                                            <li role="presentation" class="active"><a href="#edit_user_details"
+                                            <li role="presentation" class="active"><a href="#edit_patient_details"
                                                                                       id="home-tab"
                                                                                       role="tab" data-toggle="tab"
-                                                                                      aria-expanded="true">Edit user</a>
+                                                                                      aria-expanded="true">Edit Patient</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -77,21 +80,22 @@
                                 </div>
                                 <div class="" role="tabpanel" data-example-id="togglable-tabs">
                                     <div id="myTabContent" class="tab-content">
-                                        <!-- start user details update -->
-                                        <div role="tabpanel" class="tab-pane active " id="edit_user_details"
+                                        <!-- start patient details update -->
+                                        <div role="tabpanel" class="tab-pane active " id="edit_patient_details"
                                              aria-labelledby="home-tab">
 
                                             <div class="x_panel">
                                                 <div class="x_title">
-                                                    <h2>user Details Update</h2>
+                                                    <h2>Patient Details Update</h2>
 
                                                     <div class="clearfix"></div>
                                                 </div>
                                                 <div class="x_content">
                                                     <br/>
-                                                    <form action="{{route('user_details_update')}}"
+                                                    <form action="{{ route('patient.patient_details_update')}}"
                                                           class="form-horizontal form-label-left" method="post"
-                                                          enctype="multipart/form-data" id="user_details_update">
+                                                          enctype="multipart/form-data" id="patient_details_update">
+
                                                         @method('put')
                                                         @csrf
 
@@ -119,14 +123,14 @@
                                                             </div>
                                                         @endif
                                                         <input type="hidden" class="form-control" name="id"
-                                                               value="{{$user->id}}">
+                                                               value="{{$patient->id}}">
                                                         <div class="form-group row ">
                                                             <label class="control-label col-md-3 col-sm-3 ">Name</label>
                                                             <div class="col-md-9 col-sm-9 ">
                                                                 <input type="text" class="form-control"
                                                                        name="name"
-                                                                       value="{{$user->name}}"
-                                                                       placeholder="user Name" {{Session::get('userType') === "user" ? "readonly" : ""}}>
+                                                                       value="{{$patient->name}}"
+                                                                       placeholder="patient Name" {{Session::get('userType') === "user" ? "readonly" : ""}}>
                                                             </div>
                                                         </div>
                                                         <div class="form-group row">
@@ -135,13 +139,13 @@
                                                             <div
                                                                 class="{{Session::get('userType') === "user" ? "col-md-7 col-sm-3" : "col-md-9 col-sm-9"}}">
                                                                 <input type="email" class="form-control"
-                                                                       value="{{$user->email}}"
+                                                                       value="{{$patient->email}}"
                                                                        placeholder="Email"
                                                                        name="email" {{Session::get('userType') === "user" ? "readonly" : ""}}>
                                                             </div>
                                                             @if(Session::get('userType') === "user" )
                                                                 <a class="border-button" href="javascript:;"
-                                                                   onclick="getEmailPopup('{{ route('email.popup.get', $user->id) }}', '{{ route('check.email') }}', {{ $user->id }}, '{{ Session::get('userType') }}')">
+                                                                   onclick="getEmailPopup('{{ route('email.popup.get', $patient->id) }}', '{{ route('check.email') }}', {{ $patient->id }}, '{{ Session::get('userType') }}')">
                                                                     <button type="button" class="btn btn-secondary">
                                                                         Change Email
                                                                     </button>
@@ -156,13 +160,13 @@
                                                             <div
                                                                 class="{{Session::get('userType') === "user" ? "col-md-6 col-sm-3" : "col-md-9 col-sm-9"}}">
                                                                 <input type="text" class="form-control"
-                                                                       value="{{$user->mobile_no}}"
+                                                                       value="{{$patient->mobile_no}}"
                                                                        placeholder="Mobile No"
                                                                        name="mobile_no" {{Session::get('userType') === "user" ? "readonly" : ""}}>
                                                             </div>
                                                             @if(Session::get('userType') === "user" )
                                                                 <a class="border-button" href="javascript:;"
-                                                                   onclick="getMobilePopup('{{ route('mobile.popup.get', $user->id) }}', '{{ route('check.mobile') }}', {{ $user->id }}, '{{ Session::get('userType') }}')">
+                                                                   onclick="getMobilePopup('{{ route('mobile.popup.get', $patient->id) }}', '{{ route('check.mobile') }}', {{ $patient->id }}, '{{ Session::get('userType') }}')">
                                                                     <button type="button" class="btn btn-secondary">
                                                                         Change Mobile No
                                                                     </button>
@@ -176,7 +180,7 @@
                                                             <div class="col-md-9 col-sm-9 ">
                                                             <textarea class="form-control" rows="3"
                                                                       name="address"
-                                                                      placeholder="Address">{{$user->address}}</textarea>
+                                                                      placeholder="Address">{{$patient->address}}</textarea>
                                                             </div>
                                                         </div>
                                                         <div class="form-group row">
@@ -187,7 +191,7 @@
                                                                     <option value="">Choose..</option>
                                                                     @foreach($states as $state)
                                                                         <option
-                                                                            value="{{$state->name}}" {{ ($user->state === $state->name) ? "selected" : "" }}>{{$state->name}}</option>
+                                                                            value="{{$state->name}}" {{ ($patient->state === $state->name) ? "selected" : "" }}>{{$state->name}}</option>
                                                                     @endforeach
                                                                 </select>
                                                             </div>
@@ -201,7 +205,7 @@
                                                                     <option value="">Choose..</option>
                                                                     @foreach($cities as $city)
                                                                         <option
-                                                                            value="{{$city->name}}" {{ ($user->city === $city->name) ? "selected" : "" }}>{{$city->name}}</option>
+                                                                            value="{{$city->name}}" {{ ($patient->city === $city->name) ? "selected" : "" }}>{{$city->name}}</option>
                                                                     @endforeach
                                                                 </select>
                                                             </div>
@@ -213,7 +217,7 @@
                                                                 Code</label>
                                                             <div class="col-md-9 col-sm-9 ">
                                                                 <input type="text" class="form-control"
-                                                                       value="{{$user->pin_code}}"
+                                                                       value="{{$patient->pin_code}}"
                                                                        placeholder="Pin Code" name="pin_code">
                                                             </div>
 
@@ -224,7 +228,7 @@
                                                                 No</label>
                                                             <div class="col-md-9 col-sm-9 ">
                                                                 <input type="text" class="form-control"
-                                                                       value="{{$user->aadhar_no}}"
+                                                                       value="{{$patient->aadhar_no}}"
                                                                        placeholder="Aadhar No"
                                                                        name="aadhar_no" {{Session::get('userType') === "user" ? "readonly" : ""}}>
                                                             </div>
@@ -235,7 +239,7 @@
                                                                 class="control-label col-md-3 col-sm-3 ">Date Of
                                                                 Birth</label>
                                                             <div class="col-md-9 col-sm-9 ">
-                                                                <input id="dob" name="dob" value="{{$user->dob}}"
+                                                                <input id="dob" name="dob" value="{{$patient->dob}}"
                                                                        class="date-picker form-control"
                                                                        placeholder="dd-mm-yyyy" type="text"
                                                                        onfocus="this.type='date'"
@@ -255,21 +259,6 @@
                                                         </div>
                                                         <div class="form-group row">
                                                             <label
-                                                                class="control-label col-md-3 col-sm-3 ">Password</label>
-                                                            <div class="col-md-9 col-sm-9 ">
-                                                                <a href="javascript:;" class="border-button"
-                                                                   data-toggle="modal"
-                                                                   data-target="#change_password"
-                                                                   onclick="changePasswordClick('{{ route('check.password') }}')">
-                                                                    <button type="button"
-                                                                            class="btn btn-sm btn-secondary">
-                                                                        Change Password
-                                                                    </button>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group row">
-                                                            <label
                                                                 class="control-label col-md-3 col-sm-3 ">Profile
                                                                 Photo</label>
                                                             <div class="col-md-9 col-sm-9 ">
@@ -286,12 +275,12 @@
                                                                 <div class="col-md-55">
                                                                     <div class="thumbnail">
                                                                         <div class="image view view-first">
-                                                                            <a href="{{asset('upload_file/user/user_document/'.$user->document_photo)}}"
+                                                                            <a href="{{asset('upload_file/patient/patient_document/'.$patient->document_photo)}}"
                                                                                target="_blank">
                                                                                 <img
                                                                                     style="width: 100%; display: block;"
-                                                                                    src="{{asset('upload_file/user/user_document/'.$user->document_photo)}}"
-                                                                                    alt="image">
+                                                                                    src="{{$patient->document_photo ? asset('upload_file/patient/patient_document/'.$patient->document_photo) : asset('upload_file/default.png')}}"
+                                                                                    alt="{{$patient->name}}">
                                                                             </a>
                                                                         </div>
                                                                     </div>
@@ -299,7 +288,7 @@
                                                                 @if(Session::get('userType') !== "user" )
                                                                     <input type="file" id="document_photo"
                                                                            name="document_photo" accept="image/*"
-                                                                           alt="{{$user->name}}">
+                                                                           alt="{{$patient->name}}">
                                                                 @endif
                                                             </div>
 
@@ -307,19 +296,19 @@
                                                         <div class="ln_solid"></div>
                                                         <div class="form-group">
                                                             <div class="col-md-9 col-sm-9  offset-md-3">
-                                                                <a href="{{route('user.index')}}">
+                                                                <a href="{{route('patient.index')}}">
                                                                     <button type="button" class="btn btn-primary">Cancel
                                                                     </button>
                                                                 </a>
                                                                 <button type="reset" class="btn btn-primary">Reset
                                                                 </button>
-                                                                @if(Session::get('userType') !== "user" )
-                                                                    <a href="{{route('user.user_delete', $user->id)}}">
-                                                                        <button type="button" class="btn btn-danger">
-                                                                            Delete
-                                                                        </button>
-                                                                    </a>
-                                                                @endif
+{{--                                                                @if(Session::get('userType') !== "patient" )--}}
+{{--                                                                    <a href="{{route('patient.patient_delete', $patient->id)}}">--}}
+{{--                                                                        <button type="button" class="btn btn-danger">--}}
+{{--                                                                            Delete--}}
+{{--                                                                        </button>--}}
+{{--                                                                    </a>--}}
+{{--                                                                @endif--}}
                                                                 <button class="btn btn-success">Submit
                                                                 </button>
                                                             </div>
@@ -327,15 +316,14 @@
                                                     </form>
                                                 </div>
                                             </div>
-                                            <x-change-password id="{{$user->id}}" user-type="user"/>
                                             <!-- Change E-mails Pop-Up -->
-                                            <div id="update_email_popup"></div>
+{{--                                            <div id="update_email_popup"></div>--}}
                                             <!-- /Change E-mails Pop-Up -->
                                             <!-- Change Mobile Pop-Up -->
-                                            <div id="update_mobile_popup"></div>
+{{--                                            <div id="update_mobile_popup"></div>--}}
                                             <!-- /Change Mobile Pop-Up -->
                                         </div>
-                                        <!-- end user details update -->
+                                        <!-- end patient details update -->
                                         <!-- start patient count -->
                                         <!-- end patient count -->
                                     </div>

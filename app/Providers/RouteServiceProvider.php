@@ -55,6 +55,12 @@ class RouteServiceProvider extends ServiceProvider
                 ->namespace($this->namespace)
                 ->group(base_path('routes/doctor.php'));
 
+            Route::prefix('patient')
+                ->as('patient.')
+                ->middleware('patient')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/patient.php'));
+
         });
     }
 

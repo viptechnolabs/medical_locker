@@ -15,24 +15,25 @@ class CreatePatientsTable extends Migration
     {
         Schema::create('patients', function (Blueprint $table) {
             $table->id();
-            $table->string('patient_id', 10)->unique();
-            $table->string('profile_photo');
+            $table->string('patient_id', 22)->unique()->default('VIP/PE/2021/1');
             $table->string('name', 100);
             $table->string('mobile_no', 13);
-            $table->string('email', 25)->unique();;
+            $table->string('email', 50)->nullable();
             $table->longText('address');
             $table->string('city', 22);
             $table->string('state', 22);
             $table->string('pin_code', 10);
-            $table->string('aadhar_no', 13);
-            $table->dateTime('dob');
+            $table->string('aadhar_no', 13)->unique()->nullable();
+            $table->date('dob');
             $table->enum('gender', ['male', 'female', 'transgender', 'other']);
-            $table->string('weight', 10);
-            $table->string('height', 10);
-            $table->unsignedBigInteger('consultant_doctor')->unsigned();
-            $table->string('treatment_type', 100);
+            $table->string('profile_photo')->nullable();
+            $table->string('document_photo')->nullable();
+//            $table->string('weight', 10);
+//            $table->string('height', 10);
+//            $table->unsignedBigInteger('consultant_doctor')->unsigned();
+//            $table->string('treatment_type', 100);
             $table->timestamps();
-            $table->foreign('consultant_doctor')->references('id')->on('doctors');
+//            $table->foreign('consultant_doctor')->references('id')->on('doctors');
         });
     }
 
