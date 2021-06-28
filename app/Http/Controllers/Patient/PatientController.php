@@ -100,9 +100,12 @@ class PatientController extends Controller
     {
         $patient = Patients::findOrFail($id);
         $hospital = Hospital::findOrFail(1);
+//        $report = Report::findOrFail($id);
+        $report = Report::with('doctor')->where('patient_id',$id)->get();
+//        dd($report->doctor[0]->name);
         $state = State::all();
         $city = City::all();
-        return view('patient.patient_details', ['patient' => $patient, 'hospital' => $hospital, 'states' => $state, 'cities' => $city]);
+        return view('patient.patient_details', ['patient' => $patient, 'hospital' => $hospital, 'states' => $state, 'cities' => $city, 'reports' => $report]);
     }
 
     public function patientDetailsUpdate(Request $request)

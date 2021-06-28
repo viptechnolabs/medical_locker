@@ -68,6 +68,11 @@
                                                                                       role="tab" data-toggle="tab"
                                                                                       aria-expanded="true">Edit Patient</a>
                                             </li>
+                                            <li role="presentation" class=""><a href="#patient_report" role="tab"
+                                                                                id="profile-tab" data-toggle="tab"
+                                                                                aria-expanded="false">Patient
+                                                    Report</a>
+                                            </li>
                                         </ul>
                                     </div>
                                     <div class="col-md-3">
@@ -325,7 +330,49 @@
                                         </div>
                                         <!-- end patient details update -->
                                         <!-- start patient count -->
+                                        <div role="tabpanel" class="tab-pane fade" id="patient_report"
+                                             aria-labelledby="profile-tab">
+                                            <table class="data table table-striped no-margin">
+                                                <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Consultant Date</th>
+                                                    <th>Type</th>
+                                                    <th>Treatment Name</th>
+                                                    <th>Consultant Doctor</th>
+                                                    <th>Routine Checkup</th>
+                                                    <th>Insurance</th>
+                                                    <th>File (Reports)</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                @foreach($reports as $report)
+                                                    <tr>
+                                                        <td></td>
+
+                                                        <td>{{$report->consultant_date}}</td>
+
+                                                        <td>{{$report->type}}</td>
+
+                                                        <td>{{$report->treatment_name}}</td>
+
+                                                        <td>{{$report->doctor[0]->name}}</td>
+{{--                                                        <td>{{$report->doctor}}</td>--}}
+
+                                                        <td>{{$report->routine_checkup}}</td>
+
+                                                        <td>{{$report->insurance}}</td>
+
+                                                        <td></td>
+                                                    </tr>
+                                                @endforeach
+
+                                                </tbody>
+                                            </table>
+                                        </div>
                                         <!-- end patient count -->
+
                                     </div>
                                 </div>
                             </div>
