@@ -14,4 +14,9 @@ class Report extends Model
         return $this->hasMany(Doctor::class,'id','consultant_doctor');
     }
 
+    public function patient(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Patients::class,'id','patient_id');
+    }
+
 }

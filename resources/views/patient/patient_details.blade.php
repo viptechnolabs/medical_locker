@@ -27,7 +27,7 @@
                             <div class="clearfix"></div>
                         </div>
                         <div class="x_content">
-                            <div class="col-md-3 col-sm-3  profile_left">
+                            <div class="col-md-2 col-sm-2  profile_left">
                                 <div class="profile_img">
                                     <div id="crop-avatar">
                                         <!-- Current avatar -->
@@ -40,7 +40,7 @@
                                 <h3>{{$patient->name}}</h3>
                                 <hr>
 
-                                <ul class="list-unstyled user_data" style="font-size: 19px">
+                                <ul class="list-unstyled user_data" >
                                     <li>
                                         <a href="mailto:{{$patient->email}}">
                                             <i class="fa fa-envelope user-profile-icon"></i> {{$patient->email}}
@@ -58,7 +58,7 @@
 
 
                             </div>
-                            <div class="col-md-9 col-sm-9 ">
+                            <div class="col-md-10 col-sm-10 ">
 
                                 <div class="profile_title">
                                     <div class="col-md-9">
@@ -347,29 +347,51 @@
                                                 </thead>
                                                 <tbody>
 
-                                                @foreach($reports as $report)
+                                                @foreach($reports as $no => $report)
                                                     <tr>
-                                                        <td></td>
+                                                        <td>{{ $no + 1  }}</td>
 
-                                                        <td>{{$report->consultant_date}}</td>
+                                                        <td>{{date('d-m-Y', strtotime($report->consultant_date))}}</td>
 
-                                                        <td>{{$report->type}}</td>
+                                                        <td>{{ucfirst($report->type)}}</td>
 
-                                                        <td>{{$report->treatment_name}}</td>
+                                                        <td>{{ucfirst($report->treatment_name)}}</td>
 
-                                                        <td>{{$report->doctor[0]->name}}</td>
-{{--                                                        <td>{{$report->doctor}}</td>--}}
+                                                        <td>Dr. {{ucfirst($report->doctor[0]->name)}}</td>
 
-                                                        <td>{{$report->routine_checkup}}</td>
+                                                        <td>{{ucfirst($report->routine_checkup)}}</td>
 
-                                                        <td>{{$report->insurance}}</td>
+                                                        <td>{{ucfirst($report->insurance)}}</td>
 
-                                                        <td></td>
+                                                        <td>
+
+                                                            <div class="resume-preview">
+                                                                <object data="{{ asset($report->file_path.''.$report->file_name) }}"
+                                                                        type="application/pdf"
+                                                                        width="100%" height="100%">
+{{--                                                                    <p>Alternative text - include a link <a href="{{ route('patient.report_download',$report->id) }}">to the--}}
+{{--                                                                            PDF!</a>--}}
+{{--                                                                    </p>--}}
+                                                                    <p>Sorry for not load a pdf place click a link to download a pdf
+{{--                                                                        <a href="{{ route('patient.report_download',$report->id) }}" target="_blank"><u><i class="fa fa-download fa-fw"></i>&nbsp;Download</u></a>--}}
+                                                                    </p>
+                                                                </object>
+                                                                <a href="{{ asset($report->file_path.''.$report->file_name) }}" target="_blank"><u><i class="fa fa-eye"></i>&nbsp;Preview</u></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                                <a href="{{ route('patient.report_download',$report->id) }}" target="_blank"><u><i class="fa fa-download fa-fw"></i>&nbsp;Download</u></a>
+                                                            </div>
+                                                        </td>
                                                     </tr>
                                                 @endforeach
-
                                                 </tbody>
                                             </table>
+                                            <style>
+                                                td, th {
+                                                    text-align: center;
+                                                }
+                                            </style>
+                                            @empty($report)
+                                                <h4 style="margin:22px; text-align: center">No report inserted at time</h4>
+                                            @endempty
                                         </div>
                                         <!-- end patient count -->
 

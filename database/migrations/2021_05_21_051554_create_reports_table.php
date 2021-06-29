@@ -22,6 +22,7 @@ class CreateReportsTable extends Migration
             $table->enum('type', ['opd', 'indore']);
             $table->string('treatment_name', 100);
             $table->enum('insurance', ['yes', 'no']);
+            $table->string('file_name', 100);
             $table->string('file_path', 100);
             $table->timestamps();
             $table->foreign('patient_id')->references('id')->on('patients');

@@ -74,9 +74,9 @@
                         </thead>
 
                         <tbody>
-                        @foreach($patients as $patient)
+                        @foreach($patients as $no => $patient)
                             <tr>
-                                <td>{{$patient->id}}</td>
+                                <td>{{ $no + 1 }}</td>
                                 <td><img src='{{$patient->profile_photo ? asset('upload_file/patient/'.$patient->profile_photo) : asset('upload_file/default.png')}}' width='100px' /></td>
                                 <td>{{$patient->patient_id}}</td>
                                 <td>{{$patient->name}}</td>

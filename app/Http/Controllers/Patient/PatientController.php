@@ -11,14 +11,17 @@ use App\Models\Hospital;
 use App\Models\Patients;
 use App\Models\Report;
 use App\Models\State;
+use Barryvdh\DomPDF\Facade as PDF;
+//use Barryvdh\DomPDF\PDF;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-
+//use PDF;
 class PatientController extends Controller
 {
     //
@@ -100,9 +103,7 @@ class PatientController extends Controller
     {
         $patient = Patients::findOrFail($id);
         $hospital = Hospital::findOrFail(1);
-//        $report = Report::findOrFail($id);
         $report = Report::with('doctor')->where('patient_id',$id)->get();
-//        dd($report->doctor[0]->name);
         $state = State::all();
         $city = City::all();
         return view('patient.patient_details', ['patient' => $patient, 'hospital' => $hospital, 'states' => $state, 'cities' => $city, 'reports' => $report]);
@@ -211,17 +212,22 @@ class PatientController extends Controller
             if ($file) {
                 $destinationPath = public_path() . '/upload_file/patient/patient_report/'.str_replace('/','_', $request->patient_id).'/';
                 $fileName =  date('d-m-Y', strtotime($request->consultant_date)) . '_' . $request->file->getClientOriginalName();
-                $file_upload = new FileUpload();
-                $file_upload->patient_id = $request->id;
-                $file_upload->file_name = $fileName;
-                $file_upload->file_path = $destinationPath;
+                $report->file_name = $fileName;
+                $report->file_path = '/upload_file/patient/patient_report/'.str_replace('/','_', $request->patient_id).'/';
                 $file->move($destinationPath, $fileName);
-                $file_upload->save();
             }
             $report->save();
             session()->flash('message', 'Patient Report Add Successfully..!');
             return redirect()->route('patient.patient_details', $request->id);
         }
 
+    }
+
+    public function reportDownload($id)
+    {
+        $report = Report::findOrFail($id);
+       // dd($report->patient[0]->name);
+        //$data = Report::findOrFail($id);
+        return Response::download(public_path($report->file_path.$report->file_name),$report->patient[0]->name.'_'.$report->file_name);
     }
 }
