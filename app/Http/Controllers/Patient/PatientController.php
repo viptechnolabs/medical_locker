@@ -15,6 +15,7 @@ use Barryvdh\DomPDF\Facade as PDF;
 //use Barryvdh\DomPDF\PDF;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
@@ -28,7 +29,17 @@ class PatientController extends Controller
     public function index(PatientDataTable $dataTable)
     {
         $hospital = Hospital::findOrFail(1);
-        $patients = Patients::all();
+       // $patients = Patients::all();
+        if (Auth::guard('hospital')->check()) {
+            $patients = Patients::all();
+        }
+        elseif (Auth::guard('doctor')->check()) {
+            $patients =  Report::where('consultant_doctor',Auth::guard('doctor')->user()->id)->get();
+//            dd($patient_report[0]->patient);
+        }
+        elseif (Auth::guard('web')->check()) {
+            $patients = Patients::all();
+        }
 //        return $dataTable->render('patient.index', ['hospital' => $hospital]);
         return view('patient.index', ['hospital' => $hospital, 'patients' => $patients]);
     }
@@ -226,8 +237,10 @@ class PatientController extends Controller
     public function reportDownload($id)
     {
         $report = Report::findOrFail($id);
+        $file_name = str_replace('/','_', $report->patient[0]->patient_id) .'_'.$report->file_name;
+
        // dd($report->patient[0]->name);
         //$data = Report::findOrFail($id);
-        return Response::download(public_path($report->file_path.$report->file_name),$report->patient[0]->name.'_'.$report->file_name);
+        return Response::download(public_path($report->file_path.$report->file_name), str_replace('/','_', $report->patient[0]->patient_id) .'_'.$report->file_name);
     }
 }

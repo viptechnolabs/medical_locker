@@ -139,9 +139,9 @@
                                 @if(Auth::guard('hospital')->check())
                                     <a class="dropdown-item"  href="{{route('hospital_details')}}"> Setting</a>
                                 @elseif(Auth::guard('doctor')->check())
-                                    <a class="dropdown-item"  href="{{route('profile', ['doctor', Auth::guard('doctor')->user()->id])}}"> Profile</a>
+                                    <a class="dropdown-item"  href="{{route('profile')}}"> Profile</a>
                                 @elseif(Auth::guard('web')->check())
-                                    <a class="dropdown-item"  href="{{route('profile', ['user', Auth::guard('web')->user()->id])}}"> Profile</a>
+                                    <a class="dropdown-item"  href="{{route('profile')}}"> Profile</a>
                                 @endif
                                 <a class="dropdown-item"  href="{{route('logout')}}"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
                             </div>

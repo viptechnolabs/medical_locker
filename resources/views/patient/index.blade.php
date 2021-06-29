@@ -23,11 +23,13 @@
                                 <button type="submit" class="btn btn-default">Go!</button>&ensp;
                              </span>
 
-                        <a href="{{route('patient.add_patient')}}">
-                            <button type="button" class="btn btn-primary btn-sm">
-                                <i class="fa fa-users"></i> &ensp; Add Patients
-                            </button>
-                        </a>
+                        @if(!Auth::guard('doctor')->check())
+                            <a href="{{route('patient.add_patient')}}">
+                                <button type="button" class="btn btn-primary btn-sm">
+                                    <i class="fa fa-users"></i> &ensp; Add Patients
+                                </button>
+                            </a>
+                        @endif
 {{--                        <a href="{{route('patient.deleted_patient')}}">--}}
 {{--                            <button type="button" class="btn btn-danger btn-sm">--}}
 {{--                                <i class="fa fa-user-md"></i> &ensp;  Patients--}}
@@ -74,22 +76,39 @@
                         </thead>
 
                         <tbody>
-                        @foreach($patients as $no => $patient)
-                            <tr>
-                                <td>{{ $no + 1 }}</td>
-                                <td><img src='{{$patient->profile_photo ? asset('upload_file/patient/'.$patient->profile_photo) : asset('upload_file/default.png')}}' width='100px' /></td>
-                                <td>{{$patient->patient_id}}</td>
-                                <td>{{$patient->name}}</td>
-                                <td>{{$patient->email}}</td>
-                                <td>{{$patient->mobile_no}}</td>
-{{--                                <td align="center">--}}
-{{--                                    <a type='button' class='btn btn-success btn-sm' href="{{route('patient.patient_details', $patient->id)}}"><i class='fa fa-plus'> </i> Add Report</a>--}}
-{{--                                </td>--}}
-                                <td align="center">
-                                    <a type='button' class='btn btn-primary btn-sm' href="{{route('patient.patient_details', $patient->id)}}"><i class='fa fa-user'> </i> View Profile</a>
-                                </td>
-                            </tr>
-                        @endforeach
+                        @if (Auth::guard('doctor')->check())
+                            @foreach($patients as  $no =>  $patient_re)
+                                @foreach($patient_re->patient as $patient)
+                                    <tr>
+                                        <td>{{ $no + 1 }}</td>
+                                        <td><img src='{{$patient->profile_photo ? asset('upload_file/patient/'.$patient->profile_photo) : asset('upload_file/default.png')}}' width='100px' /></td>
+                                        <td>{{$patient->patient_id}}</td>
+                                        <td>{{$patient->name}}</td>
+                                        <td>{{$patient->email}}</td>
+                                        <td>{{$patient->mobile_no}}</td>
+                                        <td align="center">
+                                            <a type='button' class='btn btn-primary btn-sm' href="{{route('patient.patient_details', $patient->id)}}"><i class='fa fa-user'> </i> View Profile</a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endforeach
+                        @endif
+                        @if (Auth::guard('hospital')->check() or Auth::guard('web')->check() )
+                                @foreach($patients as $no => $patient)
+                                    <tr>
+                                        <td>{{ $no + 1 }}</td>
+                                        <td><img src='{{$patient->profile_photo ? asset('upload_file/patient/'.$patient->profile_photo) : asset('upload_file/default.png')}}' width='100px' /></td>
+                                        <td>{{$patient->patient_id}}</td>
+                                        <td>{{$patient->name}}</td>
+                                        <td>{{$patient->email}}</td>
+                                        <td>{{$patient->mobile_no}}</td>
+                                        <td align="center">
+                                            <a type='button' class='btn btn-primary btn-sm' href="{{route('patient.patient_details', $patient->id)}}"><i class='fa fa-user'> </i> View Profile</a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                        @endif
+
                         </tbody>
                     </table>
 

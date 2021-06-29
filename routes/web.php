@@ -38,7 +38,7 @@ Route::middleware(['auth:hospital', 'checkStatus'])->group(function () {
 
 Route::middleware(['auth:doctor,web', 'checkStatus'])->group(function () {
     /* Doctor and User Middleware */
-    Route::get('profile/{user_type}/{id}', [App\Http\Controllers\HospitalController::class, 'profile'])->name('profile');
+    Route::get('profile', [App\Http\Controllers\HospitalController::class, 'profile'])->name('profile');
 });
 Route::middleware(['auth:hospital,web', 'checkStatus'])->group(function () {
     /* Hospital and User Middleware */

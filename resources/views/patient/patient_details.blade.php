@@ -1,12 +1,12 @@
 @extends('layout.app')
 @section('content')
     <div>
-        <a href="{{route(Session::get('userType') === "user" ? "index" : "patient.index")}}"> Do your work, then step
+        <a href="{{route('patient.index')}}"> Do your work, then step
             back. </a>
         <div class="">
             <div class="page-title">
                 <div class="title_left">
-                    <h3>Update Details</h3>
+                    <h3>{{Auth::guard('hospital')->check() ? 'Update details' : 'Patient details'}}</h3>
                 </div>
 
                 <div class="title_right">
@@ -20,10 +20,12 @@
                 <div class="col-md-12 col-sm-12 ">
                     <div class="x_panel">
                         <div class="x_title">
-                            <h2>Patient Update Details</h2>
-                            <ul class="nav navbar-right panel_toolbox">
-                                <a type='button' class='btn btn-success btn-sm' href="{{route('patient.add_report', $patient->id)}}"><i class='fa fa-plus'> </i> Add Report</a>
-                            </ul>
+                            <h2>{{Auth::guard('hospital')->check() ? 'Patient update details and reports' : 'Patient details and reports'}}</h2>
+                            @if(!Auth::guard('doctor')->check())
+                                <ul class="nav navbar-right panel_toolbox">
+                                    <a type='button' class='btn btn-success btn-sm' href="{{route('patient.add_report', $patient->id)}}"><i class='fa fa-plus'> </i> Add Report</a>
+                                </ul>
+                            @endif
                             <div class="clearfix"></div>
                         </div>
                         <div class="x_content">
@@ -135,49 +137,31 @@
                                                                 <input type="text" class="form-control"
                                                                        name="name"
                                                                        value="{{$patient->name}}"
-                                                                       placeholder="patient Name" {{Session::get('userType') === "user" ? "readonly" : ""}}>
+                                                                       placeholder="patient Name" {{Session::get('userType') === "hospital" ? "" : "readonly"}}>
                                                             </div>
                                                         </div>
                                                         <div class="form-group row">
                                                             <label
                                                                 class="control-label col-md-3 col-sm-3 ">Email</label>
                                                             <div
-                                                                class="{{Session::get('userType') === "user" ? "col-md-7 col-sm-3" : "col-md-9 col-sm-9"}}">
+                                                                class="col-md-9 col-sm-9">
                                                                 <input type="email" class="form-control"
                                                                        value="{{$patient->email}}"
                                                                        placeholder="Email"
-                                                                       name="email" {{Session::get('userType') === "user" ? "readonly" : ""}}>
+                                                                       name="email" {{Session::get('userType') === "hospital" ? "" : "readonly"}}>
                                                             </div>
-                                                            @if(Session::get('userType') === "user" )
-                                                                <a class="border-button" href="javascript:;"
-                                                                   onclick="getEmailPopup('{{ route('email.popup.get', $patient->id) }}', '{{ route('check.email') }}', {{ $patient->id }}, '{{ Session::get('userType') }}')">
-                                                                    <button type="button" class="btn btn-secondary">
-                                                                        Change Email
-                                                                    </button>
-                                                                </a>
-                                                            @endif
-
                                                         </div>
                                                         <div class="form-group row">
                                                             <label
                                                                 class="control-label col-md-3 col-sm-3 ">Mobile
                                                                 No</label>
                                                             <div
-                                                                class="{{Session::get('userType') === "user" ? "col-md-6 col-sm-3" : "col-md-9 col-sm-9"}}">
+                                                                class="col-md-9 col-sm-9">
                                                                 <input type="text" class="form-control"
                                                                        value="{{$patient->mobile_no}}"
                                                                        placeholder="Mobile No"
-                                                                       name="mobile_no" {{Session::get('userType') === "user" ? "readonly" : ""}}>
+                                                                       name="mobile_no" {{Session::get('userType') === "hospital" ? "" : "readonly"}}>
                                                             </div>
-                                                            @if(Session::get('userType') === "user" )
-                                                                <a class="border-button" href="javascript:;"
-                                                                   onclick="getMobilePopup('{{ route('mobile.popup.get', $patient->id) }}', '{{ route('check.mobile') }}', {{ $patient->id }}, '{{ Session::get('userType') }}')">
-                                                                    <button type="button" class="btn btn-secondary">
-                                                                        Change Mobile No
-                                                                    </button>
-                                                                </a>
-                                                            @endif
-
                                                         </div>
                                                         <div class="form-group row">
                                                             <label class="control-label col-md-3 col-sm-3 "> Address
@@ -185,14 +169,14 @@
                                                             <div class="col-md-9 col-sm-9 ">
                                                             <textarea class="form-control" rows="3"
                                                                       name="address"
-                                                                      placeholder="Address">{{$patient->address}}</textarea>
+                                                                      placeholder="Address" {{Session::get('userType') === "hospital" ? "" : "readonly"}}>{{$patient->address}}</textarea>
                                                             </div>
                                                         </div>
                                                         <div class="form-group row">
                                                             <label
                                                                 class="control-label col-md-3 col-sm-3 ">State</label>
                                                             <div class="col-md-9 col-sm-9 ">
-                                                                <select id="state" name="state" class="form-control">
+                                                                <select id="state" name="state" class="form-control" {{Session::get('userType') === "hospital" ? "" : "disabled"}}>
                                                                     <option value="">Choose..</option>
                                                                     @foreach($states as $state)
                                                                         <option
@@ -206,7 +190,7 @@
                                                             <label
                                                                 class="control-label col-md-3 col-sm-3 ">City</label>
                                                             <div class="col-md-9 col-sm-9 ">
-                                                                <select id="city" name="city" class="form-control">
+                                                                <select id="city" name="city" class="form-control" {{Session::get('userType') === "hospital" ? "" : "disabled"}}>
                                                                     <option value="">Choose..</option>
                                                                     @foreach($cities as $city)
                                                                         <option
@@ -223,7 +207,7 @@
                                                             <div class="col-md-9 col-sm-9 ">
                                                                 <input type="text" class="form-control"
                                                                        value="{{$patient->pin_code}}"
-                                                                       placeholder="Pin Code" name="pin_code">
+                                                                       placeholder="Pin Code" name="pin_code" {{Session::get('userType') === "hospital" ? "" : "readonly"}}>
                                                             </div>
 
                                                         </div>
@@ -235,7 +219,7 @@
                                                                 <input type="text" class="form-control"
                                                                        value="{{$patient->aadhar_no}}"
                                                                        placeholder="Aadhar No"
-                                                                       name="aadhar_no" {{Session::get('userType') === "user" ? "readonly" : ""}}>
+                                                                       name="aadhar_no" {{Session::get('userType') === "hospital" ? "" : "readonly"}}>
                                                             </div>
 
                                                         </div>
@@ -251,7 +235,7 @@
                                                                        onmouseover="this.type='date'"
                                                                        onclick="this.type='date'"
                                                                        onblur="this.type='text'"
-                                                                       onmouseout="timeFunctionLong(this)">
+                                                                       onmouseout="timeFunctionLong(this)" {{Session::get('userType') === "hospital" ? "" : "readonly"}}>
                                                                 <script>
                                                                     function timeFunctionLong(input) {
                                                                         setTimeout(function () {
@@ -262,16 +246,17 @@
                                                             </div>
 
                                                         </div>
-                                                        <div class="form-group row">
-                                                            <label
-                                                                class="control-label col-md-3 col-sm-3 ">Profile
-                                                                Photo</label>
-                                                            <div class="col-md-9 col-sm-9 ">
-                                                                <input type="file" id="profile_photo"
-                                                                       name="profile_photo" accept="image/*">
+                                                        @if(Auth::guard('hospital')->check())
+                                                            <div class="form-group row">
+                                                                <label
+                                                                    class="control-label col-md-3 col-sm-3 ">Profile
+                                                                    Photo</label>
+                                                                <div class="col-md-9 col-sm-9 ">
+                                                                    <input type="file" id="profile_photo"
+                                                                           name="profile_photo" accept="image/*">
+                                                                </div>
                                                             </div>
-
-                                                        </div>
+                                                        @endif
                                                         <div class="form-group row">
                                                             <label
                                                                 class="control-label col-md-3 col-sm-3 ">Document
@@ -290,7 +275,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                @if(Session::get('userType') !== "user" )
+                                                                @if(Auth::guard('hospital')->check())
                                                                     <input type="file" id="document_photo"
                                                                            name="document_photo" accept="image/*"
                                                                            alt="{{$patient->name}}">
@@ -299,25 +284,20 @@
 
                                                         </div>
                                                         <div class="ln_solid"></div>
-                                                        <div class="form-group">
-                                                            <div class="col-md-9 col-sm-9  offset-md-3">
-                                                                <a href="{{route('patient.index')}}">
-                                                                    <button type="button" class="btn btn-primary">Cancel
+                                                        @if(Auth::guard('hospital')->check())
+                                                            <div class="form-group">
+                                                                <div class="col-md-9 col-sm-9  offset-md-3">
+                                                                    <a href="{{route('patient.index')}}">
+                                                                        <button type="button" class="btn btn-primary">Cancel
+                                                                        </button>
+                                                                    </a>
+                                                                    <button type="reset" class="btn btn-primary">Reset
                                                                     </button>
-                                                                </a>
-                                                                <button type="reset" class="btn btn-primary">Reset
-                                                                </button>
-{{--                                                                @if(Session::get('userType') !== "patient" )--}}
-{{--                                                                    <a href="{{route('patient.patient_delete', $patient->id)}}">--}}
-{{--                                                                        <button type="button" class="btn btn-danger">--}}
-{{--                                                                            Delete--}}
-{{--                                                                        </button>--}}
-{{--                                                                    </a>--}}
-{{--                                                                @endif--}}
-                                                                <button class="btn btn-success">Submit
-                                                                </button>
+                                                                    <button class="btn btn-success">Submit
+                                                                    </button>
+                                                                </div>
                                                             </div>
-                                                        </div>
+                                                        @endif
                                                     </form>
                                                 </div>
                                             </div>
@@ -376,8 +356,10 @@
 {{--                                                                        <a href="{{ route('patient.report_download',$report->id) }}" target="_blank"><u><i class="fa fa-download fa-fw"></i>&nbsp;Download</u></a>--}}
                                                                     </p>
                                                                 </object>
-                                                                <a href="{{ asset($report->file_path.''.$report->file_name) }}" target="_blank"><u><i class="fa fa-eye"></i>&nbsp;Preview</u></a>&nbsp;&nbsp;&nbsp;&nbsp;
-                                                                <a href="{{ route('patient.report_download',$report->id) }}" target="_blank"><u><i class="fa fa-download fa-fw"></i>&nbsp;Download</u></a>
+                                                                @if(!Auth::guard('web')->check())
+                                                                    <a href="{{ asset($report->file_path.''.$report->file_name) }}" target="_blank"><u><i class="fa fa-eye"></i>&nbsp;Preview</u></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                                    <a href="{{ route('patient.report_download',$report->id) }}" target="_blank"><u><i class="fa fa-download fa-fw"></i>&nbsp;Download</u></a>
+                                                                @endif
                                                             </div>
                                                         </td>
                                                     </tr>

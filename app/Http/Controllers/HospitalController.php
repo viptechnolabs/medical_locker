@@ -88,16 +88,16 @@ class HospitalController extends Controller
         return view('hospital_details', ['hospital' => $hospital]);
     }
 
-    public function profile($user_type, $id)
+    public function profile()
     {
         $hospital = Hospital::findOrFail(1);
-        if ($user_type === 'doctor') {
-            $doctor = Doctor::findOrFail($id);
+        if (Session::get('userType') === "doctor") {
+            $doctor = Doctor::findOrFail(Auth::guard('doctor')->user()->id);
             $state = State::all();
             $city = City::all();
             return view('doctor.doctor_details', ['doctor' => $doctor, 'hospital' => $hospital, 'states' => $state, 'cities' => $city]);
-        } elseif ($user_type === 'user') {
-            $user = User::findOrFail($id);
+        } elseif (Session::get('userType') === 'user') {
+            $user = User::findOrFail(Auth::guard('web')->user()->id);
             $state = State::all();
             $city = City::all();
             return view('user.user_details', ['user' => $user, 'hospital' => $hospital, 'states' => $state, 'cities' => $city]);

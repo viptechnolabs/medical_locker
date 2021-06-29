@@ -39,6 +39,11 @@ class Doctor extends Authenticatable
 //        return $this->hasMany(Certificate::class);
     }
 
+    public function patient()
+    {
+        return $this->hasMany(Report::class,'consultant_doctor','id');
+//        return $this->hasMany(Certificate::class);
+    }
 
 //    public  static function  getUserById($id){
 //        return Doctor::findOrFail($id);
