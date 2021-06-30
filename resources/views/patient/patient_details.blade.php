@@ -309,7 +309,7 @@
                                             <!-- /Change Mobile Pop-Up -->
                                         </div>
                                         <!-- end patient details update -->
-                                        <!-- start patient count -->
+                                        <!-- start patient report -->
                                         <div role="tabpanel" class="tab-pane fade" id="patient_report"
                                              aria-labelledby="profile-tab">
                                             <table class="data table table-striped no-margin">
@@ -359,6 +359,7 @@
                                                                 @if(!Auth::guard('web')->check())
                                                                     <a href="{{ asset($report->file_path.''.$report->file_name) }}" target="_blank"><u><i class="fa fa-eye"></i>&nbsp;Preview</u></a>&nbsp;&nbsp;&nbsp;&nbsp;
                                                                     <a href="{{ route('patient.report_download',$report->id) }}" target="_blank"><u><i class="fa fa-download fa-fw"></i>&nbsp;Download</u></a>
+{{--                                                                    <a href="{{ url('api/report_download/'.$report->id) }}" target="_blank"><u><i class="fa fa-download fa-fw"></i>&nbsp;Download</u></a>--}}
                                                                 @endif
                                                             </div>
                                                         </td>
@@ -375,7 +376,7 @@
                                                 <h4 style="margin:22px; text-align: center">No report inserted at time</h4>
                                             @endempty
                                         </div>
-                                        <!-- end patient count -->
+                                        <!-- end patient report -->
 
                                     </div>
                                 </div>

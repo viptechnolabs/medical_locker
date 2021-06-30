@@ -30,6 +30,13 @@
                                 </button>
                             </a>
                         @endif
+                        @if(!Auth::guard('web')->check())
+                            <a href="{{ route('patient.patient_list_download') }}">
+                                <button type="button" class="btn btn-success btn-sm">
+                                    <i class="fa fa-download fa-fw"></i> &ensp; Patients List Download
+                                </button>
+                            </a>
+                        @endif
 {{--                        <a href="{{route('patient.deleted_patient')}}">--}}
 {{--                            <button type="button" class="btn btn-danger btn-sm">--}}
 {{--                                <i class="fa fa-user-md"></i> &ensp;  Patients--}}

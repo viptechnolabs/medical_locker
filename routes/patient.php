@@ -21,6 +21,7 @@ Route::middleware(['auth:hospital,doctor,web', 'checkStatus'])->group(function (
 
 Route::middleware(['auth:hospital,doctor', 'checkStatus'])->group(function () {
     Route::get('report_download/{id}', [App\Http\Controllers\Patient\PatientController::class, 'reportDownload'])->name('report_download');
+    Route::get('patient_list_download', [App\Http\Controllers\Patient\PatientController::class, 'patientListDownload'])->name('patient_list_download');
 });
 
 Route::middleware(['auth:hospital,web', 'checkStatus'])->group(function () {

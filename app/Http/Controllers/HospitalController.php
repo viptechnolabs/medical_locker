@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\City;
 use App\Models\Doctor;
 use App\Models\Hospital;
+use App\Models\Patients;
 use App\Models\State;
 use App\Models\User;
 use App\Notifications\ChangeEmail;
@@ -26,7 +27,8 @@ class HospitalController extends Controller
         $hospital = Hospital::findOrFail(1);
         $doctors = Doctor::orderBy('id', 'DESC')->take(5)->get();
         $users = User::orderBy('id', 'DESC')->take(5)->get();
-        return view('index', ['hospital' => $hospital, 'doctors' => $doctors, 'users' => $users]);
+        $patients = Patients::orderBy('id', 'DESC')->take(5)->get();
+        return view('index', ['hospital' => $hospital, 'doctors' => $doctors, 'users' => $users, 'patients' => $patients]);
     }
 
     public function login()

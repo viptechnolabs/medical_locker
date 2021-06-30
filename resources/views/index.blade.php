@@ -156,24 +156,26 @@
                             <div class="clearfix"></div>
                         </div>
                         <ul class="list-unstyled top_profiles scroll-view">
-                            @foreach ($doctors as $doctor)
+                            @foreach ($patients as $patient)
                                 <li class="media event">
                                     <a class="pull-left border-aero profile_thumb">
                                         <i class="fa fa-user aero"></i>
                                     </a>
                                     <div class="media-body">
-                                        <a class="title" href="{{route('doctor.doctor_details', $doctor->id)}}">Dr. {{$doctor->name}}</a>
-                                        <p><strong>{{$doctor->specialist}} </strong> <small style="margin-left: 130px">{{$doctor->created_at}}</small></p>
+                                        <a class="title" href="{{route('patient.patient_details', $patient->id)}}">{{$patient->name}}</a>
+                                        <div>
+                                            <small style="">{{$patient->created_at}}</small>
+                                        </div>
                                     </div>
                                 </li>
                             @endforeach
-                            @empty($doctor)
+                            @empty($patient)
                                 <h4 style="margin:22px; text-align: center">No patient inserted at time</h4>
                             @endempty
                             <li class="media event">
 
                                 <div class="media-body text-center">
-                                    <a href="{{route('doctor.index')}}"><u><p><strong>view more</strong></p></u></a>
+                                    <a href="{{route('patient.index')}}"><u><p><strong>view more</strong></p></u></a>
                                 </div>
                             </li>
                         </ul>

@@ -243,4 +243,23 @@ class PatientController extends Controller
         //$data = Report::findOrFail($id);
         return Response::download(public_path($report->file_path.$report->file_name), str_replace('/','_', $report->patient[0]->patient_id) .'_'.$report->file_name);
     }
+
+    public function patientListDownload()
+    {
+        if (Auth::guard('hospital')->check()) {
+            $patients = Patients::all();
+        }
+        elseif (Auth::guard('doctor')->check()) {
+            $patients =  Report::where('consultant_doctor',Auth::guard('doctor')->user()->id)->get();
+//            dd($patients[0]->patient[0]->name);
+        }
+        view()->share('patients',$patients);
+        $pdf = PDF::loadView('patient.patient_list', $patients);
+        return $pdf->download('patient_list.pdf');
+
+//        $patients = Patients::all();
+//        view()->share('patients',$patients);
+//       // $pdf = PDF::loadView('patient.patient_list', $patients);
+//        return view('patient.patient_list', ['patients' => $patients]);
+    }
 }

@@ -17,3 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+//Route::group(['middleware' => ['auth']], function()
+//{
+//    Route::get('report_download/{id}', [App\Http\Controllers\Patient\PatientController::class, 'reportDownload'])->name('report_download');
+//    Route::get('patient_list_download', [App\Http\Controllers\Patient\PatientController::class, 'reportDownload'])->name('patient_list_download');
+//});
