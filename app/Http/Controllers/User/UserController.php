@@ -87,6 +87,11 @@ class UserController extends Controller
                 $document->move($destinationPath, $fileName);
             }
             $user->save();
+
+            activity('Add user')
+                ->performedOn($user)
+                ->log( $request->name . ' are added');
+
             session()->flash('message', 'User Add Successfully..!');
             return redirect()->route('user.index');
         }
@@ -154,6 +159,11 @@ class UserController extends Controller
                 $user->document_photo = $fileName;
             }
             $user->save();
+
+            activity('Update user')
+                ->performedOn($user)
+                ->log( $request->name . ' are updated');
+
             session()->flash('message', 'User Details Update Successfully..!');
             return redirect()->back();
         }
@@ -163,6 +173,11 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $user->delete();
+
+        activity('Delete user')
+            ->performedOn($user)
+            ->log( $user->name . ' are deleted');
+
         session()->flash('message', 'Dr. '.$user->name.' are Delete Successfully..!');
         return redirect()->route('user.index');
     }

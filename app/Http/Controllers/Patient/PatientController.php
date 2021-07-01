@@ -101,6 +101,11 @@ class PatientController extends Controller
                 $document->move($destinationPath, $fileName);
             }
             $patient->save();
+
+            activity('Add patient')
+                ->performedOn($patient)
+                ->log( '('. $patient->patient_id . ') ' . $request->name . ' are added');
+
             // Second Method USe
             $patient_id = DB::table('patients')->orderBy('id', 'DESC')->first();
             session()->flash('message', 'Patient Add Successfully..!');
@@ -179,6 +184,11 @@ class PatientController extends Controller
                 $patient->document_photo = $fileName;
             }
             $patient->save();
+
+            activity('Update patient')
+                ->performedOn($patient)
+                ->log( '('. $patient->patient_id . ') ' . $request->name . ' are updated');
+
             session()->flash('message', 'Patient Details Update Successfully..!');
             return redirect()->back();
         }
@@ -228,6 +238,11 @@ class PatientController extends Controller
                 $file->move($destinationPath, $fileName);
             }
             $report->save();
+
+            activity('Add report')
+                ->performedOn($report)
+                ->log( '('. $report->patient[0]->patient_id . ') ' . $request->name . ' report added');
+
             session()->flash('message', 'Patient Report Add Successfully..!');
             return redirect()->route('patient.patient_details', $request->id);
         }
@@ -237,7 +252,11 @@ class PatientController extends Controller
     public function reportDownload($id)
     {
         $report = Report::findOrFail($id);
-        $file_name = str_replace('/','_', $report->patient[0]->patient_id) .'_'.$report->file_name;
+        //$file_name = str_replace('/','_', $report->patient[0]->patient_id) .'_'.$report->file_name;
+
+        activity('Report download')
+            ->performedOn($report)
+            ->log( '('. $report->patient[0]->patient_id . ') ' . $report->patient[0]->name . ' report downloaded');
 
        // dd($report->patient[0]->name);
         //$data = Report::findOrFail($id);
@@ -253,6 +272,10 @@ class PatientController extends Controller
             $patients =  Report::where('consultant_doctor',Auth::guard('doctor')->user()->id)->get();
 //            dd($patients[0]->patient[0]->name);
         }
+
+        activity('Patient list download')
+            ->log(  'Patient list downloaded');
+
         view()->share('patients',$patients);
         $pdf = PDF::loadView('patient.patient_list', $patients);
         return $pdf->download('patient_list.pdf');

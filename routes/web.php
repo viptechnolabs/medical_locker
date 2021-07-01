@@ -34,6 +34,7 @@ Route::middleware(['auth:hospital', 'checkStatus'])->group(function () {
     Route::put('restore/{id}', [App\Http\Controllers\HospitalController::class, 'restore'])->name('restore');
     Route::post('status_popup', [\App\Http\Controllers\HospitalController::class, 'changeStatusPopup'])->name('change_status_popup');
     Route::put('change_status/{id}', [\App\Http\Controllers\HospitalController::class, 'changeStatus'])->name('change_status');
+    Route::get('activity',[\App\Http\Controllers\HospitalController::class, 'activity'])->name('activity');
 });
 
 Route::middleware(['auth:doctor,web', 'checkStatus'])->group(function () {

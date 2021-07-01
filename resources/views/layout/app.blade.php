@@ -88,6 +88,11 @@
                         <ul class="nav side-menu">
                             <li><a href="{{route('patient.index')}}"><i class="fa fa-users"></i> Patients</a></li>
                         </ul>
+                        @if(Auth::guard('hospital')->check())
+                        <ul class="nav side-menu">
+                            <li><a href="{{route('activity')}}"><i class="fa fa-clock-o"></i> Activity</a></li>
+                        </ul>
+                        @endif
                     </div>
 
                 </div>

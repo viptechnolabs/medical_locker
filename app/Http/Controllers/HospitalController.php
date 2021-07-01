@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Spatie\Activitylog\Models\Activity;
 
 class HospitalController extends Controller
 {
@@ -33,7 +34,14 @@ class HospitalController extends Controller
 
     public function login()
     {
-        return view('login');
+        if (Auth::check())
+        {
+            return redirect()->route('index');
+        }
+        else
+        {
+            return view('login');
+        }
     }
 
     public function doLogin(Request $request)
@@ -41,19 +49,32 @@ class HospitalController extends Controller
         //$userType = array('hospital','doctor','user');
         if ($request->user_type === 'hospital') {
             if (Auth::guard('hospital')->attempt($request->only('email', 'password'), $request->filled('remember'))) {
-                //Authentication passed...
                 Session::put('userType', 'hospital');
+                //Authentication passed...
+                activity('Login')
+                    ->performedOn(Auth::guard('hospital')->user())
+                    ->causedBy(Auth::guard('hospital')->user())
+                    ->log(Auth::guard('hospital')->user()->name.' Hospital login');
+
                 return redirect()->route('index');
             }
         } elseif ($request->user_type === 'doctor') {
             if (Auth::guard('doctor')->attempt(['email' => $request->email, 'password' => $request->password, 'status' => 'active'], $request->filled('remember'))) {
                 //Authentication passed...
+                activity('Doctor login')
+                    ->performedOn(Auth::guard('doctor')->user())
+                    ->causedBy(Auth::guard('doctor')->user())
+                    ->log('Dr. ' . Auth::guard('doctor')->user()->name.' are login');
                 Session::put('userType', 'doctor');
                 return redirect()->route('index');
             }
         } elseif ($request->user_type === 'user') {
             if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'status' => 'active'], $request->filled('remember'))) {
                 //Authentication passed...
+                activity('User login')
+                    ->performedOn(Auth::guard('web')->user())
+                    ->causedBy(Auth::guard('web')->user())
+                    ->log(Auth::guard('web')->user()->name.' are     login');
                 Session::put('userType', 'user');
                 return redirect()->route('index');
             }
@@ -70,18 +91,49 @@ class HospitalController extends Controller
     public function logout()
     {
         if (Session::get('userType') === 'hospital') {
+
+            activity('Logout')
+                ->performedOn(Auth::guard('hospital')->user())
+                ->causedBy(Auth::guard('hospital')->user())
+                ->log(Auth::guard('hospital')->user()->name.' are logout');
+
             Session::flush();
             Auth::guard('hospital')->logout();
-        } elseif (Session::get('userType') === 'doctor') {
+
+        }
+        elseif (Session::get('userType') === 'doctor') {
+
+            activity('Doctor logout')
+                ->performedOn(Auth::guard('doctor')->user())
+                ->causedBy(Auth::guard('doctor')->user())
+                ->log('Dr. ' . Auth::guard('doctor')->user()->name.' are logout');
+
             Session::flush();
             Auth::guard('doctor')->logout();
+
         } elseif (Session::get('userType') === 'user') {
+
+            activity('User logout')
+                ->performedOn(Auth::guard('web')->user())
+                ->causedBy(Auth::guard('web')->user())
+                ->log(Auth::guard('web')->user()->name.' are logout');
+
             Session::flush();
             Auth::logout();
         }
         return redirect()
             ->route('login')
             ->with('status', 'Logout successfully...!');
+    }
+
+    public function activity()
+    {
+//        dd(Auth::guard('hospital')->user());
+        $hospital = Hospital::findOrFail(1);
+        $activities = Activity::all(); //returns the last logged activity
+//        dd($activities[0]->log_name);
+        //$lastActivity->subject; //returns the model that was passed to `performedOn`;
+        return view('activity', ['activities' => $activities, 'hospital' => $hospital,]);
     }
 
     public function hospitalDetails()
@@ -264,6 +316,11 @@ class HospitalController extends Controller
             $hospital->pin_cord_no = $request->hospital_pin_cord_no;
             $hospital->password = Hash::make($request->password);;
             $hospital->save();
+
+            activity('Update profile')
+                ->performedOn($hospital)
+                ->log($request->hospital_name.' details are updated');
+
             session()->flash('message', 'Hospital details update successfully..!');
             return redirect()->back();
         }
@@ -508,6 +565,11 @@ class HospitalController extends Controller
                 $hospital->verification_code = null;
                 $hospital->token = null;
                 $hospital->save();
+
+                activity('Update email')
+                    ->performedOn($hospital)
+                    ->log($hospital->name.' email are update');
+
                 //            if($request->user()->isTaTeamUser()){
                 //                $this->setLeaderActivity($request->user(), $hospital, 'candidate_email');
                 //            }
@@ -531,6 +593,11 @@ class HospitalController extends Controller
                 $doctor->token = null;
                 $doctor->save();
 
+                activity('Update email')
+                    ->performedOn($doctor)
+                    ->log('Dr. '. $doctor->name .' email are update');
+
+
                 return response()->json([
                     'message' => 'ok',
                     'status' => 200,
@@ -549,6 +616,11 @@ class HospitalController extends Controller
                 $user->verification_code = null;
                 $user->token = null;
                 $user->save();
+
+                activity('Update email')
+                    ->performedOn($user)
+                    ->log($user->name.' email are update');
+
 
                 return response()->json([
                     'message' => 'ok',
@@ -578,6 +650,11 @@ class HospitalController extends Controller
                 $hospital->token = null;
                 $hospital->save();
 
+                activity('Update mobile no')
+                    ->performedOn($hospital)
+                    ->log( $hospital->name .' mobile number are update');
+
+
                 return response()->json([
                     'message' => 'ok',
                     'status' => 200,
@@ -597,6 +674,11 @@ class HospitalController extends Controller
                 $doctor->token = null;
                 $doctor->save();
 
+                activity('Update mobile no')
+                    ->performedOn($doctor)
+                    ->log('Dr. '. $doctor->name .' mobile number are update');
+
+
                 return response()->json([
                     'message' => 'ok',
                     'status' => 200,
@@ -615,6 +697,11 @@ class HospitalController extends Controller
                 $user->verification_code = null;
                 $user->token = null;
                 $user->save();
+
+                activity('Update mobile no')
+                    ->performedOn($user)
+                    ->log( $user->name .' mobile number are update');
+
 
                 return response()->json([
                     'message' => 'ok',
@@ -643,13 +730,23 @@ class HospitalController extends Controller
         if ($request->user_type === 'doctor') {
             $doctor = Doctor::findOrFail($id);
             $doctor->status = ($doctor->status === "active") ? "inactive" : "active";
-            session()->flash('message', $doctor->name . ' Status Updated..!');
             $doctor->save();
+
+            activity('Update doctor status')
+                ->performedOn($doctor)
+                ->log( 'Dr. '. $doctor->name . ' status is '. (($doctor->status === "active") ? "active" : "inactive") );
+
+            session()->flash('message', $doctor->name . ' Status Updated..!');
         } elseif ($request->user_type === 'user') {
             $user = User::findOrFail($id);
             $user->status = ($user->status === "active") ? "inactive" : "active";
-            session()->flash('message', $user->name . ' Status Updated..!');
             $user->save();
+
+            activity('Update user status')
+                ->performedOn($user)
+                ->log( $user->name . ' status is '. (($user->status === "active") ? "active" : "inactive") );
+
+            session()->flash('message', $user->name . ' Status Updated..!');
         }
 
         return redirect()->back();
@@ -660,11 +757,21 @@ class HospitalController extends Controller
         if ($request->user_type === 'doctor') {
             $doctor = Doctor::withTrashed()->findOrFail($id);
             $doctor->restore();
+
+            activity('Restore doctor')
+                ->performedOn($doctor)
+                ->log( 'Dr. ' . $doctor->name . ' are restore' );
+
             session()->flash('message', 'Dr. ' . $doctor->name . ' Restore Successfully..!');
             return redirect()->route('doctor.index');
         } elseif ($request->user_type === 'user') {
             $user = User::withTrashed()->findOrFail($id);
             $user->restore();
+
+            activity('Restore user')
+                ->performedOn($user)
+                ->log($user->name . ' are restore' );
+
             session()->flash('message', $user->name . ' Restore Successfully..!');
             return redirect()->route('user.index');
         }

@@ -127,6 +127,11 @@ class DoctorController extends Controller
                     $certificates->move($certificates_destinationPath, $certificates_name);
                 }
             }
+
+            activity('Add doctor')
+                ->performedOn($doctor)
+                ->log('Dr. ' . $request->name . ' are added');
+
             session()->flash('message', 'Doctor Add Successfully..!');
             return redirect()->route('doctor.index');
         }
@@ -220,8 +225,13 @@ class DoctorController extends Controller
                     $certificates->move($certificates_destinationPath, $certificates_name);
                 }
             }
-
             $doctor->save();
+
+            activity('Update doctor')
+                ->performedOn($doctor)
+                ->log('Dr. ' . $request->name . ' are updated');
+
+
             session()->flash('message', 'Doctor Details Update Successfully..!');
             return redirect()->back();
         }
@@ -232,7 +242,12 @@ class DoctorController extends Controller
     {
         $doctor = Doctor::findOrFail($id);
         $doctor->delete();
-        session()->flash('message', 'Dr. '.$doctor->name.' are Delete Successfully..!');
+
+        activity('Delete doctor')
+            ->performedOn($doctor)
+            ->log('Dr. ' . $doctor->name . ' are deleted');
+
+        session()->flash('message', 'Dr. '.$doctor->name.' are delete successfully..!');
         return redirect()->route('doctor.index');
     }
 
