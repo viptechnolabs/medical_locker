@@ -17,6 +17,7 @@ class City extends Component
     public function __construct($selectCity)
     {
         $this->selectCity = $selectCity;
+        $this->cities = \App\Models\City::all();
     }
 
     /**
