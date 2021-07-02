@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -12,6 +11,7 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
     use SoftDeletes;
+
     protected $dates = ['deleted_at'];
 
     /**
@@ -28,13 +28,13 @@ class User extends Authenticatable
         'state',
         'pin_code',
         'aadhar_no',
-        'document_photo',
         'gender',
         'dob',
         'status',
         'token',
         'verification_code',
         'profile_photo',
+        'document_photo',
         'password',
     ];
 

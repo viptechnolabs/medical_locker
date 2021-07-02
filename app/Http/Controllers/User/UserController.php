@@ -9,24 +9,21 @@ use App\Models\City;
 use App\Models\Hospital;
 use App\Models\State;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Yajra\Datatables\Datatables;
 
 
 class UserController extends Controller
 {
     //
-    public function index(UserDataTable $dataTable  )
+    public function index(UserDataTable $dataTable)
     {
         $hospital = Hospital::findOrFail(1);
-        $users = User::all();
+        // $users = User::all();
         return $dataTable->render('user.index', ['hospital' => $hospital]);
-//        return view('user.index', ['hospital' => $hospital, 'users' => $users]);
+        // return view('user.index', ['hospital' => $hospital, 'users' => $users]);
     }
 
     public function addUser()
@@ -64,13 +61,13 @@ class UserController extends Controller
             $document = $request->document;
             $user->name = $request->name;
             $user->mobile_no = $request->mobile_no;
-            $user->email  = $request->email;
-            $user->address  = $request->address;
+            $user->email = $request->email;
+            $user->address = $request->address;
             $user->city = $request->city;
             $user->state = $request->state;
-            $user->pin_code	 = $request->pin_code;
-            $user->aadhar_no	 = $request->aadhar_no;
-            $user->gender	 = $request->gender;
+            $user->pin_code = $request->pin_code;
+            $user->aadhar_no = $request->aadhar_no;
+            $user->gender = $request->gender;
             $user->dob = $request->dob;
             $user->password = Hash::make('1234');
 
@@ -90,7 +87,7 @@ class UserController extends Controller
 
             activity('Add user')
                 ->performedOn($user)
-                ->log( $request->name . ' are added');
+                ->log($request->name . ' are added');
 
             session()->flash('message', 'User Add Successfully..!');
             return redirect()->route('user.index');
@@ -162,7 +159,7 @@ class UserController extends Controller
 
             activity('Update user')
                 ->performedOn($user)
-                ->log( $request->name . ' are updated');
+                ->log($request->name . ' are updated');
 
             session()->flash('message', 'User Details Update Successfully..!');
             return redirect()->back();
@@ -176,9 +173,9 @@ class UserController extends Controller
 
         activity('Delete user')
             ->performedOn($user)
-            ->log( $user->name . ' are deleted');
+            ->log($user->name . ' are deleted');
 
-        session()->flash('message', 'Dr. '.$user->name.' are Delete Successfully..!');
+        session()->flash('message', 'Dr. ' . $user->name . ' are Delete Successfully..!');
         return redirect()->route('user.index');
     }
 

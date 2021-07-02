@@ -6,29 +6,21 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="{{asset('images/hospital.ico')}}" type="image/ico" />
+    <link rel="icon" href="{{asset('images/hospital.ico')}}" type="image/ico"/>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
 
     <!-- Add more and remove button -->
-
-{{--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/css/bootstrap.min.css">--}}
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-
-
-
 
     <title>VIP TechnoLabs</title>
 
-       <!-- Bootstrap -->
-
+    <!-- Bootstrap -->
     <link href="{{asset('vendors/bootstrap/dist/css/bootstrap.min.css')}}" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="{{asset('vendors/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet">
     <!-- NProgress -->
     <link href="{{asset('vendors/nprogress/nprogress.css')}}" rel="stylesheet">
-{{--    <!-- Dropzone.js -->--}}
-{{--    <link href="{{asset('vendors/dropzone/dist/min/dropzone.min.css')}}" rel="stylesheet">--}}
 
     <!-- iCheck -->
     <link href="{{asset('vendors/iCheck/skins/flat/green.css')}}" rel="stylesheet">
@@ -36,13 +28,12 @@
     <!-- bootstrap-progressbar -->
     <link href="{{asset('vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css')}}" rel="stylesheet">
     <!-- JQVMap -->
-    <link href="{{asset('vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet')}}"/>
+    <link href="{{asset('vendors/jqvmap/dist/jqvmap.min.css')}}" rel="stylesheet"/>
     <!-- bootstrap-daterangepicker -->
     <link href="{{asset('vendors/bootstrap-daterangepicker/daterangepicker.css')}}" rel="stylesheet">
 
     <!-- Custom Theme Style -->
     <link href="{{asset('build/css/custom.min.css')}}" rel="stylesheet">
-{{--    @livewireStyles--}}
 </head>
 
 <body class="nav-md">
@@ -59,7 +50,8 @@
                 <!-- menu profile quick info -->
                 <div class="profile clearfix">
                     <div class="profile_pic">
-                        <img src="{{asset('upload_file/'.$hospital->logo)}}" alt="{$hospital->name}}" class="img-circle profile_img">
+                        <img src="{{asset('upload_file/'.$hospital->logo)}}" alt="{$hospital->name}}"
+                             class="img-circle profile_img">
                     </div>
                     <div class="profile_info">
                         <h2>{{$hospital->name}}</h2>
@@ -68,7 +60,7 @@
                 </div>
                 <!-- /menu profile quick info -->
 
-                <br />
+                <br/>
 
                 <!-- sidebar menu -->
                 <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
@@ -78,20 +70,20 @@
                             <li><a href="{{route('index')}}"><i class="fa fa-home"></i> Dashboard</a></li>
                         </ul>
                         @if(Auth::guard('hospital')->check())
-                        <ul class="nav side-menu">
-                            <li><a href="{{route('doctor.index')}}"><i class="fa fa-user-md"></i> Doctors</a></li>
-                        </ul>
-                        <ul class="nav side-menu">
-                            <li><a href="{{route('user.index')}}"><i class="fa fa-user"></i> Users</a></li>
-                        </ul>
+                            <ul class="nav side-menu">
+                                <li><a href="{{route('doctor.index')}}"><i class="fa fa-user-md"></i> Doctors</a></li>
+                            </ul>
+                            <ul class="nav side-menu">
+                                <li><a href="{{route('user.index')}}"><i class="fa fa-user"></i> Users</a></li>
+                            </ul>
                         @endif
                         <ul class="nav side-menu">
                             <li><a href="{{route('patient.index')}}"><i class="fa fa-users"></i> Patients</a></li>
                         </ul>
                         @if(Auth::guard('hospital')->check())
-                        <ul class="nav side-menu">
-                            <li><a href="{{route('activity')}}"><i class="fa fa-clock-o"></i> Activity</a></li>
-                        </ul>
+                            <ul class="nav side-menu">
+                                <li><a href="{{route('activity')}}"><i class="fa fa-clock-o"></i> Activity</a></li>
+                            </ul>
                         @endif
                     </div>
 
@@ -128,27 +120,35 @@
                     <ul class=" navbar-right">
                         <li class="nav-item dropdown open" style="padding-left: 15px;">
                             @if(Auth::guard('hospital')->check())
-                                <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
-                                    <img src="{{asset('upload_file/'.Auth::guard('hospital')->user()->logo)}}" alt="{{Auth::guard('hospital')->user()->name}}">{{ Auth::guard('hospital')->user()->name}}
+                                <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true"
+                                   id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
+                                    <img src="{{asset('upload_file/'.Auth::guard('hospital')->user()->logo)}}"
+                                         alt="{{Auth::guard('hospital')->user()->name}}">{{ Auth::guard('hospital')->user()->name}}
                                 </a>
                             @elseif(Auth::guard('doctor')->check())
-                                <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
-                                    <img src="{{asset('upload_file/doctor/'.Auth::guard('doctor')->user()->profile_photo)}}" alt="{{Auth::guard('hospital')->check()}}">{{ Auth::guard('doctor')->user()->name}}
+                                <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true"
+                                   id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
+                                    <img
+                                        src="{{asset('upload_file/doctor/'.Auth::guard('doctor')->user()->profile_photo)}}"
+                                        alt="{{Auth::guard('hospital')->check()}}">{{ Auth::guard('doctor')->user()->name}}
                                 </a>
                             @elseif(Auth::guard('web')->check())
-                                <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
-                                    <img src="{{asset('upload_file/user/'.Auth::guard('web')->user()->profile_photo)}}" alt="{{Auth::guard('web')->check()}}">{{ Auth::guard('web')->user()->name}}
+                                <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true"
+                                   id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
+                                    <img src="{{asset('upload_file/user/'.Auth::guard('web')->user()->profile_photo)}}"
+                                         alt="{{Auth::guard('web')->check()}}">{{ Auth::guard('web')->user()->name}}
                                 </a>
                             @endif
                             <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
                                 @if(Auth::guard('hospital')->check())
-                                    <a class="dropdown-item"  href="{{route('hospital_details')}}"> Setting</a>
+                                    <a class="dropdown-item" href="{{route('hospital_details')}}"> Setting</a>
                                 @elseif(Auth::guard('doctor')->check())
-                                    <a class="dropdown-item"  href="{{route('profile')}}"> Profile</a>
+                                    <a class="dropdown-item" href="{{route('profile')}}"> Profile</a>
                                 @elseif(Auth::guard('web')->check())
-                                    <a class="dropdown-item"  href="{{route('profile')}}"> Profile</a>
+                                    <a class="dropdown-item" href="{{route('profile')}}"> Profile</a>
                                 @endif
-                                <a class="dropdown-item"  href="{{route('logout')}}"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
+                                <a class="dropdown-item" href="{{route('logout')}}"><i
+                                        class="fa fa-sign-out pull-right"></i> Log Out</a>
                             </div>
                         </li>
                     </ul>
@@ -195,14 +195,15 @@
 <!-- Bootstrap -->
 <script src="{{asset('vendors/bootstrap/dist/js/bootstrap.bundle.min.js')}}"></script>
 <!-- DataTables -->
-<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css">
-
-
+<script src="{{ asset('js/datatable/jquery.dataTables.min.js') }}"></script>
+{{--<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>--}}
+<script src="{{ asset('js/datatable/dataTables.bootstrap4.min.js') }}"></script>
+{{--<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>--}}
+<link href="{{ asset('js/datatable/dataTables.bootstrap4.min.css') }}" rel="stylesheet"/>
+{{--<link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css">--}}
 
 {{--<!-- Bootstrap JavaScript -->--}}
-{{--<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>--}}
+
 <!-- FastClick -->
 <script src="{{asset('vendors/fastclick/lib/fastclick.js')}}"></script>
 <!-- NProgress -->
@@ -239,26 +240,8 @@
 <!-- bootstrap-daterangepicker -->
 <script src="{{asset('vendors/moment/min/moment.min.js')}}"></script>
 <script src="{{asset('vendors/bootstrap-daterangepicker/daterangepicker.js')}}"></script>
-{{--<!-- bootstrap-wysiwyg -->--}}
-{{--<script src="{{asset('vendors/bootstrap-wysiwyg/js/bootstrap-wysiwyg.min.js')}}"></script>--}}
-{{--<script src="{{asset('vendors/jquery.hotkeys/jquery.hotkeys.js')}}"></script>--}}
-{{--<script src="{{asset('vendors/google-code-prettify/src/prettify.js')}}"></script>--}}
 <!-- jQuery Tags Input -->
 <script src="{{asset('vendors/jquery.tagsinput/src/jquery.tagsinput.js')}}"></script>
-{{--<!-- Switchery -->--}}
-{{--<script src="{{asset('vendors/switchery/dist/switchery.min.js')}}"></script>--}}
-{{--<!-- Select2 -->--}}
-{{--<script src="{{asset('vendors/select2/dist/js/select2.full.min.js')}}"></script>--}}
-{{--<!-- Parsley -->--}}
-{{--<script src="{{asset('vendors/parsleyjs/dist/parsley.min.js')}}"></script>--}}
-{{--<!-- Autosize -->--}}
-{{--<script src="{{asset('vendors/autosize/dist/autosize.min.js')}}"></script>--}}
-{{--<!-- jQuery autocomplete -->--}}
-{{--<script src="{{asset('vendors/devbridge-autocomplete/dist/jquery.autocomplete.min.js')}}"></script>--}}
-{{--<!-- starrr -->--}}
-{{--<script src="{{asset('vendors/starrr/dist/starrr.js')}}"></script>--}}
-{{--<!-- Dropzone.js -->--}}
-{{--<script src="{{asset('vendors/dropzone/dist/min/dropzone.min.js')}}"></script>--}}
 <!-- Custom Theme Scripts -->
 <script src="{{asset('build/js/custom.min.js')}}"></script>
 <!--Change Email Js-->
@@ -275,7 +258,6 @@
 <script src="{{ asset('js/custom_validation_rules.js') }}"></script>
 <script src="{{ asset('js/validation.js') }}"></script>
 {{--<script src="{{ asset('js/file.js') }}"></script>--}}
-{{--@livewireScripts--}}
 </body>
 
 </html>

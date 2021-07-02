@@ -1,4 +1,4 @@
-<!-- update doctor status -->
+<!-- update status -->
 <div class="modal fade" id="change_status" tabindex="-1"
      role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-md">
@@ -31,4 +31,4 @@
         </div>
     </div>
 </div>
-<!-- /update doctor status -->
+<!-- /update status -->

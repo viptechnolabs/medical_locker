@@ -6,8 +6,6 @@ use App\Models\DeletedUser;
 use App\Models\User;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
-use Yajra\DataTables\Html\Editor\Editor;
-use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
 class DeletedUserDataTable extends DataTable
@@ -23,13 +21,13 @@ class DeletedUserDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->addColumn('action', 'user.action')
-            ->editColumn('profile_photo', function (User $user){
-                $url = $user->profile_photo ? asset('upload_file/user/'.$user->profile_photo) : asset('upload_file/default.png');
+            ->editColumn('profile_photo', function (User $user) {
+                $url = $user->profile_photo ? asset('upload_file/user/' . $user->profile_photo) : asset('upload_file/default.png');
                 return "<img src='{$url}' width='100px' />";
 
             })
             ->editColumn('action', function (User $user) {
-                return "<a type='button' class='btn btn-success btn-sm' href='javascript:;' onclick='StatusChange(\"".route('change_status_popup')."\", \"".route('restore', $user->id)."\", \"".'Are You Sure to restore...?'."\", \"".'user'."\")'>Restore</a>";
+                return "<a type='button' class='btn btn-success btn-sm' href='javascript:;' onclick='StatusChange(\"" . route('change_status_popup') . "\", \"" . route('restore', $user->id) . "\", \"" . 'Are You Sure to restore...?' . "\", \"" . 'user' . "\")'>Restore</a>";
 
             })
             ->rawColumns(['profile_photo', 'action']);
@@ -54,18 +52,18 @@ class DeletedUserDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-                    ->pageLength('5')
-                    ->setTableId('user-table')
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
-                    ->dom('Bfrtip')
-                    ->buttons(
-                        Button::make('create'),
-                        Button::make('export'),
-                        Button::make('print'),
-                        Button::make('reset'),
-                        Button::make('reload')
-                    );
+            ->pageLength('5')
+            ->setTableId('user-table')
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            ->dom('Bfrtip')
+            ->buttons(
+                Button::make('create'),
+                Button::make('export'),
+                Button::make('print'),
+                Button::make('reset'),
+                Button::make('reload')
+            );
     }
 
     /**
@@ -75,14 +73,6 @@ class DeletedUserDataTable extends DataTable
      */
     protected function getColumns()
     {
-//        return [
-//            'id',
-//            'profile_photo',
-//            'name',
-//            'email',
-//            'mobile_no',
-//            'action',
-//        ];
         return [
             Column::make('id'),
             Column::make('profile_photo'),

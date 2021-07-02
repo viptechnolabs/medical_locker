@@ -6,12 +6,14 @@ use App\Models\City;
 use App\Models\Doctor;
 use App\Models\Hospital;
 use App\Models\Patients;
+use App\Models\Report;
 use App\Models\State;
 use App\Models\User;
 use App\Notifications\ChangeEmail;
 use App\Notifications\ChangeMobileNo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
@@ -29,24 +31,21 @@ class HospitalController extends Controller
         $doctors = Doctor::orderBy('id', 'DESC')->take(5)->get();
         $users = User::orderBy('id', 'DESC')->take(5)->get();
         $patients = Patients::orderBy('id', 'DESC')->take(5)->get();
-        return view('index', ['hospital' => $hospital, 'doctors' => $doctors, 'users' => $users, 'patients' => $patients]);
+        $activities = Activity::orderBy('id', 'DESC')->take(5)->get();
+        return view('index', ['hospital' => $hospital, 'doctors' => $doctors, 'users' => $users, 'patients' => $patients, 'activities' => $activities]);
     }
 
     public function login()
     {
-        if (Auth::check())
-        {
+        if (Auth::check()) {
             return redirect()->route('index');
-        }
-        else
-        {
+        } else {
             return view('login');
         }
     }
 
     public function doLogin(Request $request)
     {
-        //$userType = array('hospital','doctor','user');
         if ($request->user_type === 'hospital') {
             if (Auth::guard('hospital')->attempt($request->only('email', 'password'), $request->filled('remember'))) {
                 Session::put('userType', 'hospital');
@@ -54,7 +53,7 @@ class HospitalController extends Controller
                 activity('Login')
                     ->performedOn(Auth::guard('hospital')->user())
                     ->causedBy(Auth::guard('hospital')->user())
-                    ->log(Auth::guard('hospital')->user()->name.' Hospital login');
+                    ->log(Auth::guard('hospital')->user()->name . ' Hospital login');
 
                 return redirect()->route('index');
             }
@@ -64,7 +63,7 @@ class HospitalController extends Controller
                 activity('Doctor login')
                     ->performedOn(Auth::guard('doctor')->user())
                     ->causedBy(Auth::guard('doctor')->user())
-                    ->log('Dr. ' . Auth::guard('doctor')->user()->name.' are login');
+                    ->log('Dr. ' . Auth::guard('doctor')->user()->name . ' are login');
                 Session::put('userType', 'doctor');
                 return redirect()->route('index');
             }
@@ -74,7 +73,7 @@ class HospitalController extends Controller
                 activity('User login')
                     ->performedOn(Auth::guard('web')->user())
                     ->causedBy(Auth::guard('web')->user())
-                    ->log(Auth::guard('web')->user()->name.' are     login');
+                    ->log(Auth::guard('web')->user()->name . ' are     login');
                 Session::put('userType', 'user');
                 return redirect()->route('index');
             }
@@ -95,18 +94,17 @@ class HospitalController extends Controller
             activity('Logout')
                 ->performedOn(Auth::guard('hospital')->user())
                 ->causedBy(Auth::guard('hospital')->user())
-                ->log(Auth::guard('hospital')->user()->name.' are logout');
+                ->log(Auth::guard('hospital')->user()->name . ' are logout');
 
             Session::flush();
             Auth::guard('hospital')->logout();
 
-        }
-        elseif (Session::get('userType') === 'doctor') {
+        } elseif (Session::get('userType') === 'doctor') {
 
             activity('Doctor logout')
                 ->performedOn(Auth::guard('doctor')->user())
                 ->causedBy(Auth::guard('doctor')->user())
-                ->log('Dr. ' . Auth::guard('doctor')->user()->name.' are logout');
+                ->log('Dr. ' . Auth::guard('doctor')->user()->name . ' are logout');
 
             Session::flush();
             Auth::guard('doctor')->logout();
@@ -116,7 +114,7 @@ class HospitalController extends Controller
             activity('User logout')
                 ->performedOn(Auth::guard('web')->user())
                 ->causedBy(Auth::guard('web')->user())
-                ->log(Auth::guard('web')->user()->name.' are logout');
+                ->log(Auth::guard('web')->user()->name . ' are logout');
 
             Session::flush();
             Auth::logout();
@@ -128,18 +126,19 @@ class HospitalController extends Controller
 
     public function activity()
     {
-//        dd(Auth::guard('hospital')->user());
         $hospital = Hospital::findOrFail(1);
-        $activities = Activity::all(); //returns the last logged activity
-//        dd($activities[0]->log_name);
-        //$lastActivity->subject; //returns the model that was passed to `performedOn`;
+        $activities = Activity::orderBy('id', 'DESC')->get(); //returns the last logged activity
         return view('activity', ['activities' => $activities, 'hospital' => $hospital,]);
     }
 
     public function hospitalDetails()
     {
         $hospital = Hospital::findOrFail(1);
-        return view('hospital_details', ['hospital' => $hospital]);
+        $count_monthly_patients = Patients::select(DB::raw("(COUNT(*)) as count"), DB::raw("MONTHNAME(created_at) as monthname"))
+            ->whereYear('created_at', date('Y'))
+            ->groupBy('monthname')
+            ->get();
+        return view('hospital_details', ['hospital' => $hospital, 'count_monthly_patients' => $count_monthly_patients]);
     }
 
     public function profile()
@@ -149,7 +148,12 @@ class HospitalController extends Controller
             $doctor = Doctor::findOrFail(Auth::guard('doctor')->user()->id);
             $state = State::all();
             $city = City::all();
-            return view('doctor.doctor_details', ['doctor' => $doctor, 'hospital' => $hospital, 'states' => $state, 'cities' => $city]);
+            $count_monthly_patients = Report::select(DB::raw("(COUNT(*)) as count"), DB::raw("MONTHNAME(created_at) as monthname"))
+                ->whereYear('created_at', date('Y'))
+                ->where('consultant_doctor', Auth::guard('doctor')->user()->id)
+                ->groupBy('monthname')
+                ->get();
+            return view('doctor.doctor_details', ['doctor' => $doctor, 'hospital' => $hospital, 'count_monthly_patients' => $count_monthly_patients, 'states' => $state, 'cities' => $city]);
         } elseif (Session::get('userType') === 'user') {
             $user = User::findOrFail(Auth::guard('web')->user()->id);
             $state = State::all();
@@ -319,7 +323,7 @@ class HospitalController extends Controller
 
             activity('Update profile')
                 ->performedOn($hospital)
-                ->log($request->hospital_name.' details are updated');
+                ->log($request->hospital_name . ' details are updated');
 
             session()->flash('message', 'Hospital details update successfully..!');
             return redirect()->back();
@@ -568,11 +572,7 @@ class HospitalController extends Controller
 
                 activity('Update email')
                     ->performedOn($hospital)
-                    ->log($hospital->name.' email are update');
-
-                //            if($request->user()->isTaTeamUser()){
-                //                $this->setLeaderActivity($request->user(), $hospital, 'candidate_email');
-                //            }
+                    ->log($hospital->name . ' email are update');
 
                 return response()->json([
                     'message' => 'ok',
@@ -595,7 +595,7 @@ class HospitalController extends Controller
 
                 activity('Update email')
                     ->performedOn($doctor)
-                    ->log('Dr. '. $doctor->name .' email are update');
+                    ->log('Dr. ' . $doctor->name . ' email are update');
 
 
                 return response()->json([
@@ -619,7 +619,7 @@ class HospitalController extends Controller
 
                 activity('Update email')
                     ->performedOn($user)
-                    ->log($user->name.' email are update');
+                    ->log($user->name . ' email are update');
 
 
                 return response()->json([
@@ -652,7 +652,7 @@ class HospitalController extends Controller
 
                 activity('Update mobile no')
                     ->performedOn($hospital)
-                    ->log( $hospital->name .' mobile number are update');
+                    ->log($hospital->name . ' mobile number are update');
 
 
                 return response()->json([
@@ -676,7 +676,7 @@ class HospitalController extends Controller
 
                 activity('Update mobile no')
                     ->performedOn($doctor)
-                    ->log('Dr. '. $doctor->name .' mobile number are update');
+                    ->log('Dr. ' . $doctor->name . ' mobile number are update');
 
 
                 return response()->json([
@@ -700,7 +700,7 @@ class HospitalController extends Controller
 
                 activity('Update mobile no')
                     ->performedOn($user)
-                    ->log( $user->name .' mobile number are update');
+                    ->log($user->name . ' mobile number are update');
 
 
                 return response()->json([
@@ -734,7 +734,7 @@ class HospitalController extends Controller
 
             activity('Update doctor status')
                 ->performedOn($doctor)
-                ->log( 'Dr. '. $doctor->name . ' status is '. (($doctor->status === "active") ? "active" : "inactive") );
+                ->log('Dr. ' . $doctor->name . ' status is ' . (($doctor->status === "active") ? "active" : "inactive"));
 
             session()->flash('message', $doctor->name . ' Status Updated..!');
         } elseif ($request->user_type === 'user') {
@@ -744,7 +744,7 @@ class HospitalController extends Controller
 
             activity('Update user status')
                 ->performedOn($user)
-                ->log( $user->name . ' status is '. (($user->status === "active") ? "active" : "inactive") );
+                ->log($user->name . ' status is ' . (($user->status === "active") ? "active" : "inactive"));
 
             session()->flash('message', $user->name . ' Status Updated..!');
         }
@@ -760,7 +760,7 @@ class HospitalController extends Controller
 
             activity('Restore doctor')
                 ->performedOn($doctor)
-                ->log( 'Dr. ' . $doctor->name . ' are restore' );
+                ->log('Dr. ' . $doctor->name . ' are restore');
 
             session()->flash('message', 'Dr. ' . $doctor->name . ' Restore Successfully..!');
             return redirect()->route('doctor.index');
@@ -770,7 +770,7 @@ class HospitalController extends Controller
 
             activity('Restore user')
                 ->performedOn($user)
-                ->log($user->name . ' are restore' );
+                ->log($user->name . ' are restore');
 
             session()->flash('message', $user->name . ' Restore Successfully..!');
             return redirect()->route('user.index');

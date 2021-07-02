@@ -6,41 +6,31 @@ use App\DataTables\PatientDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\City;
 use App\Models\Doctor;
-use App\Models\FileUpload;
 use App\Models\Hospital;
 use App\Models\Patients;
 use App\Models\Report;
 use App\Models\State;
 use Barryvdh\DomPDF\Facade as PDF;
-//use Barryvdh\DomPDF\PDF;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
-//use PDF;
+
 class PatientController extends Controller
 {
     //
     public function index(PatientDataTable $dataTable)
     {
         $hospital = Hospital::findOrFail(1);
-       // $patients = Patients::all();
         if (Auth::guard('hospital')->check()) {
-            $patients = Patients::all();
+            $patients = Patients::orderBy('id', 'DESC')->get();
+        } elseif (Auth::guard('doctor')->check()) {
+            $patients = Report::where('consultant_doctor', Auth::guard('doctor')->user()->id)->orderBy('id', 'DESC')->get();
+        } elseif (Auth::guard('web')->check()) {
+            $patients = Patients::orderBy('id', 'DESC')->get();
         }
-        elseif (Auth::guard('doctor')->check()) {
-            $patients =  Report::where('consultant_doctor',Auth::guard('doctor')->user()->id)->get();
-//            dd($patient_report[0]->patient);
-        }
-        elseif (Auth::guard('web')->check()) {
-            $patients = Patients::all();
-        }
-//        return $dataTable->render('patient.index', ['hospital' => $hospital]);
         return view('patient.index', ['hospital' => $hospital, 'patients' => $patients]);
     }
 
@@ -72,18 +62,18 @@ class PatientController extends Controller
             return redirect()->back()->withInput()->withErrors($validation);
         } else {
             $patient = new Patients();
-            $patient_id_find  = Patients::orderBy('patient_id', 'DESC')->first();
-            $patient_id =substr($patient_id_find->patient_id ?? 'VIP/PE/2021/0', -1) +1 ;
-            $patient->patient_id  ='VIP/PE/2021/'.$patient_id ;
+            $patient_id_find = Patients::orderBy('patient_id', 'DESC')->first();
+            $patient_id = substr($patient_id_find->patient_id ?? 'VIP/PE/2021/0', -1) + 1;
+            $patient->patient_id = 'VIP/PE/2021/' . $patient_id;
             $patient->name = $request->name;
             $patient->mobile_no = $request->mobile_no;
-            $patient->email  = $request->email;
-            $patient->address  = $request->address;
+            $patient->email = $request->email;
+            $patient->address = $request->address;
             $patient->city = $request->city;
             $patient->state = $request->state;
-            $patient->pin_code	 = $request->pin_code;
-            $patient->aadhar_no	 = $request->aadhar_no;
-            $patient->gender	 = $request->gender;
+            $patient->pin_code = $request->pin_code;
+            $patient->aadhar_no = $request->aadhar_no;
+            $patient->gender = $request->gender;
             $patient->dob = $request->dob;
             $profile_photo = $request->profile_photo;
             $document = $request->document;
@@ -104,7 +94,7 @@ class PatientController extends Controller
 
             activity('Add patient')
                 ->performedOn($patient)
-                ->log( '('. $patient->patient_id . ') ' . $request->name . ' are added');
+                ->log('(' . $patient->patient_id . ') ' . $request->name . ' are added');
 
             // Second Method USe
             $patient_id = DB::table('patients')->orderBy('id', 'DESC')->first();
@@ -119,7 +109,7 @@ class PatientController extends Controller
     {
         $patient = Patients::findOrFail($id);
         $hospital = Hospital::findOrFail(1);
-        $report = Report::with('doctor')->where('patient_id',$id)->get();
+        $report = Report::with('doctor')->where('patient_id', $id)->get();
         $state = State::all();
         $city = City::all();
         return view('patient.patient_details', ['patient' => $patient, 'hospital' => $hospital, 'states' => $state, 'cities' => $city, 'reports' => $report]);
@@ -159,8 +149,7 @@ class PatientController extends Controller
             if ($profile_photo) {
                 $destinationPath = public_path() . '/upload_file/patient/';
                 $fileName = $request->name . '_' . $request->profile_photo->getClientOriginalName();
-                if ($patient->profile_photo)
-                {
+                if ($patient->profile_photo) {
                     $image_path = public_path("upload_file/patient/{$patient->profile_photo}");
                     if (File::exists($image_path)) {
                         unlink($image_path);
@@ -173,8 +162,7 @@ class PatientController extends Controller
             if ($document_photo) {
                 $destinationPath = public_path() . '/upload_file/patient/patient_document';
                 $fileName = $request->aadhar_no . '_' . $request->document_photo->getClientOriginalName();
-                if ($patient->document_photo)
-                {
+                if ($patient->document_photo) {
                     $image_path = public_path("upload_file/patient/patient_document/{$patient->document_photo}");
                     if (File::exists($image_path)) {
                         unlink($image_path);
@@ -187,7 +175,7 @@ class PatientController extends Controller
 
             activity('Update patient')
                 ->performedOn($patient)
-                ->log( '('. $patient->patient_id . ') ' . $request->name . ' are updated');
+                ->log('(' . $patient->patient_id . ') ' . $request->name . ' are updated');
 
             session()->flash('message', 'Patient Details Update Successfully..!');
             return redirect()->back();
@@ -221,27 +209,27 @@ class PatientController extends Controller
             return redirect()->back()->withInput()->withErrors($validation);
         } else {
             $report = new Report();
-            $report->patient_id  = $request->id ;
+            $report->patient_id = $request->id;
             $report->consultant_doctor = $request->consultant_doctor;
-            $report->routine_checkup  = $request->routine_checkup;
-            $report->type  = $request->type;
+            $report->routine_checkup = $request->routine_checkup;
+            $report->type = $request->type;
             $report->treatment_name = $request->treatment_name;
             $report->insurance = $request->insurance;
             $report->consultant_date = $request->consultant_date;
             $file = $request->file;
 
             if ($file) {
-                $destinationPath = public_path() . '/upload_file/patient/patient_report/'.str_replace('/','_', $request->patient_id).'/';
-                $fileName =  date('d-m-Y', strtotime($request->consultant_date)) . '_' . $request->file->getClientOriginalName();
+                $destinationPath = public_path() . '/upload_file/patient/patient_report/' . str_replace('/', '_', $request->patient_id) . '/';
+                $fileName = date('d-m-Y', strtotime($request->consultant_date)) . '_' . $request->file->getClientOriginalName();
                 $report->file_name = $fileName;
-                $report->file_path = '/upload_file/patient/patient_report/'.str_replace('/','_', $request->patient_id).'/';
+                $report->file_path = '/upload_file/patient/patient_report/' . str_replace('/', '_', $request->patient_id) . '/';
                 $file->move($destinationPath, $fileName);
             }
             $report->save();
 
             activity('Add report')
                 ->performedOn($report)
-                ->log( '('. $report->patient[0]->patient_id . ') ' . $request->name . ' report added');
+                ->log('(' . $report->patient[0]->patient_id . ') ' . $request->name . ' report added');
 
             session()->flash('message', 'Patient Report Add Successfully..!');
             return redirect()->route('patient.patient_details', $request->id);
@@ -252,37 +240,27 @@ class PatientController extends Controller
     public function reportDownload($id)
     {
         $report = Report::findOrFail($id);
-        //$file_name = str_replace('/','_', $report->patient[0]->patient_id) .'_'.$report->file_name;
 
         activity('Report download')
             ->performedOn($report)
-            ->log( '('. $report->patient[0]->patient_id . ') ' . $report->patient[0]->name . ' report downloaded');
+            ->log('(' . $report->patient[0]->patient_id . ') ' . $report->patient[0]->name . ' report downloaded');
 
-       // dd($report->patient[0]->name);
-        //$data = Report::findOrFail($id);
-        return Response::download(public_path($report->file_path.$report->file_name), str_replace('/','_', $report->patient[0]->patient_id) .'_'.$report->file_name);
+        return Response::download(public_path($report->file_path . $report->file_name), str_replace('/', '_', $report->patient[0]->patient_id) . '_' . $report->file_name);
     }
 
     public function patientListDownload()
     {
         if (Auth::guard('hospital')->check()) {
             $patients = Patients::all();
-        }
-        elseif (Auth::guard('doctor')->check()) {
-            $patients =  Report::where('consultant_doctor',Auth::guard('doctor')->user()->id)->get();
-//            dd($patients[0]->patient[0]->name);
+        } elseif (Auth::guard('doctor')->check()) {
+            $patients = Report::where('consultant_doctor', Auth::guard('doctor')->user()->id)->get();
         }
 
         activity('Patient list download')
-            ->log(  'Patient list downloaded');
+            ->log('Patient list downloaded');
 
-        view()->share('patients',$patients);
+        view()->share('patients', $patients);
         $pdf = PDF::loadView('patient.patient_list', $patients);
         return $pdf->download('patient_list.pdf');
-
-//        $patients = Patients::all();
-//        view()->share('patients',$patients);
-//       // $pdf = PDF::loadView('patient.patient_list', $patients);
-//        return view('patient.patient_list', ['patients' => $patients]);
     }
 }

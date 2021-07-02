@@ -12,11 +12,6 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-/* Hospital and Doctor*/
-Route::middleware(['auth:hospital'])->group(function () {
-
-});
-
 
 Route::middleware(['auth:hospital', 'checkStatus'])->group(function () {
     /* Hospital Middleware*/
@@ -24,7 +19,6 @@ Route::middleware(['auth:hospital', 'checkStatus'])->group(function () {
     Route::get('add_doctor', [App\Http\Controllers\Doctor\DoctorController::class, 'addDoctor'])->name('add_doctor');
     Route::post('submit_doctor', [App\Http\Controllers\Doctor\DoctorController::class, 'submitDoctor'])->name('submit_doctor');
     Route::get('doctor_details/{id}', [App\Http\Controllers\Doctor\DoctorController::class, 'doctorDetails'])->name('doctor_details');
-    //Route::put('doctor_details_update', [App\Http\Controllers\Doctor\DoctorController::class, 'doctorDetailsUpdate'])->name('doctor_details_update');
     Route::get('doctor_delete/{id}', [App\Http\Controllers\Doctor\DoctorController::class, 'doctorDelete'])->name('doctor_delete');
     Route::get('deleted_doctor', [App\Http\Controllers\Doctor\DoctorController::class, 'deletedDoctor'])->name('deleted_doctor');
     Route::put('restore_doctor/{id}', [App\Http\Controllers\Doctor\DoctorController::class, 'restoreDoctor'])->name('restore_doctor');

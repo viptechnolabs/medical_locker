@@ -8,9 +8,7 @@
                 <div class="title_left">
                     <h3>Update Details</h3>
                 </div>
-
                 <div class="title_right">
-
                 </div>
             </div>
 
@@ -56,10 +54,7 @@
                                     </li>
                                     <li><i class="fa fa-map-marker user-profile-icon"></i> {{$doctor->address}}
                                     </li>
-
-
                                 </ul>
-
 
                             </div>
                             <div class="col-md-9 col-sm-9 ">
@@ -107,7 +102,6 @@
                                                           enctype="multipart/form-data" id="doctor_details_update">
                                                         @method('put')
                                                         @csrf
-
 
                                                         @if ($errors->any())
                                                             @foreach ($errors->all() as $message)
@@ -426,8 +420,15 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr>
-                                                </tr>
+                                                @foreach($count_monthly_patients as $no => $count_monthly_patient)
+                                                    <tr>
+                                                        <td>{{ $no +1  }}</td>
+                                                        <td>{{ $count_monthly_patient->monthname  }}</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td>{{ $count_monthly_patient->count  }}</td>
+                                                    </tr>
+                                                @endforeach
                                                 </tbody>
                                             </table>
                                         </div>

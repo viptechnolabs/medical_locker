@@ -7,15 +7,13 @@ use App\Models\Certificate;
 use App\Models\City;
 use App\Models\Doctor;
 use App\Models\Hospital;
+use App\Models\Report;
 use App\Models\State;
-use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use voku\helper\ASCII;
 
 class DoctorController extends Controller
 {
@@ -25,12 +23,11 @@ class DoctorController extends Controller
         $hospital = Hospital::findOrFail(1);
         $doctors = Doctor::query();
         $search = $request->doctor_search;
-        if ($search)
-        {
-            $doctors = $doctors->where("doctor_id","like","%".$search."%")->orWhere("name","like","%".$search."%")
-                ->orWhere("mobile_no","like","%".$search."%")
-                ->orWhere("email","like","%".$search."%")
-                ->orWhere("dob","like","%".$search."%");
+        if ($search) {
+            $doctors = $doctors->where("doctor_id", "like", "%" . $search . "%")->orWhere("name", "like", "%" . $search . "%")
+                ->orWhere("mobile_no", "like", "%" . $search . "%")
+                ->orWhere("email", "like", "%" . $search . "%")
+                ->orWhere("dob", "like", "%" . $search . "%");
         }
         $doctors = $doctors->get();
         return view('doctor.index', ['hospital' => $hospital, 'doctors' => $doctors]);
@@ -42,8 +39,6 @@ class DoctorController extends Controller
         $state = State::all();
         $city = City::all();
         return view('doctor.add_doctor', ['hospital' => $hospital, 'states' => $state, 'cities' => $city]);
-
-        //$data = Item::withTrashed()->get();
     }
 
     public function submitDoctor(Request $request)
@@ -64,7 +59,6 @@ class DoctorController extends Controller
             'profile_photo' => 'required',
             'certificates' => 'required',
             'document' => 'required',
-            //'hospital_logo' => 'required|mimes:jpg|max:2048',
         );
         $validation = Validator::make($request->all(), $rules);
 
@@ -72,21 +66,21 @@ class DoctorController extends Controller
             return redirect()->back()->withInput()->withErrors($validation);
         } else {
             $doctor = new Doctor();
-            $doctor_id_find  = Doctor::withTrashed()->orderBy('doctor_id', 'DESC')->first();
-            $doctor_id =substr($doctor_id_find->doctor_id ?? 'VIP/DR/2021/0000', -1) +1 ;
+            $doctor_id_find = Doctor::withTrashed()->orderBy('doctor_id', 'DESC')->first();
+            $doctor_id = substr($doctor_id_find->doctor_id ?? 'VIP/DR/2021/0000', -1) + 1;
             $profile_photo = $request->profile_photo;
             $document = $request->document;
-            $doctor->doctor_id  ='VIP/DR/2021/000'.$doctor_id ;
+            $doctor->doctor_id = 'VIP/DR/2021/000' . $doctor_id;
             $doctor->name = $request->name;
             $doctor->specialist = $request->specialist;
             $doctor->mobile_no = $request->mobile_no;
-            $doctor->email  = $request->email;
-            $doctor->address  = $request->address;
+            $doctor->email = $request->email;
+            $doctor->address = $request->address;
             $doctor->city = $request->city;
             $doctor->state = $request->state;
-            $doctor->pin_code	 = $request->pin_code;
-            $doctor->aadhar_no	 = $request->aadhar_no;
-            $doctor->gender	 = $request->gender;
+            $doctor->pin_code = $request->pin_code;
+            $doctor->aadhar_no = $request->aadhar_no;
+            $doctor->gender = $request->gender;
             $doctor->dob = $request->dob;
             $doctor->password = Hash::make($request->mobile_no);
 
@@ -108,21 +102,19 @@ class DoctorController extends Controller
             $doc_certificates = $request->certificates;
             $doc_id = DB::table('doctors')->orderBy('id', 'DESC')->first();
             $doc_degree = $request->degree;
-            if($doc_certificates)
-            {
+            if ($doc_certificates) {
                 $certificates_destinationPath = public_path() . '/upload_file/doctor/doctor_certificates/';
-                foreach($doc_certificates as $key => $certificates)
-                {
+                foreach ($doc_certificates as $key => $certificates) {
                     $certificate_temp = $certificates->getClientOriginalName();
-                    $degree_temp = (isset($doc_degree[$key]))? $doc_degree[$key]: null;
+                    $degree_temp = (isset($doc_degree[$key])) ? $doc_degree[$key] : null;
 
-                    $certificate= new Certificate();
-                    $certificates_name = $degree_temp. '_' . $certificate_temp;
+                    $certificate = new Certificate();
+                    $certificates_name = $degree_temp . '_' . $certificate_temp;
                     $certificate::create([
                         'doc_id' => $doc_id->id,
                         'degree_name' => $degree_temp,
                         'certificate_name' => $certificates_name,
-                        'certificate_file_path' => '/upload_file/doctor/doctor_certificates/'.$certificates_name,
+                        'certificate_file_path' => '/upload_file/doctor/doctor_certificates/' . $certificates_name,
                     ]);
                     $certificates->move($certificates_destinationPath, $certificates_name);
                 }
@@ -144,13 +136,16 @@ class DoctorController extends Controller
         $hospital = Hospital::findOrFail(1);
         $state = State::all();
         $city = City::all();
-        return view('doctor.doctor_details', ['doctor' => $doctor, 'hospital' => $hospital, 'states' => $state, 'cities' => $city]);
+        $count_monthly_patients = Report::select(DB::raw("(COUNT(*)) as count"), DB::raw("MONTHNAME(created_at) as monthname"))
+            ->whereYear('created_at', date('Y'))
+            ->where('consultant_doctor', $id)
+            ->groupBy('monthname')
+            ->get();
+        return view('doctor.doctor_details', ['doctor' => $doctor, 'hospital' => $hospital, 'count_monthly_patients' => $count_monthly_patients, 'states' => $state, 'cities' => $city]);
     }
 
     public function doctorDetailsUpdate(Request $request)
     {
-        //dd($request->all());
-
         $rules = array(
             'name' => 'required',
             'specialist' => 'required',
@@ -204,23 +199,20 @@ class DoctorController extends Controller
             }
 
             $doc_certificates = $request->certificates;
-            //$doc_id = DB::table('doctors')->orderBy('id', 'DESC')->first();
             $doc_degree = $request->degree;
-            if($doc_certificates)
-            {
+            if ($doc_certificates) {
                 $certificates_destinationPath = public_path() . '/upload_file/doctor/doctor_certificates/';
-                foreach($doc_certificates as $key => $certificates)
-                {
+                foreach ($doc_certificates as $key => $certificates) {
                     $certificate_temp = $certificates->getClientOriginalName();
-                    $degree_temp = (isset($doc_degree[$key]))? $doc_degree[$key]: null;
+                    $degree_temp = (isset($doc_degree[$key])) ? $doc_degree[$key] : null;
 
-                    $certificate= new Certificate();
-                    $certificates_name = $degree_temp. '_' . $certificate_temp;
+                    $certificate = new Certificate();
+                    $certificates_name = $degree_temp . '_' . $certificate_temp;
                     $certificate::create([
                         'doc_id' => $request->id,
                         'degree_name' => $degree_temp,
                         'certificate_name' => $certificates_name,
-                        'certificate_file_path' => '/upload_file/doctor/doctor_certificates/'.$certificates_name,
+                        'certificate_file_path' => '/upload_file/doctor/doctor_certificates/' . $certificates_name,
                     ]);
                     $certificates->move($certificates_destinationPath, $certificates_name);
                 }
@@ -247,7 +239,7 @@ class DoctorController extends Controller
             ->performedOn($doctor)
             ->log('Dr. ' . $doctor->name . ' are deleted');
 
-        session()->flash('message', 'Dr. '.$doctor->name.' are delete successfully..!');
+        session()->flash('message', 'Dr. ' . $doctor->name . ' are delete successfully..!');
         return redirect()->route('doctor.index');
     }
 
@@ -257,7 +249,5 @@ class DoctorController extends Controller
         $deleted_doctor = Doctor::onlyTrashed()->get();
         return view('doctor.deleted_doctor', ['hospital' => $hospital, 'doctors' => $deleted_doctor]);
     }
-
-
 
 }

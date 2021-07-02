@@ -3,9 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class Hospital extends Authenticatable
 {
@@ -21,6 +20,8 @@ class Hospital extends Authenticatable
         'fex_no',
         'address',
         'pin_cord_no',
+        'token',
+        'verification_code',
         'password',
     ];
 

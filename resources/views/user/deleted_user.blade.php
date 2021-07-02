@@ -38,8 +38,6 @@
 
                     {!!$dataTable->table()  !!}
 
-                    {{--                        <h4 style="margin:22px; text-align: center">No user inserted at time</h4>--}}
-
                 </div>
             </div>
         </div>

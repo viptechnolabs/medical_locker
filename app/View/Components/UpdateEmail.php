@@ -2,7 +2,6 @@
 
 namespace App\View\Components;
 
-use App\Models\Hospital;
 use Illuminate\View\Component;
 
 class UpdateEmail extends Component
@@ -17,9 +16,7 @@ class UpdateEmail extends Component
 
     public function __construct($hospital)
     {
-//        $hospitalObj = new Hospital();
-//        // Ref: https://commandz.io/post/php/2016-02-21-eloquent-model-json-serialization-and-deserialization/
-//        $this->hospital = $hospitalObj->newInstance($hospitalObj->fromJson($hospital));
+        //
     }
 
     /**

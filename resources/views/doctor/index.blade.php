@@ -10,23 +10,23 @@
             <div class="title_right">
                 <div class="col-md-7 col-sm-7  form-group pull-right top_search">
                     <form action="" method="get">
-                    <div class="input-group">
-                             <input type="search" class="form-control" placeholder="Search for..." name="doctor_search">
+                        <div class="input-group">
+                            <input type="search" class="form-control" placeholder="Search for..." name="doctor_search">
                             <span class="input-group-btn">
                                 <button type="submit" class="btn btn-default">Go!</button>&ensp;
                              </span>
 
-                        <a href="{{route('doctor.add_doctor')}}">
-                            <button type="button" class="btn btn-primary btn-sm">
-                                <i class="fa fa-user-md"></i> &ensp; Add Doctor
-                            </button>
-                        </a>
-                        <a href="{{route('doctor.deleted_doctor')}}">
-                            <button type="button" class="btn btn-danger btn-sm">
-                                <i class="fa fa-user-md"></i> &ensp; Deleted Doctor
-                            </button>
-                        </a>
-                    </div>
+                            <a href="{{route('doctor.add_doctor')}}">
+                                <button type="button" class="btn btn-primary btn-sm">
+                                    <i class="fa fa-user-md"></i> &ensp; Add Doctor
+                                </button>
+                            </a>
+                            <a href="{{route('doctor.deleted_doctor')}}">
+                                <button type="button" class="btn btn-danger btn-sm">
+                                    <i class="fa fa-user-md"></i> &ensp; Deleted Doctor
+                                </button>
+                            </a>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -73,7 +73,8 @@
                                     </div>
                                     <div class="right col-sm-5 text-center">
                                         <img src="{{asset('upload_file/doctor/'.$doctor->profile_photo)}}" alt=""
-                                             class="img-circle img-fluid" style="width: 255px;max-height: 200px; height: 287px;">
+                                             class="img-circle img-fluid"
+                                             style="width: 255px;max-height: 200px; height: 287px;">
                                     </div>
                                 </div>
                                 <div class=" bottom text-center">
@@ -100,7 +101,6 @@
                                 </div>
                             </div>
                         </div>
-                        {{--                        <x-change-status/>--}}
                     @endforeach
                     @empty($doctor)
                         <h4 style="margin:22px; text-align: center">No doctor inserted at time</h4>

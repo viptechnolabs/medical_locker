@@ -28,10 +28,10 @@
         <section class="login_content">
             <form action="{{route('do_login')}}" method="POST">
                 @csrf
-{{--                @method('post')--}}
+                {{--                @method('post')--}}
                 <h1>Login Form</h1>
                 <div>
-                    <select id="user_type" name="user_type" class="form-control" >
+                    <select id="user_type" name="user_type" class="form-control">
                         <option value="0">Select User Type</option>
                         <option value="hospital">Hospital</option>
                         <option value="doctor">Doctor</option>

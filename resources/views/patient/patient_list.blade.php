@@ -5,6 +5,7 @@
         h2 {
             text-align: center;
         }
+
         table {
             font-family: arial, sans-serif;
             border-collapse: collapse;
@@ -30,9 +31,7 @@
     <tr>
         <th>#</th>
         <th>Patient Id</th>
-{{--        <th>Profile Photo</th>--}}
         <th>Name</th>
-{{--        <th>Email</th>--}}
         <th>Mobile No</th>
         <th>Address</th>
     </tr>
@@ -43,9 +42,7 @@
                 <tr>
                     <td>{{ $no + 1  }}</td>
                     <td>{{$patient->patient_id}}</td>
-        {{--            <td><img src='{{$patient->profile_photo ? asset('upload_file/patient/'.$patient->profile_photo) : asset('upload_file/default.png')}}' width='100px' /></td>--}}
                     <td>{{ ucfirst($patient->name) }}</td>
-        {{--            <td width="50px">{{ $patient->email }}</td>--}}
                     <td>{{$patient->mobile_no}}</td>
                     <td>{{ $patient->address }}</td>
                 </tr>
@@ -57,9 +54,7 @@
             <tr>
                 <td>{{ $no + 1  }}</td>
                 <td>{{ $patient->patient_id }}</td>
-                {{--            <td><img src='{{$patient->profile_photo ? asset('upload_file/patient/'.$patient->profile_photo) : asset('upload_file/default.png')}}' width='100px' /></td>--}}
                 <td>{{ ucfirst($patient->name) }}</td>
-                {{--            <td width="50px">{{ $patient->email }}</td>--}}
                 <td>{{$patient->mobile_no}}</td>
                 <td>{{ $patient->address }}</td>
             </tr>
@@ -67,6 +62,5 @@
     @endif
     </tbody>
 </table>
-
 </body>
 </html>

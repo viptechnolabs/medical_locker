@@ -10,8 +10,8 @@
                 </div>
 
                 <div class="title_right">
-
                 </div>
+
             </div>
 
             <div class="clearfix"></div>
@@ -94,7 +94,6 @@
                                                           enctype="multipart/form-data" id="user_details_update">
                                                         @method('put')
                                                         @csrf
-
 
                                                         @if ($errors->any())
                                                             @foreach ($errors->all() as $message)
@@ -336,8 +335,6 @@
                                             <!-- /Change Mobile Pop-Up -->
                                         </div>
                                         <!-- end user details update -->
-                                        <!-- start patient count -->
-                                        <!-- end patient count -->
                                     </div>
                                 </div>
                             </div>

@@ -8,14 +8,11 @@
                 <div class="title_left">
                     <h3>{{Auth::guard('hospital')->check() ? 'Update details' : 'Patient details'}}</h3>
                 </div>
-
                 <div class="title_right">
-
                 </div>
             </div>
 
             <div class="clearfix"></div>
-
             <div class="row">
                 <div class="col-md-12 col-sm-12 ">
                     <div class="x_panel">
@@ -23,7 +20,9 @@
                             <h2>{{Auth::guard('hospital')->check() ? 'Patient update details and reports' : 'Patient details and reports'}}</h2>
                             @if(!Auth::guard('doctor')->check())
                                 <ul class="nav navbar-right panel_toolbox">
-                                    <a type='button' class='btn btn-success btn-sm' href="{{route('patient.add_report', $patient->id)}}"><i class='fa fa-plus'> </i> Add Report</a>
+                                    <a type='button' class='btn btn-success btn-sm'
+                                       href="{{route('patient.add_report', $patient->id)}}"><i class='fa fa-plus'> </i>
+                                        Add Report</a>
                                 </ul>
                             @endif
                             <div class="clearfix"></div>
@@ -41,8 +40,7 @@
                                 </div>
                                 <h3>{{$patient->name}}</h3>
                                 <hr>
-
-                                <ul class="list-unstyled user_data" >
+                                <ul class="list-unstyled user_data">
                                     <li>
                                         <a href="mailto:{{$patient->email}}">
                                             <i class="fa fa-envelope user-profile-icon"></i> {{$patient->email}}
@@ -68,7 +66,8 @@
                                             <li role="presentation" class="active"><a href="#edit_patient_details"
                                                                                       id="home-tab"
                                                                                       role="tab" data-toggle="tab"
-                                                                                      aria-expanded="true">Edit Patient</a>
+                                                                                      aria-expanded="true">Edit
+                                                    Patient</a>
                                             </li>
                                             <li role="presentation" class=""><a href="#patient_report" role="tab"
                                                                                 id="profile-tab" data-toggle="tab"
@@ -105,7 +104,6 @@
 
                                                         @method('put')
                                                         @csrf
-
 
                                                         @if ($errors->any())
                                                             @foreach ($errors->all() as $message)
@@ -176,7 +174,8 @@
                                                             <label
                                                                 class="control-label col-md-3 col-sm-3 ">State</label>
                                                             <div class="col-md-9 col-sm-9 ">
-                                                                <select id="state" name="state" class="form-control" {{Session::get('userType') === "hospital" ? "" : "disabled"}}>
+                                                                <select id="state" name="state"
+                                                                        class="form-control" {{Session::get('userType') === "hospital" ? "" : "disabled"}}>
                                                                     <option value="">Choose..</option>
                                                                     @foreach($states as $state)
                                                                         <option
@@ -190,7 +189,8 @@
                                                             <label
                                                                 class="control-label col-md-3 col-sm-3 ">City</label>
                                                             <div class="col-md-9 col-sm-9 ">
-                                                                <select id="city" name="city" class="form-control" {{Session::get('userType') === "hospital" ? "" : "disabled"}}>
+                                                                <select id="city" name="city"
+                                                                        class="form-control" {{Session::get('userType') === "hospital" ? "" : "disabled"}}>
                                                                     <option value="">Choose..</option>
                                                                     @foreach($cities as $city)
                                                                         <option
@@ -207,7 +207,8 @@
                                                             <div class="col-md-9 col-sm-9 ">
                                                                 <input type="text" class="form-control"
                                                                        value="{{$patient->pin_code}}"
-                                                                       placeholder="Pin Code" name="pin_code" {{Session::get('userType') === "hospital" ? "" : "readonly"}}>
+                                                                       placeholder="Pin Code"
+                                                                       name="pin_code" {{Session::get('userType') === "hospital" ? "" : "readonly"}}>
                                                             </div>
 
                                                         </div>
@@ -288,7 +289,8 @@
                                                             <div class="form-group">
                                                                 <div class="col-md-9 col-sm-9  offset-md-3">
                                                                     <a href="{{route('patient.index')}}">
-                                                                        <button type="button" class="btn btn-primary">Cancel
+                                                                        <button type="button" class="btn btn-primary">
+                                                                            Cancel
                                                                         </button>
                                                                     </a>
                                                                     <button type="reset" class="btn btn-primary">Reset
@@ -301,12 +303,6 @@
                                                     </form>
                                                 </div>
                                             </div>
-                                            <!-- Change E-mails Pop-Up -->
-{{--                                            <div id="update_email_popup"></div>--}}
-                                            <!-- /Change E-mails Pop-Up -->
-                                            <!-- Change Mobile Pop-Up -->
-{{--                                            <div id="update_mobile_popup"></div>--}}
-                                            <!-- /Change Mobile Pop-Up -->
                                         </div>
                                         <!-- end patient details update -->
                                         <!-- start patient report -->
@@ -346,20 +342,21 @@
                                                         <td>
 
                                                             <div class="resume-preview">
-                                                                <object data="{{ asset($report->file_path.''.$report->file_name) }}"
-                                                                        type="application/pdf"
-                                                                        width="100%" height="100%">
-{{--                                                                    <p>Alternative text - include a link <a href="{{ route('patient.report_download',$report->id) }}">to the--}}
-{{--                                                                            PDF!</a>--}}
-{{--                                                                    </p>--}}
-                                                                    <p>Sorry for not load a pdf place click a link to download a pdf
-{{--                                                                        <a href="{{ route('patient.report_download',$report->id) }}" target="_blank"><u><i class="fa fa-download fa-fw"></i>&nbsp;Download</u></a>--}}
+                                                                <object
+                                                                    data="{{ asset($report->file_path.''.$report->file_name) }}"
+                                                                    type="application/pdf"
+                                                                    width="100%" height="100%">
+                                                                    <p>Sorry for not load a pdf place click a link to
+                                                                        download a pdf
                                                                     </p>
                                                                 </object>
                                                                 @if(!Auth::guard('web')->check())
-                                                                    <a href="{{ asset($report->file_path.''.$report->file_name) }}" target="_blank"><u><i class="fa fa-eye"></i>&nbsp;Preview</u></a>&nbsp;&nbsp;&nbsp;&nbsp;
-                                                                    <a href="{{ route('patient.report_download',$report->id) }}" target="_blank"><u><i class="fa fa-download fa-fw"></i>&nbsp;Download</u></a>
-{{--                                                                    <a href="{{ url('api/report_download/'.$report->id) }}" target="_blank"><u><i class="fa fa-download fa-fw"></i>&nbsp;Download</u></a>--}}
+                                                                    <a href="{{ asset($report->file_path.''.$report->file_name) }}"
+                                                                       target="_blank"><u><i class="fa fa-eye"></i>&nbsp;Preview</u></a>
+                                                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                                                    <a href="{{ route('patient.report_download',$report->id) }}"
+                                                                       target="_blank"><u><i
+                                                                                class="fa fa-download fa-fw"></i>&nbsp;Download</u></a>
                                                                 @endif
                                                             </div>
                                                         </td>
@@ -373,11 +370,11 @@
                                                 }
                                             </style>
                                             @empty($report)
-                                                <h4 style="margin:22px; text-align: center">No report inserted at time</h4>
+                                                <h4 style="margin:22px; text-align: center">No report inserted at
+                                                    time</h4>
                                             @endempty
                                         </div>
                                         <!-- end patient report -->
-
                                     </div>
                                 </div>
                             </div>

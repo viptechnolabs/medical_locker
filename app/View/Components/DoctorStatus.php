@@ -2,7 +2,6 @@
 
 namespace App\View\Components;
 
-use App\Models\Doctor;
 use Illuminate\View\Component;
 
 class DoctorStatus extends Component
@@ -12,14 +11,9 @@ class DoctorStatus extends Component
      *
      * @return void
      */
-
-    //public $id;
-
     public function __construct()
     {
         //
-        //$doctor = Doctor::findOrFail($id);
-
     }
 
     /**

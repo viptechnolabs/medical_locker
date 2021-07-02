@@ -8,7 +8,6 @@
                 @csrf
                 @method('PUT')
 
-
                 <div class="modal-header">
                     <h4 class="modal-title" id="myModalLabel2">
                         Change Password</h4>
