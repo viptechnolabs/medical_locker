@@ -228,13 +228,14 @@
                                                             <label
                                                                 class="control-label col-md-3 col-sm-3 ">State</label>
                                                             <div class="col-md-9 col-sm-9 ">
-                                                                <select id="state" name="state" class="form-control">
-                                                                    <option value="">Choose..</option>
-                                                                    @foreach($states as $state)
-                                                                        <option
-                                                                            value="{{$state->name}}" {{ ($doctor->state === $state->name) ? "selected" : "" }}>{{$state->name}}</option>
-                                                                    @endforeach
-                                                                </select>
+                                                                <x-state select-state="{{$doctor->state}}"/>
+{{--                                                                <select id="state" name="state" class="form-control">--}}
+{{--                                                                    <option value="">Choose..</option>--}}
+{{--                                                                    @foreach($states as $state)--}}
+{{--                                                                        <option--}}
+{{--                                                                            value="{{$state->name}}" {{ ($doctor->state === $state->name) ? "selected" : "" }}>{{$state->name}}</option>--}}
+{{--                                                                    @endforeach--}}
+{{--                                                                </select>--}}
                                                             </div>
 
                                                         </div>
@@ -242,13 +243,14 @@
                                                             <label
                                                                 class="control-label col-md-3 col-sm-3 ">City</label>
                                                             <div class="col-md-9 col-sm-9 ">
-                                                                <select id="city" name="city" class="form-control">
-                                                                    <option value="">Choose..</option>
-                                                                    @foreach($cities as $city)
-                                                                        <option
-                                                                            value="{{$city->name}}" {{ ($doctor->city === $city->name) ? "selected" : "" }}>{{$city->name}}</option>
-                                                                    @endforeach
-                                                                </select>
+                                                                <x-city select-city="{{$doctor->city}}"/>
+{{--                                                                <select id="city" name="city" class="form-control">--}}
+{{--                                                                    <option value="">Choose..</option>--}}
+{{--                                                                    @foreach($cities as $city)--}}
+{{--                                                                        <option--}}
+{{--                                                                            value="{{$city->name}}" {{ ($doctor->city === $city->name) ? "selected" : "" }}>{{$city->name}}</option>--}}
+{{--                                                                    @endforeach--}}
+{{--                                                                </select>--}}
                                                             </div>
 
                                                         </div>
@@ -454,6 +456,27 @@
         });
     </script>
     <!-- /Add more and remove button -->
+
+
+    <script>
+        // $("#getStatesList").html(data);
+        $('#state').change(function () {
+            var stateId = $(this).val();
+            alert(stateId)
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('fetchCities') }}',
+                data: {
+                    stateId: stateId,
+                    "_token": "{{ csrf_token() }}"
+                },
+                success: function (data) {
+                    // alert("success");
+                    $("#getCityList").html(data);
+                }
+            });
+        });
+    </script>
 @stop
 
 

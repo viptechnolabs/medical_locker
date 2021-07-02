@@ -776,5 +776,11 @@ class HospitalController extends Controller
             return redirect()->route('user.index');
         }
     }
+    public function fetchCities(Request $request): string
+    {
+        $cities = City::where("state_id", $request->stateId)->get();
+        return view('components.city', compact('cities'))->render();
+//        return view('components.city', ['cities' => $cities]);
+    }
 
 }

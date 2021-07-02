@@ -69,23 +69,25 @@
                         <div class="item form-group">
                             <label for="middle-name" class="col-form-label col-md-3 col-sm-3 label-align">State</label>
                             <div class="col-md-6 col-sm-6 ">
-                                <select id="state" name="state" class="form-control">
-                                    <option value="">Choose..</option>
-                                    @foreach($states as $state)
-                                        <option value="{{$state->name}}">{{$state->name}}</option>
-                                    @endforeach
-                                </select>
+                                <x-state select-state=""/>
+{{--                                <select id="state" name="state" class="form-control">--}}
+{{--                                    <option value="">Choose..</option>--}}
+{{--                                    @foreach($states as $state)--}}
+{{--                                        <option value="{{$state->name}}">{{$state->name}}</option>--}}
+{{--                                    @endforeach--}}
+{{--                                </select>--}}
                             </div>
                         </div>
                         <div class="item form-group">
                             <label for="middle-name" class="col-form-label col-md-3 col-sm-3 label-align">City</label>
                             <div class="col-md-6 col-sm-6 ">
-                                <select id="city" name="city" class="form-control">
-                                    <option value="">Choose..</option>
-                                    @foreach($cities as $city)
-                                        <option value="{{$city->name}}">{{$city->name}}</option>
-                                    @endforeach
-                                </select>
+                                <x-city/>
+{{--                                <select id="city" name="city" class="form-control">--}}
+{{--                                    <option value="">Choose..</option>--}}
+{{--                                    @foreach($cities as $city)--}}
+{{--                                        <option value="{{$city->name}}">{{$city->name}}</option>--}}
+{{--                                    @endforeach--}}
+{{--                                </select>--}}
                             </div>
                         </div>
                         <div class="item form-group">
@@ -176,6 +178,23 @@
         </div>
     </div>
     <!-- /page content -->
+
+    <script>
+        // $("#getStatesList").html(data);
+        $('#state').change(function () {
+            var stateId = $(this).val();
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('fetchCities') }}',
+                data: {
+                    stateId: stateId,
+                    "_token": "{{ csrf_token() }}"
+                },
+                success: function (data) {
+                    // alert("success");
+                    $("#getCityList").html(data);
+                }
+            });
+        });
+    </script>
 @stop
-
-

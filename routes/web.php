@@ -72,6 +72,8 @@ Route::get('logout', [\App\Http\Controllers\HospitalController::class, 'logout']
 
 
 
+//Route::post('getStates', [\App\Http\Controllers\HospitalController::class, 'fetchStates'])->name('fetchStates');
+Route::post('getCities', [\App\Http\Controllers\HospitalController::class, 'fetchCities'])->name('fetchCities');
 
 
 

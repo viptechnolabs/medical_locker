@@ -11,7 +11,6 @@
 
 
     <!-- Add more and remove button -->
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
     <title>VIP TechnoLabs</title>
 
@@ -22,18 +21,29 @@
     <!-- NProgress -->
     <link href="{{asset('vendors/nprogress/nprogress.css')}}" rel="stylesheet">
 
-    <!-- iCheck -->
-    <link href="{{asset('vendors/iCheck/skins/flat/green.css')}}" rel="stylesheet">
+{{--    <!-- iCheck -->--}}
+{{--    <link href="{{asset('vendors/iCheck/skins/flat/green.css')}}" rel="stylesheet">--}}
 
-    <!-- bootstrap-progressbar -->
-    <link href="{{asset('vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css')}}" rel="stylesheet">
-    <!-- JQVMap -->
-    <link href="{{asset('vendors/jqvmap/dist/jqvmap.min.css')}}" rel="stylesheet"/>
-    <!-- bootstrap-daterangepicker -->
-    <link href="{{asset('vendors/bootstrap-daterangepicker/daterangepicker.css')}}" rel="stylesheet">
+{{--    <!-- bootstrap-progressbar -->--}}
+{{--    <link href="{{asset('vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css')}}" rel="stylesheet">--}}
+{{--    <!-- JQVMap -->--}}
+{{--    <link href="{{asset('vendors/jqvmap/dist/jqvmap.min.css')}}" rel="stylesheet"/>--}}
+
+{{--    <!-- bootstrap-daterangepicker -->--}}
+{{--    <link href="{{asset('vendors/bootstrap-daterangepicker/daterangepicker.css')}}" rel="stylesheet">--}}
+
+{{--    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>--}}
+
+{{--    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>--}}
 
     <!-- Custom Theme Style -->
     <link href="{{asset('build/css/custom.min.css')}}" rel="stylesheet">
+
+{{--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"--}}
+{{--            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"--}}
+{{--            crossorigin="anonymous"></script>--}}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 </head>
 
 <body class="nav-md">
@@ -173,6 +183,7 @@
 
 <!-- jQuery -->
 <script src="{{asset('vendors/jquery/dist/jquery.min.js')}}"></script>
+
 <script>
     $.ajaxSetup({
         headers: {
@@ -194,6 +205,7 @@
 </script>
 <!-- Bootstrap -->
 <script src="{{asset('vendors/bootstrap/dist/js/bootstrap.bundle.min.js')}}"></script>
+
 <!-- DataTables -->
 <script src="{{ asset('js/datatable/jquery.dataTables.min.js') }}"></script>
 {{--<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>--}}
@@ -204,44 +216,44 @@
 
 {{--<!-- Bootstrap JavaScript -->--}}
 
-<!-- FastClick -->
-<script src="{{asset('vendors/fastclick/lib/fastclick.js')}}"></script>
+{{--<!-- FastClick -->--}}
+{{--<script src="{{asset('vendors/fastclick/lib/fastclick.js')}}"></script>--}}
 <!-- NProgress -->
 <script src="{{asset('vendors/nprogress/nprogress.js')}}"></script>
-<!-- morris.js -->
-<script src="{{asset('vendors/raphael/raphael.min.js')}}"></script>
-<script src="{{asset('vendors/morris.js/morris.min.js')}}"></script>
-<!-- Chart.js -->
-<script src="{{asset('vendors/Chart.js/dist/Chart.min.js')}}"></script>
-<!-- gauge.js -->
-<script src="{{asset('vendors/gauge.js/dist/gauge.min.js')}}"></script>
-<!-- bootstrap-progressbar -->
-<script src="{{asset('vendors/bootstrap-progressbar/bootstrap-progressbar.min.js')}}"></script>
-<!-- iCheck -->
-<script src="{{asset('vendors/iCheck/icheck.min.js')}}"></script>
-<!-- Skycons -->
-<script src="{{asset('vendors/skycons/skycons.js')}}"></script>
-<!-- Flot -->
-<script src="{{asset('vendors/Flot/jquery.flot.js')}}"></script>
-<script src="{{asset('vendors/Flot/jquery.flot.pie.js')}}"></script>
-<script src="{{asset('vendors/Flot/jquery.flot.time.js')}}"></script>
-<script src="{{asset('vendors/Flot/jquery.flot.stack.js')}}"></script>
-<script src="{{asset('vendors/Flot/jquery.flot.resize.js')}}"></script>
-<!-- Flot plugins -->
-<script src="{{asset('vendors/flot.orderbars/js/jquery.flot.orderBars.js')}}"></script>
-<script src="{{asset('vendors/flot-spline/js/jquery.flot.spline.min.js')}}"></script>
-<script src="{{asset('vendors/flot.curvedlines/curvedLines.js')}}"></script>
-<!-- DateJS -->
-<script src="{{asset('vendors/DateJS/build/date.js')}}"></script>
-<!-- JQVMap -->
-<script src="{{asset('vendors/jqvmap/dist/jquery.vmap.js')}}"></script>
-<script src="{{asset('vendors/jqvmap/dist/maps/jquery.vmap.world.js')}}"></script>
-<script src="{{asset('vendors/jqvmap/examples/js/jquery.vmap.sampledata.js')}}"></script>
-<!-- bootstrap-daterangepicker -->
-<script src="{{asset('vendors/moment/min/moment.min.js')}}"></script>
-<script src="{{asset('vendors/bootstrap-daterangepicker/daterangepicker.js')}}"></script>
-<!-- jQuery Tags Input -->
-<script src="{{asset('vendors/jquery.tagsinput/src/jquery.tagsinput.js')}}"></script>
+{{--<!-- morris.js -->--}}
+{{--<script src="{{asset('vendors/raphael/raphael.min.js')}}"></script>--}}
+{{--<script src="{{asset('vendors/morris.js/morris.min.js')}}"></script>--}}
+{{--<!-- Chart.js -->--}}
+{{--<script src="{{asset('vendors/Chart.js/dist/Chart.min.js')}}"></script>--}}
+{{--<!-- gauge.js -->--}}
+{{--<script src="{{asset('vendors/gauge.js/dist/gauge.min.js')}}"></script>--}}
+{{--<!-- bootstrap-progressbar -->--}}
+{{--<script src="{{asset('vendors/bootstrap-progressbar/bootstrap-progressbar.min.js')}}"></script>--}}
+{{--<!-- iCheck -->--}}
+{{--<script src="{{asset('vendors/iCheck/icheck.min.js')}}"></script>--}}
+{{--<!-- Skycons -->--}}
+{{--<script src="{{asset('vendors/skycons/skycons.js')}}"></script>--}}
+{{--<!-- Flot -->--}}
+{{--<script src="{{asset('vendors/Flot/jquery.flot.js')}}"></script>--}}
+{{--<script src="{{asset('vendors/Flot/jquery.flot.pie.js')}}"></script>--}}
+{{--<script src="{{asset('vendors/Flot/jquery.flot.time.js')}}"></script>--}}
+{{--<script src="{{asset('vendors/Flot/jquery.flot.stack.js')}}"></script>--}}
+{{--<script src="{{asset('vendors/Flot/jquery.flot.resize.js')}}"></script>--}}
+{{--<!-- Flot plugins -->--}}
+{{--<script src="{{asset('vendors/flot.orderbars/js/jquery.flot.orderBars.js')}}"></script>--}}
+{{--<script src="{{asset('vendors/flot-spline/js/jquery.flot.spline.min.js')}}"></script>--}}
+{{--<script src="{{asset('vendors/flot.curvedlines/curvedLines.js')}}"></script>--}}
+{{--<!-- DateJS -->--}}
+{{--<script src="{{asset('vendors/DateJS/build/date.js')}}"></script>--}}
+{{--<!-- JQVMap -->--}}
+{{--<script src="{{asset('vendors/jqvmap/dist/jquery.vmap.js')}}"></script>--}}
+{{--<script src="{{asset('vendors/jqvmap/dist/maps/jquery.vmap.world.js')}}"></script>--}}
+{{--<script src="{{asset('vendors/jqvmap/examples/js/jquery.vmap.sampledata.js')}}"></script>--}}
+{{--<!-- bootstrap-daterangepicker -->--}}
+{{--<script src="{{asset('vendors/moment/min/moment.min.js')}}"></script>--}}
+{{--<script src="{{asset('vendors/bootstrap-daterangepicker/daterangepicker.js')}}"></script>--}}
+{{--<!-- jQuery Tags Input -->--}}
+{{--<script src="{{asset('vendors/jquery.tagsinput/src/jquery.tagsinput.js')}}"></script>--}}
 <!-- Custom Theme Scripts -->
 <script src="{{asset('build/js/custom.min.js')}}"></script>
 <!--Change Email Js-->
@@ -254,7 +266,7 @@
 <script src="{{ asset('js/change_password.js') }}"></script>
 <!--Validation-->
 <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
-<script src="{{ asset('js/validation_rules.js') }}"></script>
+{{--<script src="{{ asset('js/validation_rules.js') }}"></script>--}}
 <script src="{{ asset('js/custom_validation_rules.js') }}"></script>
 <script src="{{ asset('js/validation.js') }}"></script>
 {{--<script src="{{ asset('js/file.js') }}"></script>--}}

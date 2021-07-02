@@ -94,23 +94,25 @@
                         <div class="item form-group">
                             <label for="middle-name" class="col-form-label col-md-3 col-sm-3 label-align">State</label>
                             <div class="col-md-6 col-sm-6 ">
-                                <select id="state" name="state" class="form-control">
-                                    <option value="">Choose..</option>
-                                    @foreach($states as $state)
-                                        <option value="{{$state->name}}">{{$state->name}}</option>
-                                    @endforeach
-                                </select>
+    {{--                                <select id="state" name="state" class="form-control">--}}
+{{--                                    <option value="">Choose..</option>--}}
+{{--                                    @foreach($states as $state)--}}
+{{--                                        <option value="{{$state->name}}">{{$state->name}}</option>--}}
+{{--                                    @endforeach--}}
+{{--                                </select>--}}
+                                <x-state select-state=""/>
                             </div>
                         </div>
                         <div class="item form-group">
                             <label for="middle-name" class="col-form-label col-md-3 col-sm-3 label-align">City</label>
-                            <div class="col-md-6 col-sm-6 ">
-                                <select id="city" name="city" class="form-control">
-                                    <option value="">Choose..</option>
-                                    @foreach($cities as $city)
-                                        <option value="{{$city->name}}">{{$city->name}}</option>
-                                    @endforeach
-                                </select>
+                            <div class="col-md-6 col-sm-6" id="getCityList">
+{{--                                <select id="city" name="city" class="form-control">--}}
+{{--                                    <option value="">Choose..</option>--}}
+{{--                                    @foreach($cities as $city)--}}
+{{--                                        <option value="{{$city->name}}">{{$city->name}}</option>--}}
+{{--                                    @endforeach--}}
+{{--                                </select>--}}
+                                <x-city >
                             </div>
                         </div>
                         <div class="item form-group">
@@ -200,6 +202,7 @@
     </div>
     <!-- /page content -->
     <!-- Add more and remove button -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajaxy/1.6.1/scripts/jquery.ajaxy.min.js" integrity="sha512-bztGAvCE/3+a1Oh0gUro7BHukf6v7zpzrAb3ReWAVrt+bVNNphcl2tDTKCBr5zk7iEDmQ2Bv401fX3jeVXGIcA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script type="text/javascript">
         var i = 0;
         $("#add-btn").click(function () {
@@ -211,6 +214,25 @@
         });
     </script>
     <!-- /Add more and remove button -->
+    <script>
+        // $("#getStatesList").html(data);
+        $('#state').change(function () {
+            var stateId = $(this).val();
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('fetchCities') }}',
+                data: {
+                    stateId: stateId,
+                    "_token": "{{ csrf_token() }}"
+                },
+                success: function (data) {
+                    // alert("success");
+                    $("#getCityList").html(data);
+                }
+            });
+        });
+    </script>
+
 @stop
 
 
