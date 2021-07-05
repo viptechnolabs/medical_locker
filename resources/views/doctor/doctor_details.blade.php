@@ -228,7 +228,7 @@
                                                             <label
                                                                 class="control-label col-md-3 col-sm-3 ">State</label>
                                                             <div class="col-md-9 col-sm-9 ">
-                                                                <x-state select-state="{{$doctor->state}}"/>
+                                                                <x-state select-state="{{$doctor->state_id}}"/>
 {{--                                                                <select id="state" name="state" class="form-control">--}}
 {{--                                                                    <option value="">Choose..</option>--}}
 {{--                                                                    @foreach($states as $state)--}}
@@ -243,7 +243,7 @@
                                                             <label
                                                                 class="control-label col-md-3 col-sm-3 ">City</label>
                                                             <div class="col-md-9 col-sm-9 ">
-                                                                <x-city select-city="{{$doctor->city}}"/>
+                                                                <x-city selected="{{$doctor->city_id}}"/>
 {{--                                                                <select id="city" name="city" class="form-control">--}}
 {{--                                                                    <option value="">Choose..</option>--}}
 {{--                                                                    @foreach($cities as $city)--}}
@@ -460,14 +460,21 @@
 
     <script>
         // $("#getStatesList").html(data);
-        $('#state').change(function () {
-            var stateId = $(this).val();
-            alert(stateId)
+        $(document).ready(function () {
+            getCity("{{ $doctor->state_id }}", "{{ $doctor->city_id }}")
+
+            $('#state').change(function () {
+                getCity(this.value);
+            });
+        });
+
+        function getCity(stateId, cityId = null) {
             $.ajax({
                 type: 'POST',
                 url: '{{ route('fetchCities') }}',
                 data: {
                     stateId: stateId,
+                    selected: cityId,
                     "_token": "{{ csrf_token() }}"
                 },
                 success: function (data) {
@@ -475,7 +482,7 @@
                     $("#getCityList").html(data);
                 }
             });
-        });
+        }
     </script>
 @stop
 

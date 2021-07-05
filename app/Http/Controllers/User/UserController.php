@@ -63,8 +63,8 @@ class UserController extends Controller
             $user->mobile_no = $request->mobile_no;
             $user->email = $request->email;
             $user->address = $request->address;
-            $user->city = $request->city;
-            $user->state = $request->state;
+            $user->city_id = $request->city;
+            $user->state_id = $request->state;
             $user->pin_code = $request->pin_code;
             $user->aadhar_no = $request->aadhar_no;
             $user->gender = $request->gender;
@@ -128,8 +128,8 @@ class UserController extends Controller
             $user->email = $request->email;
             $user->mobile_no = $request->mobile_no;
             $user->address = $request->address;
-            $user->state = $request->state;
-            $user->city = $request->city;
+            $user->state_id = $request->state;
+            $user->city_id = $request->city;
             $user->pin_code = $request->pin_code;
             $user->aadhar_no = $request->aadhar_no;
             $user->dob = $request->dob;

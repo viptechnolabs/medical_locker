@@ -76,8 +76,8 @@ class DoctorController extends Controller
             $doctor->mobile_no = $request->mobile_no;
             $doctor->email = $request->email;
             $doctor->address = $request->address;
-            $doctor->city = $request->city;
-            $doctor->state = $request->state;
+            $doctor->city_id = $request->city;
+            $doctor->state_id = $request->state;
             $doctor->pin_code = $request->pin_code;
             $doctor->aadhar_no = $request->aadhar_no;
             $doctor->gender = $request->gender;
@@ -170,8 +170,8 @@ class DoctorController extends Controller
             $doctor->email = $request->email;
             $doctor->mobile_no = $request->mobile_no;
             $doctor->address = $request->address;
-            $doctor->state = $request->state;
-            $doctor->city = $request->city;
+            $doctor->state_id = $request->state;
+            $doctor->city_id = $request->city;
             $doctor->pin_code = $request->pin_code;
             $doctor->aadhar_no = $request->aadhar_no;
             $doctor->dob = $request->dob;

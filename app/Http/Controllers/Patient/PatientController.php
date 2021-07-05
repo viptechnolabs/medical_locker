@@ -69,8 +69,8 @@ class PatientController extends Controller
             $patient->mobile_no = $request->mobile_no;
             $patient->email = $request->email;
             $patient->address = $request->address;
-            $patient->city = $request->city;
-            $patient->state = $request->state;
+            $patient->city_id = $request->city;
+            $patient->state_id = $request->state;
             $patient->pin_code = $request->pin_code;
             $patient->aadhar_no = $request->aadhar_no;
             $patient->gender = $request->gender;
@@ -139,8 +139,8 @@ class PatientController extends Controller
             $patient->email = $request->email;
             $patient->mobile_no = $request->mobile_no;
             $patient->address = $request->address;
-            $patient->state = $request->state;
-            $patient->city = $request->city;
+            $patient->city_id = $request->city;
+            $patient->state_id = $request->state;
             $patient->pin_code = $request->pin_code;
             $patient->aadhar_no = $request->aadhar_no;
             $patient->dob = $request->dob;

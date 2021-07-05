@@ -44,6 +44,9 @@ class CitySeeder extends Seeder
             'Vapi (Wapi)',
             'Veraval',
             'Other',
+            'Udaipur',
+            'Jesalmar',
+            'Goa',
         ];
 
         foreach($cities as $citie){

@@ -17,6 +17,9 @@ class StateSeeder extends Seeder
         //
         $states = [
             'Gujrat',
+            'Rajsthan',
+            'MP',
+            'Goa',
             'Other',
         ];
 

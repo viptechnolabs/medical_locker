@@ -103,8 +103,8 @@ class DoctorSeeder extends Seeder
             $doctorObj->mobile_no = $doctor['mobile_no'];
             $doctorObj->email = $doctor['email'];
             $doctorObj->address = $doctor['address'];
-            $doctorObj->city = $doctor['city'];
-            $doctorObj->state = $doctor['state'];
+            $doctorObj->city_id = $doctor['city'];
+            $doctorObj->state_id = $doctor['state'];
             $doctorObj->pin_code = $doctor['pin_code'];
             $doctorObj->aadhar_no = $doctor['aadhar_no'];
             $doctorObj->document_photo = $doctor['document_photo'];

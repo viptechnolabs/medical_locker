@@ -182,13 +182,14 @@
                                                             <label
                                                                 class="control-label col-md-3 col-sm-3 ">State</label>
                                                             <div class="col-md-9 col-sm-9 ">
-                                                                <select id="state" name="state" class="form-control">
-                                                                    <option value="">Choose..</option>
-                                                                    @foreach($states as $state)
-                                                                        <option
-                                                                            value="{{$state->name}}" {{ ($user->state === $state->name) ? "selected" : "" }}>{{$state->name}}</option>
-                                                                    @endforeach
-                                                                </select>
+                                                                <x-state select-state="{{$user->state_id}}"/>
+{{--                                                                <select id="state" name="state" class="form-control">--}}
+{{--                                                                    <option value="">Choose..</option>--}}
+{{--                                                                    @foreach($states as $state)--}}
+{{--                                                                        <option--}}
+{{--                                                                            value="{{$state->name}}" {{ ($user->state_id === $state->name) ? "selected" : "" }}>{{$state->name}}</option>--}}
+{{--                                                                    @endforeach--}}
+{{--                                                                </select>--}}
                                                             </div>
 
                                                         </div>
@@ -196,13 +197,14 @@
                                                             <label
                                                                 class="control-label col-md-3 col-sm-3 ">City</label>
                                                             <div class="col-md-9 col-sm-9 ">
-                                                                <select id="city" name="city" class="form-control">
-                                                                    <option value="">Choose..</option>
-                                                                    @foreach($cities as $city)
-                                                                        <option
-                                                                            value="{{$city->name}}" {{ ($user->city === $city->name) ? "selected" : "" }}>{{$city->name}}</option>
-                                                                    @endforeach
-                                                                </select>
+                                                                <x-city selected="{{$user->city_id}}"/>
+{{--                                                                <select id="city" name="city" class="form-control">--}}
+{{--                                                                    <option value="">Choose..</option>--}}
+{{--                                                                    @foreach($cities as $city)--}}
+{{--                                                                        <option--}}
+{{--                                                                            value="{{$city->name}}" {{ ($user->city_id === $city->name) ? "selected" : "" }}>{{$city->name}}</option>--}}
+{{--                                                                    @endforeach--}}
+{{--                                                                </select>--}}
                                                             </div>
 
                                                         </div>
@@ -344,6 +346,34 @@
             </div>
         </div>
     </div>
+
+
+    <script>
+        // $("#getStatesList").html(data);
+        $(document).ready(function () {
+            getCity("{{ $user->state_id }}", "{{ $user->city_id }}")
+
+            $('#state').change(function () {
+                getCity(this.value);
+            });
+        });
+
+        function getCity(stateId, cityId = null) {
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('fetchCities') }}',
+                data: {
+                    stateId: stateId,
+                    selected: cityId,
+                    "_token": "{{ csrf_token() }}"
+                },
+                success: function (data) {
+                    // alert("success");
+                    $("#getCityList").html(data);
+                }
+            });
+        }
+    </script>
 @stop
 
 

@@ -112,7 +112,7 @@
 {{--                                        <option value="{{$city->name}}">{{$city->name}}</option>--}}
 {{--                                    @endforeach--}}
 {{--                                </select>--}}
-                                <x-city >
+                                <x-city/>
                             </div>
                         </div>
                         <div class="item form-group">

@@ -7,17 +7,16 @@ use Illuminate\View\Component;
 class City extends Component
 {
     public $cities;
-    public $selectCity;
+    public $selected;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($selectCity)
+    public function __construct($selected = null)
     {
-        $this->selectCity = $selectCity;
-        $this->cities = \App\Models\City::all();
+        $this->selected = $selected;
     }
 
     /**
@@ -27,6 +26,7 @@ class City extends Component
      */
     public function render()
     {
+//        dd($this->selectCity);
         return view('components.city');
     }
 }

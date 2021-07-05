@@ -92,8 +92,8 @@ class UserSeeder extends Seeder
             $userObj->mobile_no = $user['mobile_no'];
             $userObj->email = $user['email'];
             $userObj->address = $user['address'];
-            $userObj->city = $user['city'];
-            $userObj->state = $user['state'];
+            $userObj->city_id = $user['city'];
+            $userObj->state_id = $user['state'];
             $userObj->pin_code = $user['pin_code'];
             $userObj->aadhar_no = $user['aadhar_no'];
             $userObj->gender = $user['gender'];

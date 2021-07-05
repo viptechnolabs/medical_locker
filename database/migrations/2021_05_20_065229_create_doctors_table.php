@@ -23,8 +23,9 @@ class CreateDoctorsTable extends Migration
             $table->string('mobile_no', 13);
             $table->string('email', 50)->unique();;
             $table->longText('address');
-            $table->string('city', 22);
-            $table->string('state', 22);
+            $table->unsignedBigInteger('city_id')->unsigned();
+            $table->unsignedBigInteger('state_id')->unsigned();
+//            $table->unsignedBigInteger('state_id');
             $table->string('pin_code', 10);
             $table->string('aadhar_no', 13)->unique();
             $table->string('document_photo');
@@ -37,6 +38,10 @@ class CreateDoctorsTable extends Migration
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();
+
+            $table->foreign('city_id')->references('id')->on('cities');
+            $table->foreign('state_id')->references('id')->on('states');
+//            $table->foreign('state_id')->references('id')->on('states');
         });
     }
 

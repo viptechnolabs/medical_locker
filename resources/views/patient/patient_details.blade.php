@@ -174,14 +174,15 @@
                                                             <label
                                                                 class="control-label col-md-3 col-sm-3 ">State</label>
                                                             <div class="col-md-9 col-sm-9 ">
-                                                                <select id="state" name="state"
-                                                                        class="form-control" {{Session::get('userType') === "hospital" ? "" : "disabled"}}>
-                                                                    <option value="">Choose..</option>
-                                                                    @foreach($states as $state)
-                                                                        <option
-                                                                            value="{{$state->name}}" {{ ($patient->state === $state->name) ? "selected" : "" }}>{{$state->name}}</option>
-                                                                    @endforeach
-                                                                </select>
+                                                                <x-state select-state="{{$patient->state_id}}"/>
+{{--                                                                <select id="state" name="state"--}}
+{{--                                                                        class="form-control" {{Session::get('userType') === "hospital" ? "" : "disabled"}}>--}}
+{{--                                                                    <option value="">Choose..</option>--}}
+{{--                                                                    @foreach($states as $state)--}}
+{{--                                                                        <option--}}
+{{--                                                                            value="{{$state->name}}" {{ ($patient->state_id === $state->name) ? "selected" : "" }}>{{$state->name}}</option>--}}
+{{--                                                                    @endforeach--}}
+{{--                                                                </select>--}}
                                                             </div>
 
                                                         </div>
@@ -189,14 +190,15 @@
                                                             <label
                                                                 class="control-label col-md-3 col-sm-3 ">City</label>
                                                             <div class="col-md-9 col-sm-9 ">
-                                                                <select id="city" name="city"
-                                                                        class="form-control" {{Session::get('userType') === "hospital" ? "" : "disabled"}}>
-                                                                    <option value="">Choose..</option>
-                                                                    @foreach($cities as $city)
-                                                                        <option
-                                                                            value="{{$city->name}}" {{ ($patient->city === $city->name) ? "selected" : "" }}>{{$city->name}}</option>
-                                                                    @endforeach
-                                                                </select>
+                                                                <x-city selected="{{$patient->city_id}}"/>
+{{--                                                                <select id="city" name="city"--}}
+{{--                                                                        class="form-control" {{Session::get('userType') === "hospital" ? "" : "disabled"}}>--}}
+{{--                                                                    <option value="">Choose..</option>--}}
+{{--                                                                    @foreach($cities as $city)--}}
+{{--                                                                        <option--}}
+{{--                                                                            value="{{$city->name}}" {{ ($patient->city_id === $city->name) ? "selected" : "" }}>{{$city->name}}</option>--}}
+{{--                                                                    @endforeach--}}
+{{--                                                                </select>--}}
                                                             </div>
 
                                                         </div>
@@ -384,6 +386,33 @@
             </div>
         </div>
     </div>
+
+    <script>
+        // $("#getStatesList").html(data);
+        $(document).ready(function () {
+            getCity("{{ $patient->state_id }}", "{{ $patient->city_id }}")
+
+            $('#state').change(function () {
+                getCity(this.value);
+            });
+        });
+
+        function getCity(stateId, cityId = null) {
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('fetchCities') }}',
+                data: {
+                    stateId: stateId,
+                    selected: cityId,
+                    "_token": "{{ csrf_token() }}"
+                },
+                success: function (data) {
+                    // alert("success");
+                    $("#getCityList").html(data);
+                }
+            });
+        }
+    </script>
 @stop
 
 

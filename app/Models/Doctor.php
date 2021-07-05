@@ -48,6 +48,10 @@ class Doctor extends Authenticatable
 //        return $this->hasMany(Certificate::class);
     }
 
+    public function state()
+    {
+        return $this->hasOne(State::class, 'id', 'state_id');
+    }
 //    public  static function  getUserById($id){
 //        return Doctor::findOrFail($id);
 //    }

@@ -20,8 +20,8 @@ class CreatePatientsTable extends Migration
             $table->string('mobile_no', 13);
             $table->string('email', 50)->nullable();
             $table->longText('address');
-            $table->string('city', 22);
-            $table->string('state', 22);
+            $table->unsignedBigInteger('city_id')->unsigned();
+            $table->unsignedBigInteger('state_id')->unsigned();
             $table->string('pin_code', 10);
             $table->string('aadhar_no', 13)->unique()->nullable();
             $table->date('dob');
@@ -33,6 +33,9 @@ class CreatePatientsTable extends Migration
 //            $table->unsignedBigInteger('consultant_doctor')->unsigned();
 //            $table->string('treatment_type', 100);
             $table->timestamps();
+
+            $table->foreign('city_id')->references('id')->on('cities');
+            $table->foreign('state_id')->references('id')->on('states');
 //            $table->foreign('consultant_doctor')->references('id')->on('doctors');
         });
     }
