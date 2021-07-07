@@ -150,7 +150,7 @@
                                                                             <td><input type="file"
                                                                                        id="update_certificates"
                                                                                        name="certificates[0]"
-                                                                                       accept="image/*"/></td>
+                                                                                       accept="image/*" onchange="preview_image()"/></td>
                                                                             <td>
                                                                                 <button type="button" name="add"
                                                                                         id="add-btn"
@@ -160,6 +160,7 @@
                                                                             </td>
                                                                         </tr>
                                                                     </table>
+                                                                    <div id="image_preview"></div>
                                                                 </div>
 
                                                             </div>
@@ -321,10 +322,12 @@
                                                                 Photo</label>
                                                             <div class="col-md-9 col-sm-9 ">
                                                                 <input type="file" id="profile_photo"
-                                                                       name="profile_photo" accept="image/*">
+                                                                       name="profile_photo" accept="image/*" oninput="profile_preview.src=window.URL.createObjectURL(this.files[0])"/>
+                                                                <img id="profile_preview" width="100px" />
                                                             </div>
 
                                                         </div>
+                                                        <br>
                                                         <div class="form-group row">
                                                             <label
                                                                 class="control-label col-md-3 col-sm-3 ">Document
@@ -346,7 +349,8 @@
                                                                 @if(Session::get('userType') !== "doctor" )
                                                                     <input type="file" id="document_photo"
                                                                            name="document_photo" accept="image/*"
-                                                                           alt="{{$doctor->name}}">
+                                                                           alt="{{$doctor->name}}" oninput="document_preview.src=window.URL.createObjectURL(this.files[0])">
+                                                                    <img id="document_preview" width="100px" />
                                                                 @endif
                                                             </div>
 
@@ -449,7 +453,7 @@
         var i = 0;
         $("#add-btn").click(function () {
             ++i;
-            $("#dynamicAddRemove").append('<tr><td><input type="text" name="degree[' + i + ']" placeholder="Enter Degree" class="form-control" /></td><td><input  type="file" id="certificates"  name="certificates[' + i + ']" accept="image/* "/></td><td><button type="button" class="btn btn-sm btn-danger remove-tr">Remove</button></td></tr>');
+            $("#dynamicAddRemove").append('<tr><td><input type="text" name="degree[' + i + ']" placeholder="Enter Degree" class="form-control" /></td><td><input  type="file" id="certificates"  name="certificates[' + i + ']" accept="image/*" onchange="preview_image()"/></td><td><button type="button" class="btn btn-sm btn-danger remove-tr">Remove</button></td></tr>');
         });
         $(document).on('click', '.remove-tr', function () {
             $(this).parents('tr').remove();
@@ -457,6 +461,15 @@
     </script>
     <!-- /Add more and remove button -->
 
+    <script>
+        function preview_image() {
+            Array.from(event.target.files).filter(f => {
+                return f.type.startsWith('image/')
+            }).forEach((f) => {
+                $('#image_preview').append("<img class='preview-image' src='" + URL.createObjectURL(f) + "' width='170px'> &emsp;");
+            });
+        }
+    </script>
 
     <script>
         // $("#getStatesList").html(data);

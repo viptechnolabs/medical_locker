@@ -256,10 +256,13 @@
                                                                     Photo</label>
                                                                 <div class="col-md-9 col-sm-9 ">
                                                                     <input type="file" id="profile_photo"
-                                                                           name="profile_photo" accept="image/*">
+                                                                           name="profile_photo" accept="image/*"
+                                                                           oninput="profile_preview.src=window.URL.createObjectURL(this.files[0])"/>
+                                                                    <img id="profile_preview" width="100px" />
                                                                 </div>
                                                             </div>
                                                         @endif
+                                                        <br>
                                                         <div class="form-group row">
                                                             <label
                                                                 class="control-label col-md-3 col-sm-3 ">Document
@@ -281,7 +284,8 @@
                                                                 @if(Auth::guard('hospital')->check())
                                                                     <input type="file" id="document_photo"
                                                                            name="document_photo" accept="image/*"
-                                                                           alt="{{$patient->name}}">
+                                                                           alt="{{$patient->name}}" oninput="document_preview.src=window.URL.createObjectURL(this.files[0])">
+                                                                    <img id="document_preview" width="100px" />
                                                                 @endif
                                                             </div>
 

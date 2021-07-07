@@ -249,7 +249,8 @@
                                                                 Logo</label>
                                                             <div class="col-md-9 col-sm-9 ">
                                                                 <input type="file" value="" name="hospital_logo"
-                                                                       accept="image/*">
+                                                                       accept="image/*" oninput="hospital_logo_preview.src=window.URL.createObjectURL(this.files[0])"/>
+                                                                <img id="hospital_logo_preview" width="130px" />
                                                             </div>
                                                         </div>
 

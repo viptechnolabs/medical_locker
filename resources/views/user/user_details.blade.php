@@ -275,10 +275,12 @@
                                                                 Photo</label>
                                                             <div class="col-md-9 col-sm-9 ">
                                                                 <input type="file" id="profile_photo"
-                                                                       name="profile_photo" accept="image/*">
+                                                                       name="profile_photo" accept="image/*" oninput="profile_preview.src=window.URL.createObjectURL(this.files[0])"/>
+                                                                <img id="profile_preview" width="100px" />
                                                             </div>
 
                                                         </div>
+                                                        <br>
                                                         <div class="form-group row">
                                                             <label
                                                                 class="control-label col-md-3 col-sm-3 ">Document
@@ -300,7 +302,8 @@
                                                                 @if(Session::get('userType') !== "user" )
                                                                     <input type="file" id="document_photo"
                                                                            name="document_photo" accept="image/*"
-                                                                           alt="{{$user->name}}">
+                                                                           alt="{{$user->name}}" oninput="document_preview.src=window.URL.createObjectURL(this.files[0])">
+                                                                    <img id="document_preview" width="100px" />
                                                                 @endif
                                                             </div>
 

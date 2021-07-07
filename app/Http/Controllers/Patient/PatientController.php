@@ -52,7 +52,7 @@ class PatientController extends Controller
             'state' => 'required',
             'city' => 'required',
             'pin_code' => 'required|max:10',
-            'aadhar_no' => 'required|max:12',
+            'aadhar_no' => 'required|max:13',
             'gender' => 'required',
             'dob' => 'required',
         );

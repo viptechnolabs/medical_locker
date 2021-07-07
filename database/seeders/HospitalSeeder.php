@@ -21,7 +21,7 @@ class HospitalSeeder extends Seeder
             'logo' => 'logo.png',
             'details' => 'Hospital Details',
             'register_no' => '1234',
-            'email' => 'viphospital@gmail.com',
+            'email' => 'admin@admin.com',
             'mobile_no' => '0123456789',
             'fex_no' => '0123456789',
             'address' => 'Dummy Address',

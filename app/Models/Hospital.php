@@ -25,6 +25,12 @@ class Hospital extends Authenticatable
         'password',
     ];
 
+    public const GENDER = [
+        'male' => 'Male',
+        'female' => 'Female',
+        'transgender' => 'Transgender',
+    ];
+
     protected $hidden = [
         'password', 'remember_token',
     ];

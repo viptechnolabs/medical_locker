@@ -107,27 +107,17 @@
                             </div>
                         </div>
                         <div class="item form-group">
-                            <label class="col-form-label col-md-3 col-sm-3 label-align">Gender</label>
+                            <label for="routine_checkup" class="col-form-label col-md-3 col-sm-3 label-align">Gender</label>
                             <div class="col-md-6 col-sm-6 ">
-                                <div id="gender" class="btn-group" data-toggle="buttons">
-                                    <label class="btn btn-secondary" data-toggle-class="btn-primary"
-                                           data-toggle-passive-class="btn-default">
-                                        <input type="radio" name="gender" value="male" class="join-btn"> &nbsp; Male
-                                        &nbsp;
-                                    </label>
-                                    <label class="btn btn-primary" data-toggle-class="btn-primary"
-                                           data-toggle-passive-class="btn-default">
-                                        <input type="radio" name="gender" value="female" class="join-btn"> Female
-                                    </label>
-                                    <label class="btn btn-secondary" data-toggle-class="btn-primary"
-                                           data-toggle-passive-class="btn-default">
-                                        <input type="radio" name="gender" value="transgender" class="join-btn"> &nbsp;
-                                        Transgender &nbsp;
-                                    </label>
-                                    <label class="btn btn-primary" data-toggle-class="btn-primary"
-                                           data-toggle-passive-class="btn-default">
-                                        <input type="radio" name="gender" value="other" class="join-btn"> Other
-                                    </label>
+                                <div class="radio-group mt-2">
+                                    <div class="radio">
+                                        @foreach(App\Models\Hospital::GENDER as $key => $value )
+                                            <label>
+                                                <input type="radio" class="flat" value="{{ $key }}" id="routine_checkup"
+                                                       name="gender"> {{ $value }} &nbsp;&nbsp;
+                                            </label>
+                                        @endforeach
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -152,14 +142,16 @@
                             <label for="middle-name" class="col-form-label col-md-3 col-sm-3 label-align">Profile
                                 Photo</label>
                             <div class="col-md-6 col-sm-6 ">
-                                <input type="file" id="profile_photo" name="profile_photo" accept="image/*">
+                                <input type="file" id="profile_photo" name="profile_photo" accept="image/*" oninput="profile_preview.src=window.URL.createObjectURL(this.files[0])"/>
+                                <img id="profile_preview" width="100px" />
                             </div>
                         </div>
                         <div class="item form-group">
                             <label for="middle-name" class="col-form-label col-md-3 col-sm-3 label-align">Document
                                 Photo</label>
                             <div class="col-md-6 col-sm-6 ">
-                                <input type="file" id="document" name="document" accept="image/*">
+                                <input type="file" id="document" name="document" accept="image/*" oninput="document_preview.src=window.URL.createObjectURL(this.files[0])">
+                                <img id="document_preview" width="100px" />
                             </div>
                         </div>
                         <div class="ln_solid"></div>
