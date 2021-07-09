@@ -22,11 +22,16 @@
                         </a>
                     @endif
                     @if(!Auth::guard('web')->check())
-                        <a href="{{ route('patient.patient_list_download') }}">
+                            <a href="javascript:;" class="border-button"
+                               data-toggle="modal"
+                               data-target="#patient_list_download">
                             <button type="button" class="btn btn-success btn-sm">
                                 <i class="fa fa-download fa-fw"></i> &ensp; Patients List Download
                             </button>
                         </a>
+                        <!-- list download -->
+                        <x-list-download/>
+                        <!-- /list download -->
                     @endif
                 </div>
             </div>
@@ -113,9 +118,5 @@
             </div>
         </div>
     </div>
-    <!-- Change patient status Pop-Up -->
-    <div id="status_change_popup"></div>
-    <!-- /Change patient status Pop-Up -->
-    <!-- /page content -->
 @stop
 

@@ -31,6 +31,15 @@ class Hospital extends Authenticatable
         'transgender' => 'Transgender',
     ];
 
+    public const OPTION = [
+        'all' => 'All',
+        'last_day' => 'Last day',
+        'last_week' => 'Last week',
+        'current_month' => 'Current month',
+        'last_month' => 'Last month',
+        'custom' => 'Custom',
+    ];
+
     protected $hidden = [
         'password', 'remember_token',
     ];

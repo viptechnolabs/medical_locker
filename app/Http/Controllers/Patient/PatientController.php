@@ -11,6 +11,7 @@ use App\Models\Patients;
 use App\Models\Report;
 use App\Models\State;
 use Barryvdh\DomPDF\Facade as PDF;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -27,7 +28,11 @@ class PatientController extends Controller
         if (Auth::guard('hospital')->check()) {
             $patients = Patients::orderBy('id', 'DESC')->get();
         } elseif (Auth::guard('doctor')->check()) {
-            $patients = Report::where('consultant_doctor', Auth::guard('doctor')->user()->id)->orderBy('id', 'DESC')->get();
+            //$patients = Report::where('consultant_doctor', Auth::guard('doctor')->user()->id)->orderBy('id', 'DESC')->groupBy('patient_id')->get();
+            $all_patients = Report::where('consultant_doctor', Auth::guard('doctor')->user()->id)->orderBy('id', 'DESC')->get();
+            $patients = $all_patients->unique('patient_id');
+            //$patientsDupes = $patients->diff($patients);
+
         } elseif (Auth::guard('web')->check()) {
             $patients = Patients::orderBy('id', 'DESC')->get();
         }
@@ -248,15 +253,66 @@ class PatientController extends Controller
         return Response::download(public_path($report->file_path . $report->file_name), str_replace('/', '_', $report->patient[0]->patient_id) . '_' . $report->file_name);
     }
 
-    public function patientListDownload()
+    public function patientListDownload(Request $request)
     {
         if (Auth::guard('hospital')->check()) {
-            $patients = Patients::all();
-        } elseif (Auth::guard('doctor')->check()) {
-            $patients = Report::where('consultant_doctor', Auth::guard('doctor')->user()->id)->get();
+            if ($request->option) {
+                if ($request->option === 'all')
+                {
+                    $patients = Patients::all();
+                }
+                elseif ($request->option === 'last_day')
+                {
+                    $patients = Patients::where('created_at', '>=', Carbon::today()->subDays(1))->get();
+                }
+                elseif ($request->option === 'last_week')
+                {
+                    $patients = Patients::where('created_at', '>=', Carbon::today()->subDays(1))->get();
+                }
+                elseif ($request->option === 'current_month')
+                {
+                    $patients = Patients::whereMonth('created_at', Carbon::now()->month)->get();
+                }
+                elseif ($request->option === 'last_month')
+                {
+                    $patients = Patients::where('created_at', '>=', Carbon::now()->subMonth()->month)->get();
+                }
+            }
+            if ($request->option === 'custom')
+            {
+                $patients = Patients::whereBetween('created_at', [$request->start_date." 00:00:00",$request->end_date." 23:59:59"])->get();
+            }
+        }
+        elseif (Auth::guard('doctor')->check()) {
+            if ($request->option) {
+                if ($request->option === 'all')
+                {
+                    $patients = Report::where('consultant_doctor', Auth::guard('doctor')->user()->id)->get();
+                }
+                elseif ($request->option === 'last_day')
+                {
+                    $patients = Report::where('consultant_doctor', Auth::guard('doctor')->user()->id)->where('created_at', '>=', Carbon::today()->subDays(1))->get();
+                }
+                elseif ($request->option === 'last_week')
+                {
+                    $patients = Report::where('consultant_doctor', Auth::guard('doctor')->user()->id)->where('created_at', '>=', Carbon::today()->subDays(1))->get();
+                }
+                elseif ($request->option === 'current_month')
+                {
+                    $patients = Report::where('consultant_doctor', Auth::guard('doctor')->user()->id)->whereMonth('created_at', Carbon::now()->month)->get();
+                }
+                elseif ($request->option === 'last_month')
+                {
+                    $patients = Report::where('consultant_doctor', Auth::guard('doctor')->user()->id)->where('created_at', '>=', Carbon::now()->subMonth()->month)->get();
+                }
+            }
+            if ($request->option === 'custom')
+            {
+                $patients = Report::where('consultant_doctor', Auth::guard('doctor')->user()->id)->whereBetween('created_at', [$request->start_date." 00:00:00",$request->end_date." 23:59:59"])->get();
+            }
         }
 
-        activity('Patient list download')
+            activity('Patient list download')
             ->log('Patient list downloaded');
 
         view()->share('patients', $patients);

@@ -793,3 +793,65 @@ validator = $('#add_report').validate({
         },
     }
 });
+
+
+// validator = $('#download').validate({
+//     ignore: [],
+//     errorElement: 'span',
+//     errorClass: 'validation-error',
+//     rules: {
+//         option: {
+//             required: true,
+//             not_empty:true,
+//         },
+//         start_date: {
+//             required: true,
+//             not_empty:true,
+//         },
+//         end_date: {
+//             required: true,
+//             not_empty:true,
+//         },
+//     },
+//     submitHandler: function (form) {
+//         $(form).find(':input[type=submit]').prop('disabled', true)
+//         form.submit();
+//     },
+//
+// });
+
+// validator = $('#list_download').validate({
+//     ignore: [],
+//     errorElement: 'span',
+//     errorClass: 'validation-error',
+//     rules: {
+//         option: {
+//             required: true,
+//             not_empty:true,
+//         },
+//         start_date: {
+//             required: true,
+//             not_empty:true,
+//         },
+//         end_date: {
+//             required: true,
+//             not_empty:true,
+//         },
+//     },
+//     messages: {
+//         option: {
+//             required: "Please select any option",
+//         },
+//         start_date: {
+//             required: "Please enter date range",
+//         },
+//         end_date: {
+//             required: "Please enter tye",
+//         },
+//     },
+//     submitHandler: function(form) {
+//         //
+//     }
+//
+// });
+

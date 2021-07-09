@@ -18,6 +18,22 @@
             <div class="title_left">
                 <h3>All Activity List</h3>
             </div>
+            <div class="title_right">
+                <div class="pull-right">
+                    @if(!Auth::guard('web')->check())
+                        <a href="javascript:;" class="border-button"
+                           data-toggle="modal"
+                           data-target="#delete_activity">
+                            <button type="button" class="btn btn-danger btn-sm">
+                                <i class="fa fa-trash fa-fw"></i> &ensp; Activity Delete
+                            </button>
+                        </a>
+                        <!-- list download -->
+                        <x-delete-activity/>
+                        <!-- /list download -->
+                    @endif
+                </div>
+            </div>
         </div>
 
         <div class="clearfix"></div>
@@ -26,6 +42,16 @@
             <div class="x_panel">
                 <div class="x_content">
                     <div class="col-md-12 col-sm-12  text-center">
+                        @if (session()->has('message'))
+                            <div class="alert alert-danger alert-dismissible "
+                                 role="alert">
+                                <button type="button" class="close"
+                                        data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                                <strong>{{ session('message') }}</strong>
+                            </div>
+                        @endif
                     </div>
 
                     <div class="clearfix"></div>

@@ -11,6 +11,7 @@ use App\Models\State;
 use App\Models\User;
 use App\Notifications\ChangeEmail;
 use App\Notifications\ChangeMobileNo;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -129,6 +130,37 @@ class HospitalController extends Controller
         $hospital = Hospital::findOrFail(1);
         $activities = Activity::orderBy('id', 'DESC')->get(); //returns the last logged activity
         return view('activity', ['activities' => $activities, 'hospital' => $hospital,]);
+    }
+
+    public function activityDelete(Request $request)
+    {
+        if ($request->option) {
+            if ($request->option === 'all')
+            {
+                Activity::truncate();
+            }
+            elseif ($request->option === 'last_day')
+            {
+                Activity::where('created_at', '>=', Carbon::today()->subDays(1))->delete();
+            }
+            elseif ($request->option === 'last_week')
+            {
+                Activity::where('created_at', '>=', Carbon::today()->subDays(1))->delete();
+            }
+            elseif ($request->option === 'current_month')
+            {
+                Activity::whereMonth('created_at', Carbon::now()->month)->delete();
+            }
+            elseif ($request->option === 'last_month')
+            {
+                $activity = Activity::where('created_at', '>=', Carbon::now()->subMonth()->month)->delete();
+            }
+        }
+        activity('Activity delete')
+            ->log('Activity are deleted');
+        session()->flash('message', 'Selected activity are deleted..!');
+        return redirect()->back();
+
     }
 
     public function hospitalDetails()
