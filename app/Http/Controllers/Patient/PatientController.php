@@ -255,64 +255,115 @@ class PatientController extends Controller
 
     public function patientListDownload(Request $request)
     {
-        if (Auth::guard('hospital')->check()) {
-            if ($request->option) {
+        if (Auth::guard('hospital')->check())
+        {
+            if ($request->option)
+            {
+                $queryBuilder = Patients::query();
                 if ($request->option === 'all')
                 {
-                    $patients = Patients::all();
+                    $queryBuilder = Patients::query();
                 }
                 elseif ($request->option === 'last_day')
                 {
-                    $patients = Patients::where('created_at', '>=', Carbon::today()->subDays(1))->get();
+                    $yesterday = date("Y-m-d", strtotime( '-1 days' ) );
+                    $queryBuilder->whereBetween('created_at', [$yesterday, date("Y-m-d")]);
                 }
                 elseif ($request->option === 'last_week')
                 {
-                    $patients = Patients::where('created_at', '>=', Carbon::today()->subDays(1))->get();
+                    $previous_week = strtotime("-1 week +1 day");
+                    $start_week = strtotime("last sunday midnight", $previous_week);
+                    $end_week = strtotime("next saturday", $start_week);
+                    $start_week = date("Y-m-d", $start_week);
+                    $end_week = date("Y-m-d", $end_week);
+                    $queryBuilder->whereBetween('created_at', [$start_week, $end_week]);
                 }
                 elseif ($request->option === 'current_month')
                 {
-                    $patients = Patients::whereMonth('created_at', Carbon::now()->month)->get();
+                    $queryBuilder->whereMonth('created_at', Carbon::now()->month);
                 }
                 elseif ($request->option === 'last_month')
                 {
-                    $patients = Patients::where('created_at', '>=', Carbon::now()->subMonth()->month)->get();
+                    $queryBuilder->whereMonth('created_at', '=', Carbon::now()->subMonth()->month);
                 }
+                $patients = $queryBuilder->get();
             }
             if ($request->option === 'custom')
             {
-                $patients = Patients::whereBetween('created_at', [$request->start_date." 00:00:00",$request->end_date." 23:59:59"])->get();
+                $queryBuilder = Patients::query();
+
+                if ($request->start_date && $request->end_date == null)
+                {
+                    $queryBuilder->whereBetween('created_at', [$request->start_date . " 00:00:00", date('Y-m-d') . " 23:59:59"]);
+                }
+                elseif ($request->end_date && $request->start_date == null)
+                {
+                    $queryBuilder->whereDate('created_at', '<', $request->end_date . " 23:59:59");
+                }
+                elseif ($request->start_date || $request->end_date)
+                {
+                    $queryBuilder->whereBetween('created_at', [$request->start_date . " 00:00:00", $request->end_date . " 23:59:59"]);
+                }
+                $patients = $queryBuilder->get();
             }
         }
-        elseif (Auth::guard('doctor')->check()) {
-            if ($request->option) {
+        elseif (Auth::guard('doctor')->check())
+        {
+            if ($request->option)
+            {
+
+                $queryBuilder = Report::query()->where('consultant_doctor', Auth::guard('doctor')->user()->id);
+
                 if ($request->option === 'all')
                 {
-                    $patients = Report::where('consultant_doctor', Auth::guard('doctor')->user()->id)->get();
-                }
-                elseif ($request->option === 'last_day')
+                    $queryBuilder = Report::query()->where('consultant_doctor', Auth::guard('doctor')->user()->id);
+
+                } elseif ($request->option === 'last_day')
                 {
-                    $patients = Report::where('consultant_doctor', Auth::guard('doctor')->user()->id)->where('created_at', '>=', Carbon::today()->subDays(1))->get();
+                    $yesterday = date("Y-m-d", strtotime( '-1 days' ) );
+                    $queryBuilder->whereBetween('created_at', [$yesterday, date("Y-m-d")]);
                 }
                 elseif ($request->option === 'last_week')
                 {
-                    $patients = Report::where('consultant_doctor', Auth::guard('doctor')->user()->id)->where('created_at', '>=', Carbon::today()->subDays(1))->get();
+                    $previous_week = strtotime("-1 week +1 day");
+                    $start_week = strtotime("last sunday midnight", $previous_week);
+                    $end_week = strtotime("next saturday", $start_week);
+                    $start_week = date("Y-m-d", $start_week);
+                    $end_week = date("Y-m-d", $end_week);
+                    $queryBuilder->whereBetween('created_at', [$start_week, $end_week])->get();
                 }
                 elseif ($request->option === 'current_month')
                 {
-                    $patients = Report::where('consultant_doctor', Auth::guard('doctor')->user()->id)->whereMonth('created_at', Carbon::now()->month)->get();
+                    $queryBuilder->whereMonth('created_at', Carbon::now()->month)->get();
                 }
                 elseif ($request->option === 'last_month')
                 {
-                    $patients = Report::where('consultant_doctor', Auth::guard('doctor')->user()->id)->where('created_at', '>=', Carbon::now()->subMonth()->month)->get();
+                    $queryBuilder->whereMonth('created_at', '=', Carbon::now()->subMonth()->month)->get();
                 }
+                $patients = $queryBuilder->get();
             }
             if ($request->option === 'custom')
             {
-                $patients = Report::where('consultant_doctor', Auth::guard('doctor')->user()->id)->whereBetween('created_at', [$request->start_date." 00:00:00",$request->end_date." 23:59:59"])->get();
+                //$patients = Report::where('consultant_doctor', Auth::guard('doctor')->user()->id)->whereBetween('created_at', [$request->start_date." 00:00:00",$request->end_date." 23:59:59"])->get();
+                $queryBuilder = Report::query()->where('consultant_doctor', Auth::guard('doctor')->user()->id);
+
+                if ($request->start_date && $request->end_date == null)
+                {
+                    $queryBuilder->whereBetween('created_at', [$request->start_date . " 00:00:00", date('Y-m-d') . " 23:59:59"]);
+                }
+                elseif ($request->end_date && $request->start_date == null)
+                {
+                    $queryBuilder->whereDate('created_at', '<', $request->end_date . " 23:59:59");
+                }
+                elseif ($request->start_date || $request->end_date)
+                {
+                    $queryBuilder->whereBetween('created_at', [$request->start_date . " 00:00:00", $request->end_date . " 23:59:59"]);
+                }
+                $patients = $queryBuilder->get();
             }
         }
 
-            activity('Patient list download')
+        activity('Patient list download')
             ->log('Patient list downloaded');
 
         view()->share('patients', $patients);

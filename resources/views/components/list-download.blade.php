@@ -34,7 +34,7 @@
                             <input id="start_date" name="start_date" class="date-picker form-control" placeholder="dd-mm-yyyy"
                                    type="text" onfocus="this.type='date'" onmouseover="this.type='date'"
                                    onclick="this.type='date'" onblur="this.type='text'"
-                                   onmouseout="timeFunctionLong(this)" value="{{ date('Y-m-d') }}">
+                                   onmouseout="timeFunctionLong(this)">
                             <script>
                                 function timeFunctionLong(input) {
                                     setTimeout(function () {
@@ -50,7 +50,7 @@
                             <input id="end_date" name="end_date" class="date-picker form-control" placeholder="dd-mm-yyyy"
                                    type="text" onfocus="this.type='date'" onmouseover="this.type='date'"
                                    onclick="this.type='date'" onblur="this.type='text'"
-                                   onmouseout="timeFunctionLong(this)" value="{{ date('Y-m-d') }}">
+                                   onmouseout="timeFunctionLong(this)">
                             <script>
                                 function timeFunctionLong(input) {
                                     setTimeout(function () {

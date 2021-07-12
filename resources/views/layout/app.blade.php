@@ -102,16 +102,22 @@
 
                 <!-- /menu footer buttons -->
                 <div class="sidebar-footer hidden-small">
-                    <a data-toggle="tooltip" data-placement="top" title="Settings">
+                    @if(Auth::guard('hospital')->check())
+                    <a href="{{route('hospital_details')}}" data-toggle="tooltip" data-placement="top" title="Settings">
                         <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
                     </a>
+                    @elseif(Auth::guard('doctor')->check() || Auth::guard('web')->check())
+                    <a href="{{route('profile')}}" data-toggle="tooltip" data-placement="top" title="Settings">
+                        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                    </a>
+                    @endif
                     <a data-toggle="tooltip" data-placement="top" title="FullScreen">
                         <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
                     </a>
-                    <a data-toggle="tooltip" data-placement="top" title="Lock">
+                    <a href="{{route('dark_mode')}}" data-toggle="tooltip" data-placement="top" title="Lock">
                         <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
                     </a>
-                    <a data-toggle="tooltip" data-placement="top" title="Logout" href="#">
+                    <a href="{{route('logout')}}" data-toggle="tooltip" data-placement="top" title="Logout">
                         <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
                     </a>
                 </div>
@@ -152,10 +158,10 @@
                             <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
                                 @if(Auth::guard('hospital')->check())
                                     <a class="dropdown-item" href="{{route('hospital_details')}}"> Setting</a>
-                                @elseif(Auth::guard('doctor')->check())
+                                @elseif(Auth::guard('doctor')->check() || Auth::guard('web')->check())
                                     <a class="dropdown-item" href="{{route('profile')}}"> Profile</a>
-                                @elseif(Auth::guard('web')->check())
-                                    <a class="dropdown-item" href="{{route('profile')}}"> Profile</a>
+{{--                                @elseif(Auth::guard('web')->check())--}}
+{{--                                    <a class="dropdown-item" href="{{route('profile')}}"> Profile</a>--}}
                                 @endif
                                 <a class="dropdown-item" href="{{route('logout')}}"><i
                                         class="fa fa-sign-out pull-right"></i> Log Out</a>

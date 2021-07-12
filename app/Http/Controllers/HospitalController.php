@@ -135,26 +135,34 @@ class HospitalController extends Controller
     public function activityDelete(Request $request)
     {
         if ($request->option) {
+            $queryBuilder = Activity::query();
             if ($request->option === 'all')
             {
-                Activity::truncate();
+                $queryBuilder->truncate();
             }
             elseif ($request->option === 'last_day')
             {
-                Activity::where('created_at', '>=', Carbon::today()->subDays(1))->delete();
+                $yesterday = date("Y-m-d", strtotime( '-1 days' ) );
+                $queryBuilder->whereBetween('created_at', [$yesterday, date("Y-m-d")]);
             }
             elseif ($request->option === 'last_week')
             {
-                Activity::where('created_at', '>=', Carbon::today()->subDays(1))->delete();
+                $previous_week = strtotime("-1 week +1 day");
+                $start_week = strtotime("last sunday midnight", $previous_week);
+                $end_week = strtotime("next saturday", $start_week);
+                $start_week = date("Y-m-d", $start_week);
+                $end_week = date("Y-m-d", $end_week);
+                $queryBuilder->whereBetween('created_at', [$start_week, $end_week]);
             }
             elseif ($request->option === 'current_month')
             {
-                Activity::whereMonth('created_at', Carbon::now()->month)->delete();
+                $queryBuilder->whereMonth('created_at', Carbon::now()->month);
             }
             elseif ($request->option === 'last_month')
             {
-                $activity = Activity::where('created_at', '>=', Carbon::now()->subMonth()->month)->delete();
+                $queryBuilder->whereMonth('created_at', '=', Carbon::now()->subMonth()->month);
             }
+            $queryBuilder->delete();
         }
         activity('Activity delete')
             ->log('Activity are deleted');
@@ -816,6 +824,15 @@ class HospitalController extends Controller
             'cities' => $cities,
             'selected' => $request->selected
         ])->render();
+    }
+
+    public function darkMode()
+    {
+//        dd('hello');
+        //doesnt work since $isDark's value is not initialized
+        $isDark = 0;
+        //dd($isDark);
+        return $isDark;
     }
 
 }

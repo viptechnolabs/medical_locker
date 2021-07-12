@@ -71,7 +71,7 @@
                         @foreach($activities as $no => $activity)
                             <tr>
                                 <td></td>
-                                <td>{{$activity->created_at}}</td>
+                                <td>{{ date('d-M-Y  H:i:s', strtotime($activity->created_at)) }}</td>
                                 <td>{{$activity->causer->name}}</td>
                                 <td>{{$activity->log_name}}</td>
                                 <td id="msg">{{$activity->description}}</td>

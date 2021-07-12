@@ -66,7 +66,7 @@
     @endif
     </tbody>
     @empty($patient)
-        <h4 style="text-align: center">No patient time</h4>
+        <h4 style="text-align: center">No patient at time</h4>
     @endempty
 </table>
 </body>
