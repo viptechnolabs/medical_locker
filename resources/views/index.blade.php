@@ -85,7 +85,7 @@
                                 @foreach ($activities as $activity)
                                     <li class="media event">
                                         <a class="pull-left border-aero profile_thumb">
-                                            <i class="fa fa-user-md aero"></i>
+                                            <i class="fa fa-clock-o aero"></i>
                                         </a>
                                         <div class="media-body">
                                             <a class="title" href="">{{$activity->description}}</a>

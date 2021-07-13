@@ -75,12 +75,12 @@
                                                                                 aria-expanded="false">Doctor & Patient
                                                     Count</a>
                                             </li>
-                                            <li role="presentation" class=""><a href="#edit" role="tab"
-                                                                                id="profile-tab2"
-                                                                                data-toggle="tab"
-                                                                                aria-expanded="false">Recent
-                                                    Activity</a>
-                                            </li>
+{{--                                            <li role="presentation" class=""><a href="#edit" role="tab"--}}
+{{--                                                                                id="profile-tab2"--}}
+{{--                                                                                data-toggle="tab"--}}
+{{--                                                                                aria-expanded="false">Recent--}}
+{{--                                                    Activity</a>--}}
+{{--                                            </li>--}}
                                         </ul>
                                     </div>
                                     <div class="col-md-3">
@@ -325,10 +325,9 @@
                                         </div>
                                         <!-- end doctor and  patient count -->
                                         <!-- start recent activity -->
-                                        <div role="tabpanel" class="tab-pane fade" id="edit"
-                                             aria-labelledby="profile-tab">
-
-                                        </div>
+{{--                                        <div role="tabpanel" class="tab-pane fade" id="edit"--}}
+{{--                                             aria-labelledby="profile-tab">--}}
+{{--                                        </div>--}}
                                         <!-- end recent activity -->
                                     </div>
                                 </div>

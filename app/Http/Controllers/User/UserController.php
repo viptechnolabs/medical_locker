@@ -21,9 +21,9 @@ class UserController extends Controller
     public function index(UserDataTable $dataTable)
     {
         $hospital = Hospital::findOrFail(1);
-        // $users = User::all();
-        return $dataTable->render('user.index', ['hospital' => $hospital]);
-        // return view('user.index', ['hospital' => $hospital, 'users' => $users]);
+        $users = User::all();
+//        return $dataTable->render('user.index', ['hospital' => $hospital]);
+        return view('user.index', ['hospital' => $hospital, 'users' => $users]);
     }
 
     public function addUser()
@@ -182,7 +182,8 @@ class UserController extends Controller
     public function deletedUser(DeletedUserDataTable $dataTable)
     {
         $hospital = Hospital::findOrFail(1);
-        return $dataTable->render('user.deleted_user', ['hospital' => $hospital]);
+        $users = User::onlyTrashed()->get();
+        return $dataTable->render('user.deleted_user', ['hospital' => $hospital, 'users' => $users]);
     }
 
 }

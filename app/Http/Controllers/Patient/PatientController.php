@@ -363,11 +363,19 @@ class PatientController extends Controller
             }
         }
 
-        activity('Patient list download')
-            ->log('Patient list downloaded');
+        if (count($patients) > 0)
+        {
+            activity('Patient list download')
+                ->log('Patient list downloaded');
 
-        view()->share('patients', $patients);
-        $pdf = PDF::loadView('patient.patient_list', $patients);
-        return $pdf->download('patient_list.pdf');
+            view()->share('patients', $patients);
+            $pdf = PDF::loadView('patient.patient_list', $patients);
+            return $pdf->download('patient_list.pdf');
+        }
+        else
+        {
+            session()->flash('message', 'No patient in selected option..!');
+            return redirect()->back();
+        }
     }
 }

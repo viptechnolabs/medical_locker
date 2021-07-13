@@ -114,7 +114,7 @@
                     <a data-toggle="tooltip" data-placement="top" title="FullScreen">
                         <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
                     </a>
-                    <a href="{{route('dark_mode')}}" data-toggle="tooltip" data-placement="top" title="Lock">
+                    <a data-toggle="tooltip" data-placement="top" title="Lock">
                         <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
                     </a>
                     <a href="{{route('logout')}}" data-toggle="tooltip" data-placement="top" title="Logout">
@@ -179,7 +179,7 @@
         <!-- footer content -->
         <footer>
             <div class="pull-right">
-                <a href="#">VIP TechnoLabs</a>
+                <a href="{{ route('index') }}">VIP TechnoLabs</a>
             </div>
             <div class="clearfix"></div>
         </footer>
