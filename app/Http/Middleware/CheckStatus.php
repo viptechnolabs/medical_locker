@@ -21,37 +21,17 @@ class CheckStatus
         if (Auth::guard('hospital')->check()) {
             return $next($request);
         }
-        elseif (Auth::guard('doctor')->check())
-        {
-            if (Auth::guard('doctor')->user()->status === 'active')
-            {
-                return $next($request);
-            }
-            else
-            {
-                Session::flush();
-                Auth::logout();
-                return redirect()
-                ->route('login')
-                ->with('error','You are logout...!');
-            }
+        elseif (Auth::guard('doctor')->check() && Auth::guard('doctor')->user()->status === 'active') {
+            return $next($request);
         }
-        elseif (Auth::guard('web')->check())
-        {
-            if (Auth::guard('web')->user()->status === 'active')
-            {
-                return $next($request);
-            }
-            else
-            {
-                Session::flush();
-                Auth::logout();
-                return redirect()
-                    ->route('login')
-                    ->with('error','You are logout...!');
-            }
-
+        elseif (Auth::guard('web')->check() && Auth::guard('web')->user()->status === 'active') {
+            return $next($request);
         }
 
+        Session::flush();
+        Auth::logout();
+        return redirect()
+            ->route('login')
+            ->with('error','You are logout...!');
     }
 }

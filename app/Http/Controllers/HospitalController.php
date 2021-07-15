@@ -38,7 +38,7 @@ class HospitalController extends Controller
 
     public function login()
     {
-        if (Auth::check()) {
+        if (Auth::guard('hospital')->check() || Auth::guard('doctor')->check()  || Auth::guard('web')->check()) {
             return redirect()->route('index');
         } else {
             return view('login');
