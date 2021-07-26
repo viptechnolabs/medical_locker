@@ -25,6 +25,7 @@
         <div class="clearfix"></div>
 
         <div class="row">
+            <div class="card-box table-responsive">
             <div class="x_panel">
                 <div class="x_content">
                     <div class="col-md-12 col-sm-12  text-center">
@@ -93,6 +94,7 @@
 {{--                    {!!$dataTable->table()  !!}--}}
 
                 </div>
+            </div>
             </div>
         </div>
     </div>

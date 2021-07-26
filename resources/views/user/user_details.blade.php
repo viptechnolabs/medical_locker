@@ -29,7 +29,7 @@
                                     <div id="crop-avatar">
                                         <!-- Current avatar -->
                                         <img class="img-responsive avatar-view"
-                                             src="{{asset('upload_file/user/'.$user->profile_photo)}}"
+                                             src="{{$user->profile_photo ? asset('upload_file/user/'.$user->profile_photo) : asset('upload_file/default.png')}}"
                                              alt="{{$user->name}}"
                                              title="Change the avatar" style="height: 220px; width: 220px">
                                     </div>
@@ -289,11 +289,11 @@
                                                                 <div class="col-md-55">
                                                                     <div class="thumbnail">
                                                                         <div class="image view view-first">
-                                                                            <a href="{{asset('upload_file/user/user_document/'.$user->document_photo)}}"
+                                                                            <a href="{{$user->document_photo ? asset('upload_file/user/user_document/'.$user->document_photo) : asset('upload_file/default.png')}}"
                                                                                target="_blank">
                                                                                 <img
                                                                                     style="width: 100%; display: block;"
-                                                                                    src="{{asset('upload_file/user/user_document/'.$user->document_photo)}}"
+                                                                                    src="{{$user->document_photo ? asset('upload_file/user/user_document/'.$user->document_photo) : asset('upload_file/default.png')}}"
                                                                                     alt="image">
                                                                             </a>
                                                                         </div>

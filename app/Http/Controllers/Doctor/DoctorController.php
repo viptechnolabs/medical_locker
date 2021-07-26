@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\Facades\Image;
 
 class DoctorController extends Controller
 {
@@ -82,13 +83,17 @@ class DoctorController extends Controller
             $doctor->aadhar_no = $request->aadhar_no;
             $doctor->gender = $request->gender;
             $doctor->dob = $request->dob;
-            $doctor->password = Hash::make($request->mobile_no);
+            $doctor->password = Hash::make('password');
 
             if ($profile_photo) {
-                $destinationPath = public_path() . '/upload_file/doctor/';
+                //$destinationPath = public_path() . '/upload_file/doctor/';
                 $fileName = $request->name . '_' . $request->profile_photo->getClientOriginalName();
                 $doctor->profile_photo = $fileName;
-                $profile_photo->move($destinationPath, $fileName);
+                #resize image & store
+                $image_resize = Image::make($profile_photo->getRealPath());
+                $image_resize->resize(230, 230);
+                $image_resize->save(public_path('/upload_file/doctor/' . $fileName));
+                //$profile_photo->move($destinationPath, $fileName);
             }
             if ($document) {
                 $destinationPath = public_path() . '/upload_file/doctor/doctor_document/';
@@ -109,7 +114,7 @@ class DoctorController extends Controller
                     $degree_temp = (isset($doc_degree[$key])) ? $doc_degree[$key] : null;
 
                     $certificate = new Certificate();
-                    $certificates_name = $degree_temp . '_' . $certificate_temp;
+                    $certificates_name = $doc_id->id . '_' . $degree_temp . '_' . $certificate_temp;
                     $certificate::create([
                         'doc_id' => $doc_id->id,
                         'degree_name' => $degree_temp,
@@ -184,7 +189,12 @@ class DoctorController extends Controller
                 if (File::exists($image_path)) {
                     unlink($image_path);
                 }
-                $profile_photo->move($destinationPath, $fileName);
+
+                #resize image & store
+                $image_resize = Image::make($profile_photo->getRealPath());
+                $image_resize->resize(230, 230);
+                $image_resize->save(public_path('/upload_file/doctor/' . $fileName));
+//                $profile_photo->move($destinationPath, $fileName);
                 $doctor->profile_photo = $fileName;
             }
             if ($document_photo) {
@@ -207,7 +217,7 @@ class DoctorController extends Controller
                     $degree_temp = (isset($doc_degree[$key])) ? $doc_degree[$key] : null;
 
                     $certificate = new Certificate();
-                    $certificates_name = $degree_temp . '_' . $certificate_temp;
+                    $certificates_name = $request->id . '_' . $degree_temp . '_' . $certificate_temp;
                     $certificate::create([
                         'doc_id' => $request->id,
                         'degree_name' => $degree_temp,

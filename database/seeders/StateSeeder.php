@@ -19,6 +19,7 @@ class StateSeeder extends Seeder
             'Gujrat',
             'Rajsthan',
             'MP',
+            'MH',
             'Goa',
             'Other',
         ];

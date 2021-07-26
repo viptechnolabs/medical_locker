@@ -139,6 +139,8 @@ class HospitalController extends Controller
             if ($request->option === 'all')
             {
                 $queryBuilder->truncate();
+                activity('Activity delete')
+                    ->log('Activity are deleted');
             }
             elseif ($request->option === 'last_day')
             {
@@ -162,11 +164,19 @@ class HospitalController extends Controller
             {
                 $queryBuilder->whereMonth('created_at', '=', Carbon::now()->subMonth()->month);
             }
-            $queryBuilder->delete();
+            if($queryBuilder->count() > 0)
+            {
+                $queryBuilder->delete();
+                activity('Activity delete')
+                    ->log('Activity are deleted');
+                session()->flash('message', 'Selected activity are deleted..!');
+            }
+            else
+            {
+                session()->flash('message', 'No activity in selected option..!');
+            }
         }
-        activity('Activity delete')
-            ->log('Activity are deleted');
-        session()->flash('message', 'Selected activity are deleted..!');
+
         return redirect()->back();
 
     }

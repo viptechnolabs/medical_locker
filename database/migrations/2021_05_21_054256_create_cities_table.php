@@ -13,13 +13,13 @@ class CreateCitiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('cities', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->unsignedBigInteger('state_id')->unsigned();
-            $table->timestamps();
-            $table->foreign('state_id')->references('id')->on('states');
-        });
+//        Schema::create('cities', function (Blueprint $table) {
+//            $table->id();
+//            $table->string('name');
+//            $table->unsignedBigInteger('state_id')->unsigned();
+//            $table->timestamps();
+//            $table->foreign('state_id')->references('id')->on('states');
+//        });
     }
 
     /**

@@ -51,61 +51,58 @@
                     </div>
 
                     <div class="clearfix"></div>
-                    @foreach ($doctors as $doctor)
-                        <div class="col-md-4 col-sm-4  profile_details">
-                            <div class="well profile_view">
-                                <div class="col-sm-12">
-                                    <h4 class="brief"><i>{{ucfirst($doctor->doctor_id)}}</i></h4>
-                                    <div class="left col-sm-7">
-                                        <h2 style="font-size: 22px;">Dr.{{$doctor->name}}</h2>
 
-                                        <p><strong></strong>@foreach ($doctor->certificate as $certificate)
-                                                {{$certificate->degree_name}},
-                                            @endforeach</p>
-                                        <ul class="list-unstyled">
-                                            <li><i class="fa fa-phone-square user-profile-icon"></i>
-                                                : {{$doctor->mobile_no}}</li>
-                                            <li><i class="fa fa-envelope user-profile-icon"></i> : {{$doctor->email }}
-                                            </li>
-                                            <li><i class="fa fa-calendar"></i>
-                                                : {{date('d-m-Y', strtotime($doctor->dob)) }}</li>
-                                        </ul>
-                                    </div>
-                                    <div class="right col-sm-5 text-center">
-                                        <img src="{{asset('upload_file/doctor/'.$doctor->profile_photo)}}" alt=""
-                                             class="img-circle img-fluid"
-                                             style="width: 255px;max-height: 200px; height: 287px;">
-                                    </div>
+                    @foreach ($doctors as $doctor)
+                    <div class="col-md-4 col-sm-4  profile_details">
+                        <div class="well profile_view">
+                            <div class="col-sm-12">
+                                <h4 class="brief"><i>{{ucfirst($doctor->doctor_id)}}</i></h4>
+                                <div class="left col-md-7 col-sm-7">
+                                    <h2>Dr.{{$doctor->name}}</h2>
+                                    <p><strong>About: </strong> It's specialist of {{ucfirst($doctor->specialist)}} </p>
+                                    <br>
+                                    <ul class="list-unstyled">
+                                        <li><i class="fa fa-phone-square user-profile-icon"></i>
+                                            : {{$doctor->mobile_no}}</li>
+                                        <li><i class="fa fa-calendar"></i>
+                                            : {{date('d-m-Y', strtotime($doctor->dob)) }}</li>
+                                    </ul>
                                 </div>
-                                <div class=" bottom text-center">
-                                    <div class=" col-sm-5 emphasis">
-                                        <h4 class="brief"><i>{{ucfirst($doctor->specialist)}}</i></h4>
-                                    </div>
-                                    <div class="col-sm-7 emphasis">
-                                        <a class="border-button" href="javascript:;"
-                                           onclick="StatusChange('{{ route('change_status_popup') }}','{{ route('change_status', $doctor->id) }}', 'Are You Sure to change Status...?', 'doctor')">
-                                            {{--                                        <a class="border-button" href="javascript:;"--}}
-                                            {{--                                           onclick="getEmailPopup('{{ route('doctor.doc_change_status',$doctor->id) }}', '', {{ $doctor->id }})">--}}
-                                            <button type="button"
-                                                    class="{{$doctor->status === 'active' ? 'btn btn-success btn-sm' : 'btn btn-secondary btn-sm'}}">
-                                                {{ucfirst($doctor->status)}}
-                                            </button>
-                                        </a>
-                                        {{--                                        <button type="button" class= "{{$doctor->status === 'active' ? 'btn btn-success btn-sm' : 'btn btn-secondary btn-sm'}} "data-toggle="modal" data-target="#change_status">{{ucfirst($doctor->status)}}</button>--}}
-                                        <a href="{{route('doctor.doctor_details', $doctor->id)}}">
-                                            <button type="button" class="btn btn-primary btn-sm">
-                                                <i class="fa fa-user"> </i> View Profile
-                                            </button>
-                                        </a>
-                                    </div>
+                                <div class="right col-md-5 col-sm-5 text-center">
+                                    <img src="{{$doctor->profile_photo ? asset('upload_file/doctor/'.$doctor->profile_photo) : asset('upload_file/default.png')}}" alt="" class="img-circle img-fluid">
+                                </div>
+                            </div>
+                            <div class=" profile-bottom text-center">
+                                <div class=" col-sm-5 emphasis">
+{{--                                    <h4 class="brief"><i>{{ucfirst($doctor->specialist)}}</i></h4>--}}
+                                    <h4 class="brief"><i>@foreach ($doctor->certificate as $certificate)
+                                                {{$certificate->degree_name}},
+                                            @endforeach</i></h4>
+                                </div>
+                                <div class="col-sm-7 emphasis">
+                                    <a class="border-button" href="javascript:;"
+                                       onclick="StatusChange('{{ route('change_status_popup') }}','{{ route('change_status', $doctor->id) }}', 'Are You Sure to change Status...?', 'doctor')">
+                                        <button type="button"
+                                                class="{{$doctor->status === 'active' ? 'btn btn-success btn-sm' : 'btn btn-secondary btn-sm'}}">
+                                            {{ucfirst($doctor->status)}}
+                                        </button>
+                                    </a>
+                                    <a href="{{route('doctor.doctor_details', $doctor->id)}}">
+                                        <button type="button" class="btn btn-primary btn-sm">
+                                            <i class="fa fa-user"> </i> View Profile
+                                        </button>
+                                    </a>
                                 </div>
                             </div>
                         </div>
+                    </div>
                     @endforeach
                     @empty($doctor)
                         <h4 style="margin:22px; text-align: center">No doctor inserted at time</h4>
                     @endempty
                     <div id="status_change_popup"></div>
+
+
                 </div>
             </div>
         </div>
