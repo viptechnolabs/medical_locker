@@ -78,8 +78,8 @@ class UserSeeder extends Seeder
                 'gender' => 'female',
                 'dob' => '2000-02-22',
                 'status' => 'active',
-                'profile_photo' => null,
-                'document_photo' => null,
+                'profile_photo' => '3.jpeg',
+                'document_photo' => '3.jpeg',
                 'password' => Hash::make('password'),
             ],
 
