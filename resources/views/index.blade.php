@@ -36,7 +36,7 @@
                         <div id="reportrange" class="pull-right"
                              style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
                             <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-                            <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
+                            <span>March 31 2022 - 1 April 2023</span> <b class="caret"></b>
                         </div>
                     </div>
                     <div class="clearfix"></div>
