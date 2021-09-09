@@ -65,13 +65,11 @@ Route::middleware(['auth:hospital,doctor,web', 'checkStatus'])->group(function (
         Route::post('update/mobile_verification_code', [\App\Http\Controllers\HospitalController::class, 'mobile_verification_code'])->name('update.mobile_verification_code');
     });
     Route::put('change_password', [\App\Http\Controllers\HospitalController::class, 'changePassword'])->name('change_password');
-    Route::get('dark_mode', [\App\Http\Controllers\HospitalController::class, 'darkMode'])->name('dark_mode');
 });
 
 Route::get('login', [\App\Http\Controllers\HospitalController::class, 'login'])->name('login');
 Route::post('do_login', [\App\Http\Controllers\HospitalController::class, 'doLogin'])->name('do_login');
 Route::get('logout', [\App\Http\Controllers\HospitalController::class, 'logout'])->name('logout');
-
 
 
 //Route::post('getStates', [\App\Http\Controllers\HospitalController::class, 'fetchStates'])->name('fetchStates');

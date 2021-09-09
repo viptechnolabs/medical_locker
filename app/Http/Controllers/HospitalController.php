@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ChangePasswordRequest;
+use App\Http\Requests\HospitalUpdateRequest;
 use App\Models\City;
 use App\Models\Doctor;
 use App\Models\Hospital;
@@ -19,7 +21,6 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Spatie\Activitylog\Models\Activity;
 
@@ -38,7 +39,7 @@ class HospitalController extends Controller
 
     public function login()
     {
-        if (Auth::guard('hospital')->check() || Auth::guard('doctor')->check()  || Auth::guard('web')->check()) {
+        if (Auth::guard('hospital')->check() || Auth::guard('doctor')->check() || Auth::guard('web')->check()) {
             return redirect()->route('index');
         } else {
             return view('login');
@@ -136,43 +137,31 @@ class HospitalController extends Controller
     {
         if ($request->option) {
             $queryBuilder = Activity::query();
-            if ($request->option === 'all')
-            {
+            if ($request->option === 'all') {
                 $queryBuilder->truncate();
                 activity('Activity delete')
                     ->log('Activity are deleted');
-            }
-            elseif ($request->option === 'last_day')
-            {
-                $yesterday = date("Y-m-d", strtotime( '-1 days' ) );
+            } elseif ($request->option === 'last_day') {
+                $yesterday = date("Y-m-d", strtotime('-1 days'));
                 $queryBuilder->whereBetween('created_at', [$yesterday, date("Y-m-d")]);
-            }
-            elseif ($request->option === 'last_week')
-            {
+            } elseif ($request->option === 'last_week') {
                 $previous_week = strtotime("-1 week +1 day");
                 $start_week = strtotime("last sunday midnight", $previous_week);
                 $end_week = strtotime("next saturday", $start_week);
                 $start_week = date("Y-m-d", $start_week);
                 $end_week = date("Y-m-d", $end_week);
                 $queryBuilder->whereBetween('created_at', [$start_week, $end_week]);
-            }
-            elseif ($request->option === 'current_month')
-            {
+            } elseif ($request->option === 'current_month') {
                 $queryBuilder->whereMonth('created_at', Carbon::now()->month);
-            }
-            elseif ($request->option === 'last_month')
-            {
+            } elseif ($request->option === 'last_month') {
                 $queryBuilder->whereMonth('created_at', '=', Carbon::now()->subMonth()->month);
             }
-            if($queryBuilder->count() > 0)
-            {
+            if ($queryBuilder->count() > 0) {
                 $queryBuilder->delete();
                 activity('Activity delete')
                     ->log('Activity are deleted');
                 session()->flash('message', 'Selected activity are deleted..!');
-            }
-            else
-            {
+            } else {
                 session()->flash('message', 'No activity in selected option..!');
             }
         }
@@ -336,91 +325,68 @@ class HospitalController extends Controller
 
     }
 
-    public function hospitalDetailsUpdate(Request $request)
+    public function hospitalDetailsUpdate(HospitalUpdateRequest $request)
     {
-        $rules = array(
-            'hospital_name' => 'required',
-            'hospital_details' => 'required',
-            'hospital_fex_no' => 'required|max:13',
-            'hospital_pin_cord_no' => 'required|max:10',
-            'hospital_address' => 'required',
-        );
-
-        $validation = Validator::make($request->all(), $rules);
-
-        if ($validation->fails()) {
-            return redirect()->back()->withInput()->withErrors($validation);
-        } else {
-            $hospital = Hospital::findOrFail(1);
-            $file = $request->hospital_logo;
-            if ($file) {
-                $destinationPath = public_path() . '/upload_file/';
-                $fileName = date('d_m_Y') . time() . '_' . $request->hospital_logo->getClientOriginalName();
-                $image_path = public_path("upload_file/{$hospital->logo}");
-                if (File::exists($image_path)) {
-                    unlink($image_path);
-                }
-                $file->move($destinationPath, $fileName);
-                $hospital->logo = $fileName;
+        $hospital = Hospital::findOrFail(1);
+        $file = $request->hospital_logo;
+        if ($file) {
+            $destinationPath = public_path() . '/upload_file/';
+            $fileName = date('d_m_Y') . time() . '_' . $request->hospital_logo->getClientOriginalName();
+            $image_path = public_path("upload_file/{$hospital->logo}");
+            if (File::exists($image_path)) {
+                unlink($image_path);
             }
-            $hospital->name = $request->hospital_name;
-            $hospital->details = $request->hospital_details;
-            $hospital->fex_no = $request->hospital_fex_no;
-            $hospital->address = $request->hospital_address;
-            $hospital->pin_cord_no = $request->hospital_pin_cord_no;
-            $hospital->password = Hash::make($request->password);;
-            $hospital->save();
-
-            activity('Update profile')
-                ->performedOn($hospital)
-                ->log($request->hospital_name . ' details are updated');
-
-            session()->flash('message', 'Hospital details update successfully..!');
-            return redirect()->back();
+            $file->move($destinationPath, $fileName);
+            $hospital->logo = $fileName;
         }
+        $hospital->name = $request->hospital_name;
+        $hospital->details = $request->hospital_details;
+        $hospital->fex_no = $request->hospital_fex_no;
+        $hospital->address = $request->hospital_address;
+        $hospital->pin_cord_no = $request->hospital_pin_cord_no;
+        $hospital->password = Hash::make($request->password);;
+        $hospital->save();
+
+        activity('Update profile')
+            ->performedOn($hospital)
+            ->log($request->hospital_name . ' details are updated');
+
+        session()->flash('message', 'Hospital details update successfully..!');
+        return redirect()->back();
     }
 
-    public function changePassword(Request $request)
+    public function changePassword(ChangePasswordRequest $request)
     {
         $id = $request->id;
         $user_type = $request->user_type;
 
-        $rules = array(
-            'password' => 'min:5',
-            'confirm_password' => 'required_with:password|same:password|min:5',
-        );
 
-        $validation = Validator::make($request->all(), $rules);
-
-        if ($validation->fails()) {
-            return redirect()->back()->withInput()->withErrors($validation);
-        } else {
-            if (Auth::guard('hospital')->check()) {
-                if ($user_type === 'hospital') {
-                    $doctor = Hospital::findOrFail(Auth::guard('hospital')->user()->id);
-                    $doctor->password = Hash::make($request->password);
-                    $doctor->save();
-                } elseif ($user_type === 'doctor') {
-                    $hospital = Doctor::findOrFail($id);
-                    $hospital->password = Hash::make($request->password);;
-                    $hospital->save();
-                } elseif ($user_type === 'user') {
-                    $hospital = User::findOrFail($id);
-                    $hospital->password = Hash::make($request->password);;
-                    $hospital->save();
-                }
-            } elseif (Auth::guard('doctor')->check()) {
-                $doctor = Doctor::findOrFail(Auth::guard('doctor')->user()->id);
-                $doctor->password = Hash::make($request->password);;
+        if (Auth::guard('hospital')->check()) {
+            if ($user_type === 'hospital') {
+                $doctor = Hospital::findOrFail(Auth::guard('hospital')->user()->id);
+                $doctor->password = Hash::make($request->password);
                 $doctor->save();
-            } elseif (Auth::guard('web')->check()) {
-                $user = User::findOrFail(Auth::guard('web')->user()->id);
-                $user->password = Hash::make($request->password);;
-                $user->save();
+            } elseif ($user_type === 'doctor') {
+                $hospital = Doctor::findOrFail($id);
+                $hospital->password = Hash::make($request->password);;
+                $hospital->save();
+            } elseif ($user_type === 'user') {
+                $hospital = User::findOrFail($id);
+                $hospital->password = Hash::make($request->password);;
+                $hospital->save();
             }
-            session()->flash('message', 'Password Change Successfully..!');
-            return redirect()->back();
+        } elseif (Auth::guard('doctor')->check()) {
+            $doctor = Doctor::findOrFail(Auth::guard('doctor')->user()->id);
+            $doctor->password = Hash::make($request->password);;
+            $doctor->save();
+        } elseif (Auth::guard('web')->check()) {
+            $user = User::findOrFail(Auth::guard('web')->user()->id);
+            $user->password = Hash::make($request->password);;
+            $user->save();
         }
+        session()->flash('message', 'Password Change Successfully..!');
+        return redirect()->back();
+
     }
 
     public function email_verification_code(Request $request)
@@ -834,15 +800,6 @@ class HospitalController extends Controller
             'cities' => $cities,
             'selected' => $request->selected
         ])->render();
-    }
-
-    public function darkMode()
-    {
-//        dd('hello');
-        //doesnt work since $isDark's value is not initialized
-        $isDark = 0;
-        //dd($isDark);
-        return $isDark;
     }
 
 }
