@@ -339,7 +339,7 @@
 
                                                         <td>{{ucfirst($report->treatment_name)}}</td>
 
-                                                        <td>Dr. {{ucfirst($report->doctor[0]->name)}}</td>
+                                                        <td>Dr. {{ucfirst($report->doctor[0]->name ?? 'Deleted')}}</td>
 
                                                         <td>{{ucfirst($report->routine_checkup)}}</td>
 

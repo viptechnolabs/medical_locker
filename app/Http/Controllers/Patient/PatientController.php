@@ -192,7 +192,7 @@ class PatientController extends Controller
     {
         $patient = Patients::findOrFail($id);
         $hospital = Hospital::findOrFail(1);
-        $doctor = Doctor::all();
+        $doctor = Doctor::where('status', 'active')->get();
         return view('patient.add_report', ['patient' => $patient, 'hospital' => $hospital, 'doctors' => $doctor]);
     }
 

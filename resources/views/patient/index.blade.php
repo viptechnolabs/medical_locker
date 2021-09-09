@@ -76,7 +76,7 @@
                             @foreach($patients as  $no =>  $patient_re)
                                 @foreach($patient_re->patient as $patient)
                                     <tr>
-                                        <td></td>
+                                        <td>{{ $no + 1 }}</td>
                                         <td><img
                                                 src='{{$patient->profile_photo ? asset('upload_file/patient/'.$patient->profile_photo) : asset('upload_file/default.png')}}'
                                                 width='100px'/></td>
@@ -96,7 +96,7 @@
                         @if (Auth::guard('hospital')->check() or Auth::guard('web')->check() )
                             @foreach($patients as $no => $patient)
                                 <tr>
-                                    <td></td>
+                                    <td>{{ $no + 1 }}</td>
                                     <td><img
                                             src='{{$patient->profile_photo ? asset('upload_file/patient/'.$patient->profile_photo) : asset('upload_file/default.png')}}'
                                             width='100px'/></td>
