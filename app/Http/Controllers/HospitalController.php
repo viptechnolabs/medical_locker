@@ -173,11 +173,12 @@ class HospitalController extends Controller
     public function hospitalDetails()
     {
         $hospital = Hospital::findOrFail(1);
-        $count_monthly_patients = Patients::select(DB::raw("(COUNT(*)) as count"), DB::raw("MONTHNAME(created_at) as monthname"))
-            ->whereYear('created_at', date('Y'))
-            ->groupBy('monthname')
+
+        $count_monthly_new_patients = Patients::select(DB::raw('count(*) as `count`'),DB::raw('YEAR(created_at) year, MONTHNAME(created_at) monthname'))
+            ->groupby('year','monthname')
             ->get();
-        return view('hospital_details', ['hospital' => $hospital, 'count_monthly_patients' => $count_monthly_patients]);
+
+        return view('hospital_details', ['hospital' => $hospital, 'count_monthly_new_patients' => $count_monthly_new_patients]);
     }
 
     public function profile()

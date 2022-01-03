@@ -50,7 +50,7 @@ class PatientController extends Controller
         $patient = new Patients();
         $patient_id_find = Patients::orderBy('patient_id', 'DESC')->first();
         $patient_id = substr($patient_id_find->patient_id ?? 'VIP/PE/2021/0', -1) + 1;
-        $patient->patient_id = 'VIP/PE/2021/' . $patient_id;
+        $patient->patient_id = 'VIP/DR/'.date("Y").'/' . $patient_id;
         $patient->name = $request->name;
         $patient->mobile_no = $request->mobile_no;
         $patient->email = $request->email;

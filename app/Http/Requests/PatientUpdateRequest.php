@@ -16,7 +16,7 @@ class PatientUpdateRequest extends FormRequest
             'state' => 'required',
             'city' => 'required',
             'pin_code' => 'required|max:10',
-            'aadhar_no' => 'required|max:13',
+            'aadhar_no' => 'required|max:12|min:12|unique:doctors,aadhar_no',
             'dob' => 'required',
         ];
     }

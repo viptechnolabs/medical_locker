@@ -18,7 +18,7 @@ class DoctorRequest extends FormRequest
             'state' => 'required',
             'city' => 'required',
             'pin_code' => 'required|max:10',
-            'aadhar_no' => 'required|max:12',
+            'aadhar_no' => 'required|max:12|min:12|unique:doctors,aadhar_no',
             'gender' => 'required',
             'dob' => 'required',
             'profile_photo' => 'required',

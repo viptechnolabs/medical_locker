@@ -46,12 +46,13 @@ class DoctorController extends Controller
     public function submitDoctor(DoctorRequest $request)
     {
 
+
         $doctor = new Doctor();
         $doctor_id_find = Doctor::withTrashed()->orderBy('doctor_id', 'DESC')->first();
-        $doctor_id = substr($doctor_id_find->doctor_id ?? 'VIP/DR/2021/0000', -1) + 1;
+        $doctor_id = substr($doctor_id_find->doctor_id ?? 'VIP/DR/2021/0', -1) + 1;
         $profile_photo = $request->profile_photo;
         $document = $request->document;
-        $doctor->doctor_id = 'VIP/DR/2021/000' . $doctor_id;
+        $doctor->doctor_id = 'VIP/DR/'.date("Y").'/' . $doctor_id;
         $doctor->name = $request->name;
         $doctor->specialist = $request->specialist;
         $doctor->mobile_no = $request->mobile_no;

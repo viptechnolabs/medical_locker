@@ -294,12 +294,16 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                @foreach($count_monthly_patients as $no => $count_monthly_patient)
+                                                @foreach($count_monthly_new_patients as $no => $count_monthly_new_patient)
+
                                                     <tr>
-                                                        <td>{{ $no +1  }}</td>
-                                                        <td>{{ $count_monthly_patient->monthname  }}</td>
-                                                        <td>{{ $count_monthly_patient->count  }}</td>
+                                                        <td>{{ $no + 1  }}</td>
+                                                        <td>{{ $count_monthly_new_patient->monthname ." - ". $count_monthly_new_patient->year }}</td>
+                                                        <td>{{ $count_monthly_new_patient->count  }}</td>
+                                                        <td></td>
+                                                        <td></td>
                                                     </tr>
+
                                                 @endforeach
                                                 </tbody>
                                             </table>
