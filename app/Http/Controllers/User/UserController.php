@@ -11,6 +11,7 @@ use App\Models\Hospital;
 use App\Models\State;
 use App\Models\User;
 use App\Repository\UserRepository;
+use Auth;
 use Illuminate\Http\Request;
 
 
