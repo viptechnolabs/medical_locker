@@ -3,24 +3,26 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UserRequest extends FormRequest
 {
     public function rules()
     {
+        $id = $this->request->get('id');
         return [
             'name' => 'required',
-            'email' => 'required|max:50|min:7|unique:users,email',
+            'email' => 'email|max:50|unique:users,email,' . $id,
             'mobile_no' => 'required|max:13|min:7',
             'address' => 'required',
             'state' => 'required',
             'city' => 'required',
             'pin_code' => 'required|max:10',
-            'aadhar_no' => 'required|max:12|min:12|unique:doctors,aadhar_no',
-            'gender' => 'required',
+            'aadhar_no' => 'required|max:12|min:12|unique:users,aadhar_no,' . $id,
+            'gender' => [Rule::requiredIf(empty($id))],
             'dob' => 'required',
-            'profile_photo' => 'required',
-            'document' => 'required',
+            'profile_photo' => ['mimes:jpeg,png,jpg,svg', Rule::requiredIf(empty($id))],
+            'document_photo' => ['mimes:jpeg,png,jpg,svg', Rule::requiredIf(empty($id))],
         ];
     }
 }

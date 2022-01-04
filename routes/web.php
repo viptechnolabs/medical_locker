@@ -21,7 +21,7 @@ Route::middleware(['auth:hospital', 'checkStatus'])->group(function () {
     Route::prefix('user')->as('user.')->group(function () {
         Route::get('/', [App\Http\Controllers\User\UserController::class, 'index'])->name('index');
         Route::get('add_user', [App\Http\Controllers\User\UserController::class, 'addUser'])->name('add_user');
-        Route::post('submit_user', [App\Http\Controllers\User\UserController::class, 'submitUser'])->name('submit_user');
+        Route::post('storeUser', [App\Http\Controllers\User\UserController::class, 'storeUser'])->name('storeUser');
         Route::get('user_details/{id}', [App\Http\Controllers\User\UserController::class, 'userDetails'])->name('user_details');
         Route::get('user_delete/{id}', [App\Http\Controllers\User\UserController::class, 'userDelete'])->name('user_delete');
         Route::get('deleted_user', [App\Http\Controllers\User\UserController::class, 'deletedUser'])->name('deleted_user');

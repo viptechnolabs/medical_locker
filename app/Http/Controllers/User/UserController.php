@@ -6,19 +6,23 @@ use App\DataTables\DeletedUserDataTable;
 use App\DataTables\UserDataTable;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
-use App\Http\Requests\UserUpdateRequest;
 use App\Models\City;
 use App\Models\Hospital;
 use App\Models\State;
 use App\Models\User;
+use App\Repository\UserRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Hash;
 
 
 class UserController extends Controller
 {
-    //
+    private $userRepository;
+
+    public function __construct(UserRepository $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
+
     public function index(UserDataTable $dataTable)
     {
         $hospital = Hospital::findOrFail(1);
@@ -29,52 +33,17 @@ class UserController extends Controller
 
     public function addUser()
     {
-
         $hospital = Hospital::findOrFail(1);
         $state = State::all();
         $city = City::all();
         return view('user.add_user', ['hospital' => $hospital, 'states' => $state, 'cities' => $city]);
     }
 
-    public function submitUser(UserRequest $request): \Illuminate\Http\RedirectResponse
+    public function storeUser(UserRequest $request): \Illuminate\Http\RedirectResponse
     {
-        $user = new User();
-        $profile_photo = $request->profile_photo;
-        $document = $request->document;
-        $user->name = $request->name;
-        $user->mobile_no = $request->mobile_no;
-        $user->email = $request->email;
-        $user->address = $request->address;
-        $user->city_id = $request->city;
-        $user->state_id = $request->state;
-        $user->pin_code = $request->pin_code;
-        $user->aadhar_no = $request->aadhar_no;
-        $user->gender = $request->gender;
-        $user->dob = $request->dob;
-        $user->password = Hash::make('1234');
-
-        if ($profile_photo) {
-            $destinationPath = public_path() . '/upload_file/user/';
-            $fileName = $request->name . '_' . $request->profile_photo->getClientOriginalName();
-            $user->profile_photo = $fileName;
-            $profile_photo->move($destinationPath, $fileName);
-        }
-        if ($document) {
-            $destinationPath = public_path() . '/upload_file/user/user_document/';
-            $fileName = $request->aadhar_no . '_' . $request->document->getClientOriginalName();
-            $user->document_photo = $fileName;
-            $document->move($destinationPath, $fileName);
-        }
-        $user->save();
-
-        activity('Add user')
-            ->performedOn($user)
-            ->log($request->name . ' are added');
-
+        $this->userRepository->store($request);
         session()->flash('message', 'User Add Successfully..!');
         return redirect()->route('user.index');
-
-
     }
 
     public function userDetails(Request $request, $id)
@@ -86,50 +55,14 @@ class UserController extends Controller
         return view('user.user_details', ['user' => $user, 'hospital' => $hospital, 'states' => $state, 'cities' => $city]);
     }
 
-    public function userDetailsUpdate(UserUpdateRequest $request): \Illuminate\Http\RedirectResponse
+    public function userDetailsUpdate(UserRequest $request): \Illuminate\Http\RedirectResponse
     {
+        $id = $request->input('id');
+        $user = User::findOrFail($id);
 
-        $user = User::findOrFail($request->id);
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->mobile_no = $request->mobile_no;
-        $user->address = $request->address;
-        $user->state_id = $request->state;
-        $user->city_id = $request->city;
-        $user->pin_code = $request->pin_code;
-        $user->aadhar_no = $request->aadhar_no;
-        $user->dob = $request->dob;
-        $profile_photo = $request->profile_photo;
-        $document_photo = $request->document_photo;
-        if ($profile_photo) {
-            $destinationPath = public_path() . '/upload_file/user/';
-            $fileName = $request->name . '_' . $request->profile_photo->getClientOriginalName();
-            $image_path = public_path("upload_file/user/{$user->profile_photo}");
-            if (File::exists($image_path)) {
-                unlink($image_path);
-            }
-            $profile_photo->move($destinationPath, $fileName);
-            $user->profile_photo = $fileName;
-        }
-        if ($document_photo) {
-            $destinationPath = public_path() . '/upload_file/user/user_document';
-            $fileName = $request->aadhar_no . '_' . $request->document_photo->getClientOriginalName();
-            $image_path = public_path("upload_file/user/user_document/{$user->document_photo}");
-            if (File::exists($image_path)) {
-                unlink($image_path);
-            }
-            $document_photo->move($destinationPath, $fileName);
-            $user->document_photo = $fileName;
-        }
-        $user->save();
-
-        activity('Update user')
-            ->performedOn($user)
-            ->log($request->name . ' are updated');
-
+        $this->userRepository->update($request, $user);
         session()->flash('message', 'User Details Update Successfully..!');
         return redirect()->back();
-
     }
 
     public function userDelete($id)
@@ -141,7 +74,7 @@ class UserController extends Controller
             ->performedOn($user)
             ->log($user->name . ' are deleted');
 
-        session()->flash('message', 'Dr. ' . $user->name . ' are Delete Successfully..!');
+        session()->flash('message', $user->name . ' are Delete Successfully..!');
         return redirect()->route('user.index');
     }
 

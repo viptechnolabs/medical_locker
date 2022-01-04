@@ -11,7 +11,7 @@
                 </div>
                 <div class="x_content">
                     <br/>
-                    <form action="{{route('user.submit_user')}}" method="POST" enctype="multipart/form-data"
+                    <form action="{{route('user.storeUser')}}" method="POST" enctype="multipart/form-data"
                           id="add_user">
                         @csrf
                         @if ($errors->any())
@@ -142,16 +142,18 @@
                             <label for="middle-name" class="col-form-label col-md-3 col-sm-3 label-align">Profile
                                 Photo</label>
                             <div class="col-md-6 col-sm-6 ">
-                                <input type="file" id="profile_photo" name="profile_photo" accept="image/*" oninput="profile_preview.src=window.URL.createObjectURL(this.files[0])"/>
-                                <img id="profile_preview" width="100px" />
+                                <input type="file" id="profile_photo" name="profile_photo" accept="image/*"
+                                       oninput="profile_preview.src=window.URL.createObjectURL(this.files[0])"/>
+                                <img id="profile_preview" width="100px"/>
                             </div>
                         </div>
                         <div class="item form-group">
                             <label for="middle-name" class="col-form-label col-md-3 col-sm-3 label-align">Document
                                 Photo</label>
                             <div class="col-md-6 col-sm-6 ">
-                                <input type="file" id="document" name="document" accept="image/*" oninput="document_preview.src=window.URL.createObjectURL(this.files[0])">
-                                <img id="document_preview" width="100px" />
+                                <input type="file" id="document" name="document_photo" accept="image/*"
+                                       oninput="document_preview.src=window.URL.createObjectURL(this.files[0])">
+                                <img id="document_preview" width="100px"/>
                             </div>
                         </div>
                         <div class="ln_solid"></div>
