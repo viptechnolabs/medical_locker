@@ -25,7 +25,7 @@ class UserController extends Controller
 
     public function index(UserDataTable $dataTable)
     {
-        $hospital = Hospital::findOrFail(1);
+        $hospital = Hospital::findOrFail(Auth::user()->id);
         $users = User::all();
 //        return $dataTable->render('user.index', ['hospital' => $hospital]);
         return view('user.index', ['hospital' => $hospital, 'users' => $users]);
@@ -33,7 +33,7 @@ class UserController extends Controller
 
     public function addUser()
     {
-        $hospital = Hospital::findOrFail(1);
+        $hospital = Hospital::findOrFail(Auth::user()->id);
         $state = State::all();
         $city = City::all();
         return view('user.add_user', ['hospital' => $hospital, 'states' => $state, 'cities' => $city]);
@@ -49,7 +49,7 @@ class UserController extends Controller
     public function userDetails(Request $request, $id)
     {
         $user = User::findOrFail($id);
-        $hospital = Hospital::findOrFail(1);
+        $hospital = Hospital::findOrFail(Auth::user()->id);
         $state = State::all();
         $city = City::all();
         return view('user.user_details', ['user' => $user, 'hospital' => $hospital, 'states' => $state, 'cities' => $city]);
@@ -80,7 +80,7 @@ class UserController extends Controller
 
     public function deletedUser(DeletedUserDataTable $dataTable)
     {
-        $hospital = Hospital::findOrFail(1);
+        $hospital = Hospital::findOrFail(Auth::user()->id);
         $users = User::onlyTrashed()->get();
         return $dataTable->render('user.deleted_user', ['hospital' => $hospital, 'users' => $users]);
     }

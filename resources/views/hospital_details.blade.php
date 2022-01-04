@@ -294,7 +294,8 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                @foreach($count_monthly_new_patients as $no => $count_monthly_new_patient)
+                                                @forelse($count_monthly_new_patients as $no => $count_monthly_new_patient)
+                                                    )
 
                                                     <tr>
                                                         <td>{{ $no + 1  }}</td>
@@ -303,8 +304,13 @@
                                                         <td></td>
                                                         <td></td>
                                                     </tr>
-
-                                                @endforeach
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="5" style="text-align: center">No any record at
+                                                            time
+                                                        </td>
+                                                    </tr>
+                                                @endforelse
                                                 </tbody>
                                             </table>
                                         </div>

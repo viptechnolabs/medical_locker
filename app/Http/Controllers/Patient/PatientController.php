@@ -24,7 +24,7 @@ class PatientController extends Controller
 {
     public function index()
     {
-        $hospital = Hospital::findOrFail(1);
+        $hospital = Hospital::findOrFail(Auth::user()->id);
         if (Auth::guard('hospital')->check()) {
             $patients = Patients::orderBy('id', 'DESC')->get();
         } elseif (Auth::guard('doctor')->check()) {
@@ -39,7 +39,7 @@ class PatientController extends Controller
 
     public function addPatient()
     {
-        $hospital = Hospital::findOrFail(1);
+        $hospital = Hospital::findOrFail(Auth::user()->id);
         $state = State::all();
         $city = City::all();
         return view('patient.add_patient', ['hospital' => $hospital, 'states' => $state, 'cities' => $city]);
@@ -93,7 +93,7 @@ class PatientController extends Controller
     public function patientDetails(Request $request, $id)
     {
         $patient = Patients::findOrFail($id);
-        $hospital = Hospital::findOrFail(1);
+        $hospital = Hospital::findOrFail(Auth::user()->id);
         $report = Report::with('doctor')->where('patient_id', $id)->get();
         $state = State::all();
         $city = City::all();
@@ -154,7 +154,7 @@ class PatientController extends Controller
     public function addReport(Request $request, $id)
     {
         $patient = Patients::findOrFail($id);
-        $hospital = Hospital::findOrFail(1);
+        $hospital = Hospital::findOrFail(Auth::user()->id);
         $doctor = Doctor::where('status', 'active')->get();
         return view('patient.add_report', ['patient' => $patient, 'hospital' => $hospital, 'doctors' => $doctor]);
     }

@@ -11,6 +11,7 @@ use App\Models\Doctor;
 use App\Models\Hospital;
 use App\Models\Report;
 use App\Models\State;
+use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -22,7 +23,7 @@ class DoctorController extends Controller
     //
     public function index(Request $request)
     {
-        $hospital = Hospital::findOrFail(1);
+        $hospital = Hospital::findOrFail(Auth::user()->id);
         $doctors = Doctor::query();
         $search = $request->doctor_search;
         if ($search) {
@@ -37,7 +38,7 @@ class DoctorController extends Controller
 
     public function addDoctor()
     {
-        $hospital = Hospital::findOrFail(1);
+        $hospital = Hospital::findOrFail(Auth::user()->id);
         $state = State::all();
         $city = City::all();
         return view('doctor.add_doctor', ['hospital' => $hospital, 'states' => $state, 'cities' => $city]);
@@ -119,7 +120,7 @@ class DoctorController extends Controller
     public function doctorDetails(Request $request, $id)
     {
         $doctor = Doctor::findOrFail($id);
-        $hospital = Hospital::findOrFail(1);
+        $hospital = Hospital::findOrFail(Auth::user()->id);
         $state = State::all();
         $city = City::all();
         $count_monthly_patients = Report::select(DB::raw("(COUNT(*)) as count"), DB::raw("MONTHNAME(created_at) as monthname"))
@@ -218,7 +219,7 @@ class DoctorController extends Controller
 
     public function deletedDoctor()
     {
-        $hospital = Hospital::findOrFail(1);
+        $hospital = Hospital::findOrFail(Auth::user()->id);
         $deleted_doctor = Doctor::onlyTrashed()->get();
         return view('doctor.deleted_doctor', ['hospital' => $hospital, 'doctors' => $deleted_doctor]);
     }

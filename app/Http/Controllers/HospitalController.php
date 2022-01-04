@@ -29,7 +29,7 @@ class HospitalController extends Controller
 
     public function index()
     {
-        $hospital = Hospital::findOrFail(1);
+        $hospital = Hospital::findOrFail(Auth::user()->id);
         $doctors = Doctor::orderBy('id', 'DESC')->take(5)->get();
         $users = User::orderBy('id', 'DESC')->take(5)->get();
         $patients = Patients::orderBy('id', 'DESC')->take(5)->get();
@@ -128,7 +128,7 @@ class HospitalController extends Controller
 
     public function activity()
     {
-        $hospital = Hospital::findOrFail(1);
+        $hospital = Hospital::findOrFail(Auth::user()->id);
         $activities = Activity::orderBy('id', 'DESC')->get(); //returns the last logged activity
         return view('activity', ['activities' => $activities, 'hospital' => $hospital,]);
     }
@@ -172,7 +172,7 @@ class HospitalController extends Controller
 
     public function hospitalDetails()
     {
-        $hospital = Hospital::findOrFail(1);
+        $hospital = Hospital::findOrFail(Auth::user()->id);
 
         $count_monthly_new_patients = Patients::select(DB::raw('count(*) as `count`'),DB::raw('YEAR(created_at) year, MONTHNAME(created_at) monthname'))
             ->groupby('year','monthname')
@@ -183,7 +183,7 @@ class HospitalController extends Controller
 
     public function profile()
     {
-        $hospital = Hospital::findOrFail(1);
+        $hospital = Hospital::findOrFail(Auth::user()->id);
         if (Session::get('userType') === "doctor") {
             $doctor = Doctor::findOrFail(Auth::guard('doctor')->user()->id);
             $state = State::all();
@@ -328,8 +328,14 @@ class HospitalController extends Controller
 
     public function hospitalDetailsUpdate(HospitalUpdateRequest $request)
     {
-        $hospital = Hospital::findOrFail(1);
+        $hospital = Hospital::findOrFail(Auth::user()->id);
         $file = $request->hospital_logo;
+        $hospital->name = $request->hospital_name;
+        $hospital->details = $request->hospital_details;
+        $hospital->fex_no = $request->hospital_fex_no;
+        $hospital->address = $request->hospital_address;
+        $hospital->pin_cord_no = $request->hospital_pin_cord_no;
+        $hospital->password = Hash::make($request->password);
         if ($file) {
             $destinationPath = public_path() . '/upload_file/';
             $fileName = date('d_m_Y') . time() . '_' . $request->hospital_logo->getClientOriginalName();
@@ -340,15 +346,10 @@ class HospitalController extends Controller
             $file->move($destinationPath, $fileName);
             $hospital->logo = $fileName;
         }
-        $hospital->name = $request->hospital_name;
-        $hospital->details = $request->hospital_details;
-        $hospital->fex_no = $request->hospital_fex_no;
-        $hospital->address = $request->hospital_address;
-        $hospital->pin_cord_no = $request->hospital_pin_cord_no;
-        $hospital->password = Hash::make($request->password);;
+
         $hospital->save();
 
-        activity('Update profile')
+        activity('Hospital details update')
             ->performedOn($hospital)
             ->log($request->hospital_name . ' details are updated');
 
